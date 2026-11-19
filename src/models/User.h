@@ -19,7 +19,7 @@ using DateTime = chrono::system_clock::time_point;
 
 class User{
 protected:
-    char userId;
+    string userId;
     string username;
     string passwordHash;
     Role role;
@@ -28,8 +28,10 @@ protected:
     DateTime createdAt;
     DateTime updatedAt;
 
+    string hashPassword(string rawPassword);
+
 public:
-    User(char userId,string username,string passwordHash,Role role,bool active);
+    User(string userId,string username,string passwordHash,Role role,bool active);
 
     virtual ~User();
 
@@ -37,6 +39,14 @@ public:
     bool verifyPassword(string rawPassword);
     void updateProfile();
     bool isActive() const;
+
+    string getUserId() const;
+    string getUsername() const;
+    Role getRole() const;
+    string getPasswordHash() const;
+
+    void setUsername(string username);
+    void setActive(bool active);
 };
 
 #endif
