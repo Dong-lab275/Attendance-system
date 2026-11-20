@@ -163,6 +163,10 @@ CREATE TABLE IF NOT EXISTS attendance_records (
         UNIQUE (student_id, session_id)
 );
 
+CREATE SEQUENCE IF NOT EXISTS registration_id_seq
+START WITH 1
+INCREMENT BY 1;
+
 CREATE INDEX IF NOT EXISTS idx_students_user_id
     ON students(user_id);
 
