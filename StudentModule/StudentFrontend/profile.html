@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+        }
+
+        .container {
+            max-width: 390px;
+            min-height: 100vh;
+            margin: auto;
+            padding: 20px 20px 90px;
+            background: white;
+        }
+
+        h2 {
+            color: #123d38;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #087f65;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 25px auto 10px;
+        }
+
+        .student-name {
+            text-align: center;
+            color: #123d38;
+        }
+
+        .student-role {
+            text-align: center;
+            color: #777;
+        }
+
+        .card {
+            border: 1px solid #dce5e2;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .field {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .field:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .value {
+            color: #123d38;
+            font-weight: bold;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #087f65;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Bottom navigation */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 390px;
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-top: 1px solid #dce5e2;
+            padding: 16px 5px;
+            z-index: 10;
+        }
+
+        .bottom-nav a {
+            color: #087f65;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h2>Student Profile</h2>
+
+        <div class="avatar">S</div>
+
+        <h3 class="student-name">Demo Student</h3>
+        <p class="student-role">Student</p>
+
+        <div class="card">
+            <div class="field">
+                <div class="label">Student ID</div>
+                <div class="value">079205003456</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Full Name</div>
+                <div class="value">Demo Student</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Email Address</div>
+                <div class="value">student@example.com</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Department</div>
+                <div class="value">Information Technology</div>
+            </div>
+
+            <div class="field">
+                <div class="label">Account Status</div>
+                <div class="value">Active (Demo)</div>
+            </div>
+        </div>
+
+        <a class="back" href="index.html">
+            Back to Check-in
+        </a>
+
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">Check-in</a>
+        <a href="history.html">History</a>
+        <a href="courses.html">Courses</a>
+        <a href="profile.html">Profile</a>
+    </nav>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+        }
+
+        .container {
+            max-width: 390px;
+            min-height: 100vh;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: #123d38;
+        }
+
+        .card {
+            background: #eef8f5;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .status {
+            color: #16845d;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #087f65;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #a0aaa7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Attendance</h2>
+        <p>Welcome to the Student Module</p>
+
+        <div class="card">
+            <h3>Today's Class</h3>
+            <p><strong>Course:</strong> Software Engineering</p>
+            <p><strong>Session ID:</strong> SE001</p>
+            <p><strong>Status:</strong>
+                <span class="status">Completed</span>
+            </p>
+            <p><strong>GPS:</strong> Not verified</p>
+        </div>
+
+        <button disabled>Check In</button>
+
+        <p style="text-align:center; color:#777;">
+            Check-in is unavailable for completed sessions.
+        </p>
+    </div>
+   
+<style>
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 390px;
+        display: flex;
+        justify-content: space-around;
+        background: #ffffff;
+        border-top: 1px solid #dce5e2;
+        padding: 16px 5px;
+    }
+
+    .bottom-nav a {
+        color: #087f65;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: bold;
+    }
+</style>
+
+<nav class="bottom-nav">
+    <a href="index.html">Check-in</a>
+    <a href="history.html">History</a>
+    <a href="courses.html">Courses</a>
+    <a href="profile.html">Profile</a>
+</nav>
+ 
+</body>
+</html>
