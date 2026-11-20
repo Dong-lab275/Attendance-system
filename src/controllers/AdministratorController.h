@@ -23,6 +23,9 @@ public:
 
     bool deleteCourse(string courseId);
     bool viewCourses();
+    bool viewCourseEnrollments();
+    bool deleteCourseEnrollment(string registrationId);
+
     bool addClassSession(string sessionId,string classDate,string startTime,
     string endTime,string classroom,string courseId);
 
@@ -31,6 +34,28 @@ public:
         string endTime,string classroom,string courseId);
 
     bool deleteClassSession(string sessionId);
+
+    bool createUserAccount(
+    string userId,string username,string password,string role,string fullName,
+    string email,string phone,string address = "",string dateOfBirth = "",string gender = "",string departmentId = "");
+
+    bool viewUserAccounts();
+    bool updateUserAccount(string userId, string newUsername);
+
+
+    bool addDepartment(string departmentId, string departmentName);
+    bool viewDepartments();
+    bool updateDepartment(string departmentId, string departmentName);
+    bool deleteDepartment(string departmentId);
+
+    bool assignLecturerToCourse(string courseId, string lecturerId);
+    bool unassignLecturerFromCourse(string courseId);
+
+    bool viewAttendanceHistory();
+    bool viewAttendanceReports();
+
+    bool viewClassSessionCalendar();
+    bool deleteUserAccount(string userId);
 };
 
 #endif

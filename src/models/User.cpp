@@ -3,31 +3,28 @@
 #include <sstream>
 #include <iomanip>
 
-User::User(string userId, string username, string passwordHash, Role role, bool active)
+User::User(string userId, string username, string passwordHash,
+           Role role, bool active)
 {
     this->userId = userId;
     this->username = username;
     this->passwordHash = passwordHash;
     this->role = role;
     this->active = active;
+
     this->createdAt = chrono::system_clock::now();
     this->updatedAt = this->createdAt;
 }
 
-User::~User()
-{
-}
+User::~User() = default;
 
 bool User::changePassword(string oldPassword, string newPassword)
 {
-    
-     if (!verifyPassword(oldPassword)){
+    if (!verifyPassword(oldPassword))
         return false;
-    }
 
-    if (newPassword.empty()){
+    if (newPassword.empty())
         return false;
-    }
 
     passwordHash = hashPassword(newPassword);
     updatedAt = chrono::system_clock::now();
@@ -52,7 +49,7 @@ bool User::isActive() const
 
 string User::hashPassword(string rawPassword)
 {
-     unsigned char hash[SHA256_DIGEST_LENGTH];
+    unsigned char hash[SHA256_DIGEST_LENGTH];
 
     SHA256(
         reinterpret_cast<const unsigned char*>(rawPassword.c_str()),
@@ -85,14 +82,10 @@ Role User::getRole() const
     return role;
 }
 
-string User::getPasswordHash() const
-{
-    return passwordHash;
-}
-
 void User::setUsername(string username)
 {
-     if (!username.empty()){
+    if (!username.empty())
+    {
         this->username = username;
         updateProfile();
     }
