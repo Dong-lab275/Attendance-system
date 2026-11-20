@@ -44,3 +44,11 @@ void StudentController::registerCourse(string courseId) {
         cout << "Invalid course ID!" << endl;
     }
 }
+
+bool StudentController::canCheckIn(string sessionStatus) const {
+    if (sessionStatus == "Open") {
+        return true;
+    }
+
+    return false;
+}

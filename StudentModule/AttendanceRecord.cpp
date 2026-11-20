@@ -1,25 +1,24 @@
 
 #include "AttendanceRecord.h"
 #include <iostream>
-
 using namespace std;
 
 AttendanceRecord::AttendanceRecord() {
     studentId = "";
-    courseId = "";
-    status = "ABSENT";
+    sessionId = "";
+    status = "Absent";
 }
 
-void AttendanceRecord::checkIn(string studentId, string courseId) {
+void AttendanceRecord::checkIn(string studentId, string sessionId) {
     this->studentId = studentId;
-    this->courseId = courseId;
-    status = "PRESENT";
+    this->sessionId = sessionId;
+    status = "Present";
 
-    cout << "Check-in successful!" << endl;
+    cout << "Check-in demo successful!" << endl;
 }
 
 void AttendanceRecord::displayAttendance() const {
     cout << "Student ID: " << studentId << endl;
-    cout << "Course ID: " << courseId << endl;
+    cout << "Session ID: " << sessionId << endl;
     cout << "Status: " << status << endl;
 }

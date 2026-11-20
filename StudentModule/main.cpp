@@ -39,14 +39,21 @@ else if (choice == 2) {
 
     controller.registerCourse(courseId);
 }
+
+
 else if (choice == 3) {
-    string courseId;
+    string sessionId;
+    string sessionStatus = "Completed";
 
-    cout << "Enter Course ID: ";
-    cin >> courseId;
+    cout << "Enter Session ID: ";
+    cin >> sessionId;
 
-    attendance.checkIn("ST001", courseId);
-    attendance.displayAttendance();
+    if (controller.canCheckIn(sessionStatus)) {
+        attendance.checkIn("079205003456", sessionId);
+        attendance.displayAttendance();
+    } else {
+        cout << "Check-in denied: Session is closed!" << endl;
+    }
 }
 
 

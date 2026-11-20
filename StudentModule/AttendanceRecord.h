@@ -8,13 +8,13 @@ using namespace std;
 class AttendanceRecord {
 private:
     string studentId;
-    string courseId;
+    string sessionId;
     string status;
 
 public:
     AttendanceRecord();
 
-    void checkIn(string studentId, string courseId);
+   void checkIn(string studentId, string sessionId);
     void displayAttendance() const;
 };
 

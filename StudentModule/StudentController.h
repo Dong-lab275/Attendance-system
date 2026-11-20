@@ -29,6 +29,9 @@ public:
 
     void displayStudentInformation() const;
     void registerCourse(string courseId);
+
+bool canCheckIn(string sessionStatus) const;
+
 };
 
 #endif
