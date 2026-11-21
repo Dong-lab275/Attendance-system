@@ -280,6 +280,42 @@ int main() {
     );
 
     server.Get(
+        R"(/(css|js)/(index|courses|history|profile|rate)\.(css|js))",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            const string folder = request.matches[1].str();
+            const string page = request.matches[2].str();
+            const string extension = request.matches[3].str();
+
+            if (folder != extension) {
+                response.status = 404;
+                return;
+            }
+
+            const string filePath =
+                FRONTEND_FOLDER + folder + "/" +
+                page + "." + extension;
+
+            ifstream file(filePath, ios::binary);
+
+            if (!file.is_open()) {
+                response.status = 404;
+                return;
+            }
+
+            ostringstream buffer;
+            buffer << file.rdbuf();
+
+            response.set_content(
+                buffer.str(),
+                extension == "css"
+                    ? "text/css; charset=UTF-8"
+                    : "application/javascript; charset=UTF-8"
+            );
+        }
+    );
+
+    server.Get(
         "/api/health",
         [](const httplib::Request&,
            httplib::Response& response) {
