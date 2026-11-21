@@ -470,6 +470,10 @@ async function loadStudentProfile() {
     }
 
     student = await response.json();
+
+if (typeof student === "string") {
+  student = JSON.parse(student);
+}
     displayStudentInformation();
 
   } catch (error) {

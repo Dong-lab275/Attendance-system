@@ -329,7 +329,291 @@
         font-size: 25px;
       }
     }
-  </style>
+  /* Attendance History - Figma styling */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #F3F7F8;
+    color: #162B35;
+}
+
+.sidebar {
+    width: 224px;
+    padding: 30px 17px;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar {
+    height: 80px;
+    padding: 0 40px;
+    border-bottom: 1px solid #E0E8EA;
+}
+
+.breadcrumb {
+    color: #63767F;
+    font-size: 13px;
+}
+
+.user {
+    color: #162B35;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user small {
+    color: #63767F;
+    font-size: 11px;
+}
+
+.content {
+    max-width: none;
+    margin: 0;
+    padding: 32px 40px 28px;
+}
+
+h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    line-height: 145%;
+    font-weight: 600;
+    color: #162B35;
+}
+
+.subtitle {
+    margin: 0 0 24px;
+    font-size: 14px;
+    line-height: 145%;
+    color: #63767F;
+}
+
+.content > .card:first-of-type {
+    padding: 0;
+    border: none;
+    background: transparent;
+    margin-bottom: 24px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filters > div {
+    min-width: 0;
+}
+
+.filters label {
+    font-size: 11px;
+    color: #63767F;
+    margin-bottom: 6px;
+}
+
+.filters select,
+.filters input {
+    width: auto;
+    max-width: 100%;
+    height: 39px;
+    padding: 10px 14px;
+    background: #FFFFFF;
+    border: 1px solid #E0E8EA;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 4px rgba(0,0,0,.25);
+    color: #087F75;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    min-height: 152px;
+    padding: 22px 24px;
+    background: #FFFFFF;
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+}
+
+.stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #63767F;
+}
+
+.stat-value {
+    margin-top: 16px;
+    font-size: 28px;
+    line-height: 145%;
+    font-weight: 600;
+    color: #162B35;
+}
+
+.content > .card:not(:first-of-type) {
+    padding: 22px 24px;
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+    background: #FFFFFF;
+}
+
+h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #162B35;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    padding: 10px 8px;
+    background: #F3F7F8;
+    font-size: 11px;
+    font-weight: 500;
+    color: #63767F;
+}
+
+td {
+    height: 46px;
+    padding: 10px 8px;
+    font-size: 12px;
+    color: #162B35;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.present {
+    background: #E7F4F1;
+    color: #087562;
+}
+
+.late {
+    background: #FFF3DA;
+    color: #8C641A;
+}
+
+.absent {
+    background: #FCECEE;
+    color: #AD3F4E;
+}
+
+.note {
+    color: #63767F;
+    font-size: 12px;
+}
+
+@media (max-width: 1050px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .sidebar { width: 100%; }
+    .topbar { padding: 16px; }
+    .content { padding: 22px 16px; }
+    .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .filters { flex-direction: column; }
+    .filters select, .filters input { width: 100%; }
+}
+/* End Attendance History Figma styling */
+/* Figma History refinements */
+.filters label {
+    display: none;
+}
+
+.filters select,
+.filters input {
+    min-width: 155px;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-value {
+    margin-top: 0;
+}
+
+.stat-description {
+    font-size: 11px;
+    line-height: 145%;
+    color: #63767F;
+}
+
+.history-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    color: #63767F;
+    font-size: 12px;
+}
+
+.history-pagination button {
+    border: 1px solid #E0E8EA;
+    background: white;
+    border-radius: 5px;
+    padding: 6px 10px;
+    color: #087F75;
+    cursor: pointer;
+}
+
+.history-pagination button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+/* Figma 4-column history table */
+#historyTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #162B35;
+}
+
+.table-wrap table {
+    width: 100%;
+    table-layout: fixed;
+    min-width: 600px;
+}
+
+.table-wrap th,
+.table-wrap td {
+    width: 25%;
+    text-align: left;
+}
+
+.table-wrap th {
+    background: #F3F7F8;
+    font-size: 11px;
+    color: #63767F;
+}
+
+.table-wrap td {
+    font-size: 12px;
+    color: #162B35;
+}
+</style>
 </head>
 
 <body>
@@ -428,32 +712,35 @@
           <div class="stat-card">
             <div class="stat-label">Attendance rate</div>
             <div class="stat-value" id="rateValue">0%</div>
+            <div class="stat-description">Attended / completed sessions</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-label">Present</div>
             <div class="stat-value" id="presentValue">0</div>
+            <div class="stat-description">On-time check-ins</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-label">Late</div>
             <div class="stat-value" id="lateValue">0</div>
+            <div class="stat-description">Included in attended sessions</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-label">Absent</div>
             <div class="stat-value" id="absentValue">0</div>
+            <div class="stat-description">Missed sessions</div>
           </div>
         </div>
 
         <section class="card">
-          <h3>Attendance records</h3>
+          <h3 id="historyTitle">Attendance records</h3>
 
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Course</th>
                   <th>Session</th>
                   <th>Date &amp; time</th>
                   <th>Check-in</th>
@@ -463,6 +750,10 @@
 
               <tbody id="historyTable"></tbody>
             </table>
+<div class="history-pagination" id="historyPagination">
+    <span id="historyCount">Showing 0 of 0 sessions</span>
+    <div id="historyPageButtons"></div>
+</div>
           </div>
         </section>
 
@@ -479,6 +770,8 @@
   <script>
     // Demo data. Replace with backend results later.
     let attendanceRecords = [];
+const PAGE_SIZE = 5;
+let currentPage = 1;
     const courseFilter = document.getElementById("courseFilter");
     const statusFilter = document.getElementById("statusFilter");
     const dateFilter = document.getElementById("dateFilter");
@@ -549,7 +842,15 @@ async function loadAttendanceHistory() {
       const selectedStatus = statusFilter.value;
       const selectedDate = dateFilter.value;
 
-      const filteredRecords = attendanceRecords.filter(record => {
+      const historyTitle = document.getElementById("historyTitle");
+const selectedCourseName =
+  courseFilter.options[courseFilter.selectedIndex]?.textContent || "";
+
+historyTitle.textContent =
+  selectedCourse === "all"
+    ? "All courses · Attendance records"
+    : selectedCourseName + " · Attendance records";
+const filteredRecords = attendanceRecords.filter(record => {
         const matchCourse =
           selectedCourse === "all" ||
           record.courseId === selectedCourse;
@@ -567,11 +868,16 @@ async function loadAttendanceHistory() {
 
       historyTable.innerHTML = "";
 
-      filteredRecords.forEach(record => {
+      const totalPages = Math.max(1, Math.ceil(filteredRecords.length / PAGE_SIZE));
+currentPage = Math.min(currentPage, totalPages);
+
+const startIndex = (currentPage - 1) * PAGE_SIZE;
+const visibleRecords = filteredRecords.slice(startIndex, startIndex + PAGE_SIZE);
+
+visibleRecords.forEach(record => {
         const row = document.createElement("tr");
 
         const values = [
-          record.course,
           "Session " + record.session,
           record.date + " · " + record.time,
           record.checkin
@@ -596,14 +902,45 @@ async function loadAttendanceHistory() {
       if (filteredRecords.length === 0) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-        cell.colSpan = 5;
+        cell.colSpan = 4;
         cell.textContent = "No attendance records found.";
         row.appendChild(cell);
         historyTable.appendChild(row);
       }
 
-      const present = filteredRecords.filter(
-        record => record.status === "Present"
+      const historyCount = document.getElementById("historyCount");
+const pageButtons = document.getElementById("historyPageButtons");
+
+historyCount.textContent =
+  "Showing " + visibleRecords.length +
+  " of " + filteredRecords.length + " sessions";
+
+pageButtons.innerHTML = "";
+
+function addPageButton(label, page, disabled, active = false) {
+  const button = document.createElement("button");
+  button.textContent = label;
+  button.disabled = disabled;
+  if (active) button.style.background = "#E7F4F1";
+
+  button.addEventListener("click", () => {
+    currentPage = page;
+    updateHistory();
+  });
+
+  pageButtons.appendChild(button);
+}
+
+addPageButton("Previous", currentPage - 1, currentPage === 1);
+
+for (let page = 1; page <= totalPages; page++) {
+  addPageButton(String(page), page, false, page === currentPage);
+}
+
+addPageButton("Next", currentPage + 1, currentPage === totalPages);
+
+const present = filteredRecords.filter(
+        record => record.status === "Present" || record.status === "Demo Present"
       ).length;
 
       const late = filteredRecords.filter(

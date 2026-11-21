@@ -1,32 +1,110 @@
 
-
 #include "httplib.h"
-#include "GpsValidator.h"
+#include "StudentController.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <cmath>
 #include <mutex>
-#include <vector>
+#include <cmath>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include <cctype>
 
 using namespace std;
 
+const string FRONTEND_FOLDER =
+    "StudentModule/StudentFrontend/";
+
 const string REGISTRATION_FILE =
     "StudentModule/course_registrations.txt";
 
-mutex registrationMutex;
+const string ATTENDANCE_FILE =
+    "StudentModule/attendance_demo.txt";
 
-bool isValidId(const string& value, size_t maxLength) {
-    if (value.empty() || value.size() > maxLength) {
+const string DEMO_COURSE_ID = "PHI205";
+const string DEMO_SESSION_ID = "DEMO001";
+
+const double DEMO_CLASS_LAT = 10.8000;
+const double DEMO_CLASS_LON = 106.7000;
+const double DEMO_RADIUS_METERS = 100.0;
+
+mutex fileMutex;
+StudentController studentController;
+
+string getCurrentCheckinTime() {
+    auto now = chrono::system_clock::now();
+    time_t currentTime = chrono::system_clock::to_time_t(now);
+
+    tm localTime = {};
+
+#ifdef _WIN32
+    localtime_s(&localTime, &currentTime);
+#else
+    localtime_r(&currentTime, &localTime);
+#endif
+
+    ostringstream output;
+    output << put_time(&localTime, "%Y-%m-%dT%H:%M:%S");
+    return output.str();
+}
+string escapeJson(const string& value) {
+    string result;
+
+    for (char character : value) {
+        switch (character) {
+            case '"':
+                result += "\\\"";
+                break;
+            case '\\':
+                result += "\\\\";
+                break;
+            case '\n':
+                result += "\\n";
+                break;
+            case '\r':
+                result += "\\r";
+                break;
+            case '\t':
+                result += "\\t";
+                break;
+            default:
+                result += character;
+        }
+    }
+
+    return result;
+}
+
+void sendJson(
+    httplib::Response& response,
+    int statusCode,
+    bool success,
+    const string& message
+) {
+    response.status = statusCode;
+
+    response.set_content(
+        "{\"success\":" +
+        string(success ? "true" : "false") +
+        ",\"message\":\"" +
+        escapeJson(message) +
+        "\"}",
+        "application/json"
+    );
+}
+
+bool isValidId(const string& value) {
+    if (value.empty() || value.size() > 30) {
         return false;
     }
 
-    for (char character : value) {
-        if (!isalnum(static_cast<unsigned char>(character)) &&
-            character != '_' && character != '-') {
+    for (unsigned char character : value) {
+        if (!isalnum(character) &&
+            character != '_' &&
+            character != '-') {
             return false;
         }
     }
@@ -34,17 +112,55 @@ bool isValidId(const string& value, size_t maxLength) {
     return true;
 }
 
-string escapeJson(const string& value) {
-    string result;
-
-    for (char character : value) {
-        if (character == '"' || character == '\\') {
-            result += '\\';
-        }
-        result += character;
+string getParameter(
+    const httplib::Request& request,
+    const string& name
+) {
+    if (!request.has_param(name)) {
+        return "";
     }
 
-    return result;
+    return request.get_param_value(name);
+}
+
+bool parseCoordinate(
+    const string& value,
+    double& coordinate
+) {
+    try {
+        size_t position = 0;
+        coordinate = stod(value, &position);
+
+        return position == value.size() &&
+               isfinite(coordinate);
+    } catch (...) {
+        return false;
+    }
+}
+
+bool readCoordinates(
+    const httplib::Request& request,
+    double& latitude,
+    double& longitude
+) {
+    if (!parseCoordinate(
+            getParameter(request, "studentLat"),
+            latitude
+        )) {
+        return false;
+    }
+
+    if (!parseCoordinate(
+            getParameter(request, "studentLon"),
+            longitude
+        )) {
+        return false;
+    }
+
+    return latitude >= -90.0 &&
+           latitude <= 90.0 &&
+           longitude >= -180.0 &&
+           longitude <= 180.0;
 }
 
 bool registrationExists(
@@ -52,16 +168,11 @@ bool registrationExists(
     const string& courseId
 ) {
     ifstream file(REGISTRATION_FILE);
-    string line;
 
-    while (getline(file, line)) {
-        stringstream stream(line);
-        string savedStudentId;
-        string savedCourseId;
+    string savedStudentId;
+    string savedCourseId;
 
-        getline(stream, savedStudentId, '\t');
-        getline(stream, savedCourseId, '\t');
-
+    while (file >> savedStudentId >> savedCourseId) {
         if (savedStudentId == studentId &&
             savedCourseId == courseId) {
             return true;
@@ -71,182 +182,192 @@ bool registrationExists(
     return false;
 }
 
+bool alreadyCheckedIn(
+    const string& studentId,
+    const string& sessionId
+) {
+    ifstream file(ATTENDANCE_FILE);
+
+    string savedStudentId;
+    string savedCourseId;
+    string savedSessionId;
+    string savedStatus;
+
+    string savedCheckinTime;
+            string recordLine;
+
+            while (getline(file, recordLine)) {
+                istringstream recordStream(recordLine);
+
+                if (!(recordStream >> savedStudentId
+                                   >> savedCourseId
+                                   >> savedSessionId
+                                   >> savedStatus)) {
+                    continue;
+                }
+
+                savedCheckinTime = "";
+                recordStream >> savedCheckinTime;
+        if (savedStudentId == studentId &&
+            savedSessionId == sessionId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool isWithinDemoGps(
+    double latitude,
+    double longitude
+) {
+    return studentController.validateGpsLocation(
+        latitude,
+        longitude,
+        DEMO_CLASS_LAT,
+        DEMO_CLASS_LON,
+        DEMO_RADIUS_METERS
+    );
+}
+
+void serveHtml(
+    const string& fileName,
+    httplib::Response& response
+) {
+    ifstream file(
+        FRONTEND_FOLDER + fileName,
+        ios::binary
+    );
+
+    if (!file.is_open()) {
+        response.status = 404;
+        response.set_content(
+            "HTML file not found.",
+            "text/plain"
+        );
+        return;
+    }
+
+    stringstream buffer;
+    buffer << file.rdbuf();
+
+    response.set_content(
+        buffer.str(),
+        "text/html; charset=UTF-8"
+    );
+}
+
 int main() {
     httplib::Server server;
 
-    server.Get("/", [](const httplib::Request&,
-                       httplib::Response& res) {
-        res.set_redirect("/index.html");
-    });
-
     server.Get(
-        R"(/(index|courses|history|profile|rate)\.html)",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
-
-            string filePath =
-                "StudentModule/StudentFrontend" + req.path;
-
-            ifstream file(filePath, ios::binary);
-
-            if (!file) {
-                res.status = 404;
-                res.set_content(
-                    "Page not found",
-                    "text/plain"
-                );
-                return;
-            }
-
-            stringstream buffer;
-            buffer << file.rdbuf();
-
-            res.set_content(
-                buffer.str(),
-                "text/html; charset=UTF-8"
-            );
+        "/",
+        [](const httplib::Request&,
+           httplib::Response& response) {
+            response.set_redirect("/index.html");
         }
     );
 
-    server.Get("/api/health",
-        [](const httplib::Request&,
-           httplib::Response& res) {
+    server.Get(
+        R"(/(index|courses|history|profile|rate)\.html)",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            string fileName =
+                request.matches[1].str() + ".html";
 
-            res.set_content(
+            serveHtml(fileName, response);
+        }
+    );
+
+    server.Get(
+        "/api/health",
+        [](const httplib::Request&,
+           httplib::Response& response) {
+            response.set_content(
                 R"({"status":"ok","module":"Student"})",
                 "application/json"
             );
         }
     );
 
-    server.Get("/api/check-gps",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
+    // CS201 is closed.
+    // Real session data must come from the group's
+    // existing backend when integration is available.
+    server.Get(
+        "/api/checkin-session",
+        [](const httplib::Request&,
+           httplib::Response& response) {
+            bool canCheckIn =
+                studentController.canCheckIn("Completed");
 
-            if (!req.has_param("studentLat") ||
-                !req.has_param("studentLon") ||
-                !req.has_param("classLat") ||
-                !req.has_param("classLon") ||
-                !req.has_param("radius")) {
+            string json =
+                R"({"courseId":"CS201",)"
+                R"("sessionId":"S13",)"
+                R"("status":"Completed",)"
+                "\"canCheckIn\":" +
+                string(canCheckIn ? "true" : "false") +
+                R"(,"message":"This attendance session is closed."})";
 
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Missing GPS parameters"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            try {
-                double studentLat =
-                    stod(req.get_param_value("studentLat"));
-
-                double studentLon =
-                    stod(req.get_param_value("studentLon"));
-
-                double classLat =
-                    stod(req.get_param_value("classLat"));
-
-                double classLon =
-                    stod(req.get_param_value("classLon"));
-
-                double radius =
-                    stod(req.get_param_value("radius"));
-
-                if (!isfinite(studentLat) ||
-                    !isfinite(studentLon) ||
-                    !isfinite(classLat) ||
-                    !isfinite(classLon) ||
-                    !isfinite(radius) ||
-                    studentLat < -90 || studentLat > 90 ||
-                    classLat < -90 || classLat > 90 ||
-                    studentLon < -180 || studentLon > 180 ||
-                    classLon < -180 || classLon > 180 ||
-                    radius < 0) {
-
-                    res.status = 400;
-                    res.set_content(
-                        R"({"error":"Invalid GPS parameters"})",
-                        "application/json"
-                    );
-                    return;
-                }
-
-                bool valid = GpsValidator::isWithinRadius(
-                    studentLat,
-                    studentLon,
-                    classLat,
-                    classLon,
-                    radius
-                );
-
-                res.set_content(
-                    valid
-                        ? R"({"withinRadius":true})"
-                        : R"({"withinRadius":false})",
-                    "application/json"
-                );
-
-            } catch (...) {
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Invalid GPS parameters"})",
-                    "application/json"
-                );
-            }
+            response.set_content(
+                json,
+                "application/json"
+            );
         }
     );
 
-    server.Post("/api/register-course",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
+    // Isolated demonstration session.
+    server.Get(
+        "/api/demo-session",
+        [](const httplib::Request&,
+           httplib::Response& response) {
+            response.set_content(
+                R"({"courseId":"PHI205","sessionId":"DEMO001","status":"Demo Open","canCheckIn":true,"message":"Student Module demonstration only."})",
+                "application/json"
+            );
+        }
+    );
 
-            if (!req.has_param("studentId") ||
-                !req.has_param("courseId")) {
-
-                res.status = 400;
-                res.set_content(
-                    R"({"success":false,"message":"Missing information"})",
-                    "application/json"
-                );
-                return;
-            }
-
+    server.Post(
+        "/api/register-course",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
             string studentId =
-                req.get_param_value("studentId");
+                getParameter(request, "studentId");
 
             string courseId =
-                req.get_param_value("courseId");
+                getParameter(request, "courseId");
 
-            if (!isValidId(studentId, 12) ||
-                !isValidId(courseId, 20)) {
-
-                res.status = 400;
-                res.set_content(
-                    R"({"success":false,"message":"Invalid student or course ID"})",
-                    "application/json"
+            if (!isValidId(studentId) ||
+                !isValidId(courseId)) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid student or course ID."
                 );
                 return;
             }
 
-            lock_guard<mutex> lock(registrationMutex);
+            lock_guard<mutex> lock(fileMutex);
 
             if (registrationExists(studentId, courseId)) {
-                res.status = 409;
-                res.set_content(
-                    R"({"success":false,"message":"Course already registered"})",
-                    "application/json"
+                sendJson(
+                    response,
+                    409,
+                    false,
+                    "Course already registered."
                 );
                 return;
             }
 
             ofstream file(REGISTRATION_FILE, ios::app);
 
-            if (!file) {
-                res.status = 500;
-                res.set_content(
-                    R"({"success":false,"message":"Cannot open registration file"})",
-                    "application/json"
+            if (!file.is_open()) {
+                sendJson(
+                    response,
+                    500,
+                    false,
+                    "Cannot open registration file."
                 );
                 return;
             }
@@ -256,240 +377,52 @@ int main() {
 
             file.flush();
 
-            if (!file) {
-                res.status = 500;
-                res.set_content(
-                    R"({"success":false,"message":"Cannot save registration"})",
-                    "application/json"
+            if (!file.good()) {
+                sendJson(
+                    response,
+                    500,
+                    false,
+                    "Cannot save registration."
                 );
                 return;
             }
 
-            res.set_content(
-                R"({"success":true,"message":"Course registered successfully"})",
-                "application/json"
+            sendJson(
+                response,
+                200,
+                true,
+                "Course registered successfully."
             );
         }
     );
 
-    server.Get("/api/my-courses",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
-
-            if (!req.has_param("studentId")) {
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Missing student ID"})",
-                    "application/json"
-                );
-                return;
-            }
-
+    server.Get(
+        "/api/my-courses",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
             string studentId =
-                req.get_param_value("studentId");
+                getParameter(request, "studentId");
 
-            if (!isValidId(studentId, 12)) {
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Invalid student ID"})",
-                    "application/json"
+            if (!isValidId(studentId)) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid student ID."
                 );
                 return;
             }
 
-            lock_guard<mutex> lock(registrationMutex);
+            lock_guard<mutex> lock(fileMutex);
 
             ifstream file(REGISTRATION_FILE);
-            string line;
+
+            string savedStudentId;
+            string savedCourseId;
             string json = "{\"courses\":[";
             bool first = true;
 
-            while (getline(file, line)) {
-                stringstream stream(line);
-                string savedStudentId;
-                string savedCourseId;
-
-                getline(stream, savedStudentId, '\t');
-                getline(stream, savedCourseId, '\t');
-
-                if (savedStudentId == studentId) {
-                    if (!first) {
-                        json += ",";
-                    }
-
-                    json += "\"" +
-                        escapeJson(savedCourseId) + "\"";
-
-                    first = false;
-                }
-            }
-
-            json += "]}";
-
-            res.set_content(json, "application/json");
-        }
-    );
-
-    // Demo attendance API - not real GPS verification
-    server.Post("/api/check-in",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
-
-            if (!req.has_param("studentId") ||
-                !req.has_param("courseId")) {
-                res.status = 400;
-                res.set_content(
-                    R"({"success":false,"message":"Missing information"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            string studentId = req.get_param_value("studentId");
-            string courseId = req.get_param_value("courseId");
-
-            if (!isValidId(studentId, 12) ||
-                !isValidId(courseId, 20)) {
-                res.status = 400;
-                res.set_content(
-                    R"({"success":false,"message":"Invalid ID"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            // Fixed demonstration session
-            if (courseId != "PHI205") {
-                res.status = 403;
-                res.set_content(
-                    R"({"success":false,"message":"No demo session for this course"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            lock_guard<mutex> lock(registrationMutex);
-
-            if (!registrationExists(studentId, courseId)) {
-                res.status = 403;
-                res.set_content(
-                    R"({"success":false,"message":"Course not registered"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            const string attendanceFile =
-                "StudentModule/attendance_demo.txt";
-
-            const string sessionId = "DEMO001";
-
-            ifstream input(attendanceFile);
-            string line;
-
-            while (getline(input, line)) {
-                stringstream stream(line);
-                string savedStudentId;
-                string savedCourseId;
-                string savedSessionId;
-
-                getline(stream, savedStudentId, '\t');
-                getline(stream, savedCourseId, '\t');
-                getline(stream, savedSessionId, '\t');
-
-                if (savedStudentId == studentId &&
-                    savedCourseId == courseId &&
-                    savedSessionId == sessionId) {
-                    res.status = 409;
-                    res.set_content(
-                        R"({"success":false,"message":"Already checked in"})",
-                        "application/json"
-                    );
-                    return;
-                }
-            }
-
-            input.close();
-
-            ofstream output(attendanceFile, ios::app);
-
-            if (!output) {
-                res.status = 500;
-                res.set_content(
-                    R"({"success":false,"message":"Cannot save attendance"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            output << studentId << '\t'
-                   << courseId << '\t'
-                   << sessionId << '\t'
-                   << "DEMO_PRESENT" << '\n';
-
-            output.flush();
-
-            if (!output) {
-                res.status = 500;
-                res.set_content(
-                    R"({"success":false,"message":"Save failed"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            res.set_content(
-                R"({"success":true,"message":"Demo check-in saved"})",
-                "application/json"
-            );
-        }
-    );
-
-    // Read demo attendance history
-    server.Get("/api/attendance-history",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
-
-            if (!req.has_param("studentId")) {
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Missing student ID"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            string studentId = req.get_param_value("studentId");
-
-            if (!isValidId(studentId, 12)) {
-                res.status = 400;
-                res.set_content(
-                    R"({"error":"Invalid student ID"})",
-                    "application/json"
-                );
-                return;
-            }
-
-            lock_guard<mutex> lock(registrationMutex);
-
-            ifstream file("StudentModule/attendance_demo.txt");
-
-            string line;
-            string json = "{\"records\":[";
-            bool first = true;
-
-            while (getline(file, line)) {
-                stringstream stream(line);
-                string savedStudentId;
-                string courseId;
-                string sessionId;
-                string status;
-
-                getline(stream, savedStudentId, '\t');
-                getline(stream, courseId, '\t');
-                getline(stream, sessionId, '\t');
-                getline(stream, status, '\t');
-
+            while (file >> savedStudentId >> savedCourseId) {
                 if (savedStudentId != studentId) {
                     continue;
                 }
@@ -498,47 +431,330 @@ int main() {
                     json += ",";
                 }
 
-                json += "{\"courseId\":\"" +
-                    escapeJson(courseId) +
-                    "\",\"sessionId\":\"" +
-                    escapeJson(sessionId) +
-                    "\",\"status\":\"" +
-                    escapeJson(status) + "\"}";
+                json += "\"" +
+                    escapeJson(savedCourseId) + "\"";
 
                 first = false;
             }
 
             json += "]}";
 
-            res.set_content(json, "application/json");
+            response.set_content(
+                json,
+                "application/json"
+            );
         }
     );
 
-    // Get student profile - demo data
-    server.Get("/api/student-profile",
-        [](const httplib::Request& req,
-           httplib::Response& res) {
+    server.Get(
+        "/api/check-gps",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            double latitude = 0;
+            double longitude = 0;
 
-            if (!req.has_param("studentId") ||
-                req.get_param_value("studentId") != "ST001") {
-                res.status = 404;
-                res.set_content(
-                    R"({"error":"Student not found"})",
-                    "application/json"
+            if (!readCoordinates(
+                    request,
+                    latitude,
+                    longitude
+                )) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid GPS coordinates."
                 );
                 return;
             }
 
-            res.set_content(
-                R"({
-                    "studentId":"ST001",
-                    "fullName":"Nguyen Minh Anh",
-                    "dateOfBirth":"15 Mar 2005",
-                    "gender":"Female",
-                    "emailAddress":"minhanh.nguyen@university.edu.vn",
-                    "phoneNumber":"0900000000",
-                    "address":"Ho Chi Minh City, Vietnam"
-                })",
+            bool withinRadius = isWithinDemoGps(
+                latitude,
+                longitude
+            );
+
+            string json =
+                "{\"withinRadius\":" +
+                string(withinRadius ? "true" : "false") +
+                ",\"message\":\"" +
+                string(
+                    withinRadius
+                    ? "Inside demo classroom radius."
+                    : "Outside demo classroom radius."
+                ) +
+                "\"}";
+
+            response.set_content(
+                json,
+                "application/json"
+            );
+        }
+    );
+
+    server.Post(
+        "/api/check-in",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            string studentId =
+                getParameter(request, "studentId");
+
+            string courseId =
+                getParameter(request, "courseId");
+
+            string sessionId =
+                getParameter(request, "sessionId");
+
+            if (!isValidId(studentId) ||
+                !isValidId(courseId) ||
+                !isValidId(sessionId)) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid attendance information."
+                );
+                return;
+            }
+
+            // Do not allow official attendance through
+            // the isolated demonstration server.
+            if (courseId != DEMO_COURSE_ID ||
+                sessionId != DEMO_SESSION_ID) {
+                sendJson(
+                    response,
+                    403,
+                    false,
+                    "Attendance session is not available."
+                );
+                return;
+            }
+
+            double latitude = 0;
+            double longitude = 0;
+
+            if (!readCoordinates(
+                    request,
+                    latitude,
+                    longitude
+                )) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Valid GPS coordinates are required."
+                );
+                return;
+            }
+
+            lock_guard<mutex> lock(fileMutex);
+
+            bool isRegistered =
+                registrationExists(studentId, courseId);
+
+            bool isWithinGpsRadius =
+                isWithinDemoGps(latitude, longitude);
+
+            bool hasCheckedIn =
+                alreadyCheckedIn(studentId, sessionId);
+
+            // The demo is explicitly open for testing.
+            // Its time window is not connected to
+            // the Lecturer Module yet.
+            string sessionStatus = "Open";
+            bool isWithinTime = true;
+
+            bool canCheckIn =
+                studentController.validateCheckIn(
+                    isRegistered,
+                    sessionStatus,
+                    isWithinTime,
+                    isWithinGpsRadius,
+                    hasCheckedIn
+                );
+
+            if (!canCheckIn) {
+                if (!isRegistered) {
+                    sendJson(
+                        response,
+                        403,
+                        false,
+                        "Please register the course first."
+                    );
+                } else if (!studentController.canCheckIn(
+                               sessionStatus
+                           )) {
+                    sendJson(
+                        response,
+                        403,
+                        false,
+                        "Attendance session is closed."
+                    );
+                } else if (!isWithinTime) {
+                    sendJson(
+                        response,
+                        403,
+                        false,
+                        "Outside attendance time window."
+                    );
+                } else if (!isWithinGpsRadius) {
+                    sendJson(
+                        response,
+                        403,
+                        false,
+                        "Outside demo classroom radius."
+                    );
+                } else if (hasCheckedIn) {
+                    sendJson(
+                        response,
+                        409,
+                        false,
+                        "You have already checked in."
+                    );
+                } else {
+                    sendJson(
+                        response,
+                        403,
+                        false,
+                        "Check-in denied."
+                    );
+                }
+
+                return;
+            }
+
+            ofstream file(ATTENDANCE_FILE, ios::app);
+
+            if (!file.is_open()) {
+                sendJson(
+                    response,
+                    500,
+                    false,
+                    "Cannot open attendance file."
+                );
+                return;
+            }
+
+            file << studentId << '\t'
+                 << courseId << '\t'
+                 << sessionId << '\t'
+                 << "DEMO_PRESENT" << '\t' << getCurrentCheckinTime() << '\n';
+
+            file.flush();
+
+            if (!file.good()) {
+                sendJson(
+                    response,
+                    500,
+                    false,
+                    "Cannot save attendance."
+                );
+                return;
+            }
+
+            sendJson(
+                response,
+                200,
+                true,
+                "Demo check-in successful."
+            );
+        }
+    );
+
+    server.Get(
+        "/api/attendance-history",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            string studentId =
+                getParameter(request, "studentId");
+
+            if (!isValidId(studentId)) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid student ID."
+                );
+                return;
+            }
+
+            lock_guard<mutex> lock(fileMutex);
+
+            ifstream file(ATTENDANCE_FILE);
+
+            string savedStudentId;
+            string savedCourseId;
+            string savedSessionId;
+            string savedStatus;
+
+            string json = "{\"records\":[";
+            bool first = true;
+
+            string savedCheckinTime;
+            string recordLine;
+
+            while (getline(file, recordLine)) {
+                istringstream recordStream(recordLine);
+
+                if (!(recordStream >> savedStudentId
+                                   >> savedCourseId
+                                   >> savedSessionId
+                                   >> savedStatus)) {
+                    continue;
+                }
+
+                savedCheckinTime = "";
+                recordStream >> savedCheckinTime;
+                if (savedStudentId != studentId) {
+                    continue;
+                }
+
+                if (!first) {
+                    json += ",";
+                }
+
+                json +=
+                    "{\"courseId\":\"" +
+                    escapeJson(savedCourseId) +
+                    "\",\"sessionId\":\"" +
+                    escapeJson(savedSessionId) +
+                    "\",\"status\":\"" +
+                    escapeJson(savedStatus) +
+                    "\",\"checkinTime\":\"" +
+                    escapeJson(savedCheckinTime) +
+                    "\"}";
+
+                first = false;
+            }
+
+            json += "]}";
+
+            response.set_content(
+                json,
+                "application/json"
+            );
+        }
+    );
+
+    server.Get(
+        "/api/student-profile",
+        [](const httplib::Request& request,
+           httplib::Response& response) {
+            string studentId =
+                getParameter(request, "studentId");
+
+            if (!isValidId(studentId)) {
+                sendJson(
+                    response,
+                    400,
+                    false,
+                    "Invalid student ID."
+                );
+                return;
+            }
+
+            response.set_content(
+                "{\"studentId\":\"" +
+                escapeJson(studentId) +
+                "\",\"fullName\":\"Demo Student\",\"dateOfBirth\":\"\",\"gender\":\"\",\"emailAddress\":\"\",\"phoneNumber\":\"\",\"address\":\"\"}",
                 "application/json"
             );
         }
@@ -548,7 +764,7 @@ int main() {
          << endl;
 
     if (!server.listen("127.0.0.1", 8080)) {
-        cerr << "Cannot start server on port 8080"
+        cerr << "Cannot start Student Server."
              << endl;
         return 1;
     }
