@@ -12,33 +12,45 @@ set(PostgreSQL_INCLUDE_DIR "C:/Program Files/PostgreSQL/18/include")
 set(PostgreSQL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libpq.lib")
 find_package(PostgreSQL REQUIRED)
 
-# Use PostgreSQL's OpenSSL 3 libraries
+# OpenSSL
 set(OPENSSL_ROOT_DIR "C:/Program Files/PostgreSQL/18")
 set(OPENSSL_INCLUDE_DIR "C:/msys64/ucrt64/include")
 set(OPENSSL_CRYPTO_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libcrypto.lib")
 set(OPENSSL_SSL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libssl.lib")
 find_package(OpenSSL REQUIRED COMPONENTS Crypto)
 
-# MSYS2 UCRT64 libcurl
-set(CURL_ROOT "C:/msys64/ucrt64")
-find_package(CURL REQUIRED)
+# HTTP Server and JSON
+set(CPP_HTTPLIB_INCLUDE_DIR
+    "${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib"
+)
 
+set(NLOHMANN_JSON_INCLUDE_DIR
+    "C:/msys64/ucrt64/include"
+)
+
+# Main executable
 add_executable(AttendanceSystem
     src/main.cpp
-    src/database/DatabaseConnection.cpp
-    src/models/User.cpp
-    src/controllers/UserController.cpp
-    src/controllers/AdministratorController.cpp
+
+    AdminUserModule/database/DatabaseConnection.cpp
+
+    AdminUserModule/models/User.cpp
+    AdminUserModule/models/Administrator.cpp
+
+    AdminUserModule/controllers/UserController.cpp
+    AdminUserModule/controllers/AdministratorController.cpp
 )
 
 target_include_directories(AttendanceSystem PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/AdminUserModule"
     "${PostgreSQL_INCLUDE_DIR}"
     "${OPENSSL_INCLUDE_DIR}"
+    "${CPP_HTTPLIB_INCLUDE_DIR}"
+    "${NLOHMANN_JSON_INCLUDE_DIR}"
 )
 
 target_link_libraries(AttendanceSystem PRIVATE
     PostgreSQL::PostgreSQL
     OpenSSL::Crypto
-    CURL::libcurl
 )

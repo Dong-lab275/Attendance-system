@@ -1,9 +1,9 @@
 
 #include <iostream>
 #include <string>
-#include "database/DatabaseConnection.h"
-#include "controllers/UserController.h"
-#include "controllers/AdministratorController.h"
+#include "../AdminUserModule/database/DatabaseConnection.h"
+#include "../AdminUserModule/controllers/UserController.h"
+#include "../AdminUserModule/controllers/AdministratorController.h"
 
 using namespace std;
 
