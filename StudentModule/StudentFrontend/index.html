@@ -426,7 +426,55 @@
             </span>
           </div>
         </section>
+<section class="card">
+  <div class="card-header">
+    <span class="eyebrow">DEMO ATTENDANCE SESSION</span>
+    <span class="badge">Demo Open</span>
+  </div>
 
+  <h2 class="course-title">Triết học Mác</h2>
+  <p class="muted">PHI205 · DEMO001</p>
+
+  <div class="checkin-row">
+    <button type="button" id="demoCheckinButton">
+      Check in now
+    </button>
+    <span class="muted" id="demoCheckinResult">
+      Demo session only
+    </span>
+  </div>
+</section>
+
+<script>
+document.getElementById("demoCheckinButton")
+  .addEventListener("click", async function () {
+    const button = this;
+    button.disabled = true;
+
+    try {
+      const response = await fetch("/api/check-in", {
+        method: "POST",
+        body: new URLSearchParams({
+          studentId: "ST001",
+          courseId: "PHI205"
+        })
+      });
+
+      const result = await response.json();
+
+      document.getElementById("demoCheckinResult")
+        .textContent = result.message;
+
+      if (response.status !== 409 && !response.ok) {
+        button.disabled = false;
+      }
+    } catch (error) {
+      document.getElementById("demoCheckinResult")
+        .textContent = "Cannot connect to Student Server.";
+      button.disabled = false;
+    }
+  });
+</script>
         <section class="card">
           <h3>Your other courses</h3>
 
@@ -482,6 +530,47 @@
         alert("Sign out requires a real login session.");
       });
   </script>
+
+
+<button type="button" onclick="alert('GPS button works'); checkGps();">Check My Location</button>
+<p id="gpsResult"></p>
+
+<script>
+function checkGps() {
+    alert("GPS function started");
+    const result = document.getElementById("gpsResult");
+
+    if (!navigator.geolocation) {
+        result.innerText = "GPS not supported";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+        try {
+            const params = new URLSearchParams({
+                studentLat: position.coords.latitude,
+                studentLon: position.coords.longitude,
+                classLat: 10.8000,
+                classLon: 106.7000,
+                radius: 100
+            });
+
+            const response = await fetch("/api/check-gps?" + params);
+            if (!response.ok) throw new Error("API error");
+
+            const data = await response.json();
+
+            result.innerText = data.withinRadius
+                ? "Within allowed radius"
+                : "Outside allowed radius";
+        } catch {
+            result.innerText = "GPS check failed";
+        }
+    }, () => {
+        result.innerText = "Cannot get location";
+    });
+}
+</script>
 </body>
 </html>
 

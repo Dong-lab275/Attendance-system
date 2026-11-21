@@ -430,9 +430,8 @@
       String(today.getDate()).padStart(2, "0")
     ].join("-");
 
-    const registrationOpen =
-      localDate >= registrationStart &&
-      localDate <= registrationEnd;
+    // Demo mode: allow registration for testing
+const registrationOpen = true;
 
     const availableTable =
       document.getElementById("availableCourses");
@@ -446,7 +445,28 @@
       row.appendChild(cell);
       return cell;
     }
+async function loadRegisteredCourses() {
+  try {
+    const response = await fetch(
+      "/api/my-courses?studentId=ST001"
+    );
 
+    if (!response.ok) {
+      throw new Error("Cannot load registered courses");
+    }
+
+    const data = await response.json();
+
+    courses.forEach(course => {
+      course.registered = data.courses.includes(course.id);
+    });
+
+    renderCourses();
+  } catch (error) {
+    console.error(error);
+    alert("Cannot load registered courses!");
+  }
+}
     function renderCourses() {
       availableTable.innerHTML = "";
       registeredTable.innerHTML = "";
@@ -466,15 +486,47 @@
           button.textContent = "Register";
           button.disabled = !registrationOpen;
 
-          button.addEventListener("click", function() {
+          button.addEventListener("click", async function() {
             if (!registrationOpen || course.registered) {
               return;
             }
 
             // Frontend demo only; no database write.
-            course.registered = true;
-            renderCourses();
-            alert("Demo registration completed for " + course.name);
+            const studentId = "ST001";
+
+button.disabled = true;
+button.textContent = "Registering...";
+
+try {
+  const formData = new URLSearchParams({
+    studentId: studentId,
+    courseId: course.id
+  });
+
+  const response = await fetch("/api/register-course", {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await response.json();
+
+  if (response.ok || response.status === 409) {
+    course.registered = true;
+    renderCourses();
+
+    alert(response.ok
+      ? "Course registered successfully!"
+      : "Course already registered!");
+  } else {
+    alert(result.message || "Registration failed!");
+    button.disabled = false;
+    button.textContent = "Register";
+  }
+} catch (error) {
+  alert("Cannot connect to Student Server!");
+  button.disabled = false;
+  button.textContent = "Register";
+}
           });
 
           actionCell.appendChild(button);
@@ -533,7 +585,7 @@
         alert("Sign out requires a real login session.");
       });
 
-    renderCourses();
+   loadRegisteredCourses();
   </script>
 </body>
 </html>

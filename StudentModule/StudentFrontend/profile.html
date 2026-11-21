@@ -457,15 +457,26 @@
 
   <script>
     // Demo student data.
-    const student = {
-      studentId: "SV2024001",
-      fullName: "Nguyễn Minh Anh",
-      dateOfBirth: "15 Mar 2005",
-      gender: "Female",
-      emailAddress: "minhanh.nguyen@university.edu.vn",
-      phoneNumber: "0900000000",
-      address: "Ho Chi Minh City, Vietnam"
-    };
+   let student = {};
+
+async function loadStudentProfile() {
+  try {
+    const response = await fetch(
+      "/api/student-profile?studentId=ST001"
+    );
+
+    if (!response.ok) {
+      throw new Error("Cannot load student profile");
+    }
+
+    student = await response.json();
+    displayStudentInformation();
+
+  } catch (error) {
+    console.error(error);
+    alert("Cannot load student profile.");
+  }
+}
 
     function displayStudentInformation() {
       document.getElementById("studentName").textContent =
@@ -508,7 +519,7 @@
         alert("Sign out requires a real login session.");
       });
 
-    displayStudentInformation();
+   loadStudentProfile();
   </script>
 </body>
 </html>

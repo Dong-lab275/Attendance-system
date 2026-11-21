@@ -478,76 +478,71 @@
 
   <script>
     // Demo data. Replace with backend results later.
-    const attendanceRecords = [
-      {
-        courseId: "CS201",
-        course: "Cơ sở dữ liệu",
-        session: 8,
-        date: "2026-10-14",
-        time: "09:00",
-        checkin: "09:04",
-        status: "Present"
-      },
-      {
-        courseId: "CS201",
-        course: "Cơ sở dữ liệu",
-        session: 9,
-        date: "2026-10-21",
-        time: "09:00",
-        checkin: "09:12",
-        status: "Late"
-      },
-      {
-        courseId: "CS201",
-        course: "Cơ sở dữ liệu",
-        session: 10,
-        date: "2026-10-28",
-        time: "09:00",
-        checkin: "-",
-        status: "Absent"
-      },
-      {
-        courseId: "CS201",
-        course: "Cơ sở dữ liệu",
-        session: 11,
-        date: "2026-11-04",
-        time: "09:00",
-        checkin: "09:03",
-        status: "Present"
-      },
-      {
-        courseId: "CS201",
-        course: "Cơ sở dữ liệu",
-        session: 12,
-        date: "2026-11-11",
-        time: "09:00",
-        checkin: "09:02",
-        status: "Present"
-      },
-      {
-        courseId: "SE202",
-        course: "Công nghệ phần mềm",
-        session: 5,
-        date: "2026-10-15",
-        time: "13:00",
-        checkin: "13:04",
-        status: "Present"
-      },
-      {
-        courseId: "SE202",
-        course: "Công nghệ phần mềm",
-        session: 6,
-        date: "2026-10-22",
-        time: "13:00",
-        checkin: "-",
-        status: "Absent"
-      }
-    ];
-
+    let attendanceRecords = [];
     const courseFilter = document.getElementById("courseFilter");
     const statusFilter = document.getElementById("statusFilter");
     const dateFilter = document.getElementById("dateFilter");
     const historyTable = document.getElementById("historyTable");
+
+async function loadAttendanceHistory() {
+  try {
+    const response = await fetch(
+      "/api/attendance-history?studentId=ST001"
+    );
+
+    if (!response.ok) {
+      throw new Error("Cannot load attendance history");
+    }
+
+    const data = await response.json();
+
+    const courseNames = {
+      PHI205: "Triết học Mác",
+      DSA206: "Cấu trúc dữ liệu và giải thuật"
+    };
+
+    attendanceRecords = data.records.map(record => ({
+      courseId: record.courseId,
+      course: courseNames[record.courseId] || record.courseId,
+      session: record.sessionId,
+      date: "",
+      time: "Not recorded",
+      checkin: "Demo",
+      status: record.status === "DEMO_PRESENT"
+        ? "Demo Present"
+        : record.status
+    }));
+
+    // Add available course IDs to the filter.
+    data.records.forEach(record => {
+      const exists = Array.from(courseFilter.options)
+        .some(option => option.value === record.courseId);
+
+      if (!exists) {
+        const option = document.createElement("option");
+        option.value = record.courseId;
+        option.textContent =
+          courseNames[record.courseId] || record.courseId;
+
+        courseFilter.appendChild(option);
+      }
+    });
+
+    // Add the demo status to the filter.
+    if (!Array.from(statusFilter.options)
+        .some(option => option.value === "Demo Present")) {
+      const option = document.createElement("option");
+      option.value = "Demo Present";
+      option.textContent = "Demo Present";
+      statusFilter.appendChild(option);
+    }
+
+    updateHistory();
+  } catch (error) {
+    console.error(error);
+    alert("Cannot load attendance history.");
+  }
+}
 
     function updateHistory() {
       const selectedCourse = courseFilter.value;
@@ -647,7 +642,7 @@
         alert("Sign out requires a real login session.");
       });
 
-    updateHistory();
+   loadAttendanceHistory();
   </script>
 </body>
 </html>

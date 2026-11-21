@@ -1,4 +1,4 @@
-
+#include "GpsValidator.h"
 #include "StudentController.h"
 #include <iostream>
 
@@ -36,19 +36,96 @@ void StudentController::displayStudentInformation() const {
 }
 
 void StudentController::registerCourse(string courseId) {
-    if (courseId == "C001" || courseId == "C002") {
-        cout << "Course selected: " << courseId << endl;
-        cout << "Registration demo successful!" << endl;
+    if (courseId.empty()) {
+        cout << "Course ID cannot be empty!" << endl;
+        return;
     }
-    else {
-        cout << "Invalid course ID!" << endl;
-    }
+
+    cout << "Course registration requested: " << courseId << endl;
+    cout << "Waiting for database verification." << endl;
 }
 
 bool StudentController::canCheckIn(string sessionStatus) const {
-    if (sessionStatus == "Open") {
-        return true;
+    return sessionStatus == "Open";
+}
+
+bool StudentController::validateCheckIn(
+    bool isRegistered,
+    string sessionStatus,
+    bool isWithinTime,
+    bool isWithinGpsRadius,
+    bool alreadyCheckedIn
+) const {
+    if (!isRegistered) {
+        return false;
     }
 
-    return false;
+    if (sessionStatus != "Open") {
+        return false;
+    }
+
+    if (!isWithinTime) {
+        return false;
+    }
+
+    if (!isWithinGpsRadius) {
+        return false;
+    }
+
+    if (alreadyCheckedIn) {
+        return false;
+    }
+
+    return true;
+}
+
+double StudentController::calculateAttendanceRate(
+    int attendedSessions,
+    int totalSessions
+) const {
+    if (totalSessions <= 0) {
+        return 0.0;
+    }
+
+    if (attendedSessions < 0 ||
+        attendedSessions > totalSessions) {
+        return 0.0;
+    }
+
+    return (static_cast<double>(attendedSessions)
+            / totalSessions) * 100.0;
+}
+
+void StudentController::displayAttendanceHistory(
+    const string attendanceDates[],
+    const string attendanceStatuses[],
+    int recordCount
+) const {
+    if (recordCount <= 0) {
+        cout << "No attendance history found." << endl;
+        return;
+    }
+
+    cout << "\n===== ATTENDANCE HISTORY =====" << endl;
+
+    for (int i = 0; i < recordCount; i++) {
+        cout << "Date: " << attendanceDates[i] << endl;
+        cout << "Status: " << attendanceStatuses[i] << endl;
+        cout << "------------------------" << endl;
+    }
+}
+bool StudentController::validateGpsLocation(
+    double studentLatitude,
+    double studentLongitude,
+    double classLatitude,
+    double classLongitude,
+    double allowedRadius
+) const {
+    return GpsValidator::isWithinRadius(
+        studentLatitude,
+        studentLongitude,
+        classLatitude,
+        classLongitude,
+        allowedRadius
+    );
 }
