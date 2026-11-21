@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10 · Lecturer — Student statistics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./class-sessions.html" class="nav-item">Class session management</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="#" class="nav-item">Student search &amp; filtering</a>
+        <a href="./student-statistics.html" class="nav-item active">Attendance statistics</a>
+        <a href="#" class="nav-item">Attendance history</a>
+        <a href="#" class="nav-item">Report export</a>
+        <a href="#" class="nav-item">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <div class="workspace">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Attendance statistics</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <!-- Page body -->
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Attendance statistics</h1>
+            <p>Review attendance and punctuality within your as</p>
+          </div>
+        </div>
+
+        <!-- Student filters -->
+        <div class="student-filters">
+          <button type="button" class="filter-chip">Cơ sở dữ liệu · CS201</button>
+          <button type="button" class="filter-chip">All students</button>
+          <button type="button" class="filter-chip">All attendance rates</button>
+        </div>
+
+        <!-- Attendance summary -->
+        <section class="stats-summary-grid">
+          <div class="stat-card">
+            <div class="stat-label">Selected student</div>
+            <div class="stat-value">Nguyễn Minh Anh</div>
+            <div class="stat-sub">SV2024001</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Attendance rate</div>
+            <div class="stat-value">91.7%</div>
+            <div class="stat-sub">11 attended / 12 sessions</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">On-time rate</div>
+            <div class="stat-value">83.3%</div>
+            <div class="stat-sub">10 on time / 12 sessions</div>
+          </div>
+        </section>
+
+        <!-- Class attendance statistics -->
+        <section class="stats-card">
+          <h2 class="card-title">Class attendance statistics</h2>
+
+          <div class="stats-table-header">
+            <div>Student / ID</div>
+            <div>Completed</div>
+            <div>Attended</div>
+            <div>Attendance rate</div>
+            <div>On-time rate</div>
+          </div>
+
+          <div class="stats-table-row">
+            <div class="stats-student-col">Nguyễn Minh Anh · SV2024001</div>
+            <div>12</div>
+            <div>11</div>
+            <div>91.7%</div>
+            <div class="stats-ontime-col">83.3%</div>
+          </div>
+
+          <div class="stats-table-row">
+            <div class="stats-student-col">Trần Đức Anh · SV2024002</div>
+            <div>12</div>
+            <div>12</div>
+            <div>100.0%</div>
+            <div class="stats-ontime-col">91.7%</div>
+          </div>
+
+          <div class="stats-table-row">
+            <div class="stats-student-col">Lê Ngọc Mai · SV2024003</div>
+            <div>12</div>
+            <div>11</div>
+            <div>91.7%</div>
+            <div class="stats-ontime-col">75.0%</div>
+          </div>
+
+          <div class="stats-table-row">
+            <div class="stats-student-col">Phạm Gia Bảo · SV2024004</div>
+            <div>12</div>
+            <div>9</div>
+            <div>75.0%</div>
+            <div class="stats-ontime-col">66.7%</div>
+          </div>
+        </section>
+
+        <div class="stats-formula">
+          Attendance rate = (Present + Late) / com
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

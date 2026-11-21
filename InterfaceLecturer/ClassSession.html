@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>08 · Lecturer — Class sessions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./class-sessions.html" class="nav-item active">Class session management</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="#" class="nav-item">Student search &amp; filtering</a>
+        <a href="#" class="nav-item">Attendance statistics</a>
+        <a href="#" class="nav-item">Attendance history</a>
+        <a href="#" class="nav-item">Report export</a>
+        <a href="#" class="nav-item">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Class session management</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Class sessions</h1>
+            <p>Manage schedules and attendance windows for your</p>
+          </div>
+          <button type="button" class="btn-primary">Create session</button>
+        </div>
+
+        <div class="course-filter">
+          <button type="button" class="filter-chip">Cơ sở dữ liệu · CS201</button>
+          <button type="button" class="filter-chip">November 2026</button>
+        </div>
+
+        <div class="session-grid">
+          <div class="sessions-col">
+            <section class="card sessions-card">
+              <h2 class="card-title">Class sessions</h2>
+
+              <div class="table-header">
+                <div class="col-session">Session</div>
+                <div class="col-schedule">Schedule</div>
+                <div class="col-attendance">Attendance</div>
+                <div class="col-action">Action</div>
+              </div>
+
+              <div class="table-row">
+                <div class="col-session">13</div>
+                <div class="col-schedule">11 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-open">Open</span></div>
+                <div class="col-action"><a href="#" class="action-link">View / Edit / Delete</a></div>
+              </div>
+
+              <div class="table-row">
+                <div class="col-session">14</div>
+                <div class="col-schedule">18 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
+                <div class="col-action"><a href="#" class="action-link">View / Edit / Delete</a></div>
+              </div>
+
+              <div class="table-row">
+                <div class="col-session">15</div>
+                <div class="col-schedule">25 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
+                <div class="col-action"><a href="#" class="action-link">View / Edit / Delete</a></div>
+              </div>
+
+              <div class="table-row">
+                <div class="col-session">12</div>
+                <div class="col-schedule">04 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-closed">Closed</span></div>
+                <div class="col-action"><a href="#" class="action-link">View / Edit / Delete</a></div>
+              </div>
+            </section>
+
+            <div class="attendance-rule">
+              Automatic closure: 15 minutes after the
+            </div>
+          </div>
+
+          <aside class="card session-editor">
+            <h2 class="editor-title">Create session</h2>
+
+            <div class="field-group">
+              <label class="field-label">Course</label>
+              <div class="field-box">Cơ sở dữ liệu · CS201</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Session date</label>
+              <div class="field-box">18 Nov 2026</div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Class starts</label>
+                <div class="field-box">09:00</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Class ends</label>
+                <div class="field-box">11:00</div>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Check-in opens</label>
+                <div class="field-box">09:00</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Period ends</label>
+                <div class="field-box">09:15</div>
+              </div>
+            </div>
+
+            <p class="editor-note">
+              Automatically closes at 09:30.<br />
+              Remaining
+            </p>
+
+            <div class="editor-actions">
+              <button type="button" class="btn-primary btn-sm">Create session</button>
+              <button type="button" class="btn-secondary">Cancel</button>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
