@@ -20,8 +20,8 @@
       <nav class="role-nav">
         <div class="nav-group-label">LECTURER WORKSPACE</div>
         <a href="./Class-Sessions.html" class="nav-item">Class session management</a>
-        <a href="./attendance.html" class="nav-item">Manual attendance</a>
-        <a href="./student-search.html" class="nav-item active">Student search &amp; filtering</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="./studentsearch-filtering.html" class="nav-item active">Student search &amp; filtering</a>
         <a href="./Student-statistics.html" class="nav-item">Attendance statistics</a>
         <a href="./attendance-history.html" class="nav-item">Attendance history</a>
         <a href="./report-export.html" class="nav-item">Report export</a>
@@ -47,7 +47,7 @@
         <div class="page-heading">
           <div class="page-title">
             <h1>Student search &amp; filtering</h1>
-            <p>Review attendance and punctuality within your as</p>
+            <p>Review attendance and punctuality within your assigned courses.</p>
           </div>
         </div>
 
@@ -99,4 +99,36 @@
             <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
           </div>
 
-          <div class="students-table-
+          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
+            <div class="student-col-name">Lê Ngọc Mai</div>
+            <div class="student-col-id">SV2024003</div>
+            <div class="student-col-email">ngocmai.le@university.edu.vn</div>
+            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          </div>
+
+          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
+            <div class="student-col-name">Phạm Gia Bảo</div>
+            <div class="student-col-id">SV2024004</div>
+            <div class="student-col-email">giabao.pham@university.edu.vn</div>
+            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          </div>
+        </section>
+
+        <div class="search-meta-bar">
+          <span id="studentShowingText">Showing 4 of 40 students</span>
+          <div class="pagination-controls">
+            <button type="button" class="page-link-btn">Previous</button>
+            <span class="page-num-active">1</span>
+          </div>
+        </div>
+
+        <div class="attendance-rule">
+          Search results include only students enrolled in your assigned courses.
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
