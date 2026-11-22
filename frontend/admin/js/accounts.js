@@ -3,34 +3,61 @@ const searchInput = document.getElementById("searchAccount");
 const roleFilter = document.getElementById("filterRole");
 const statusFilter = document.getElementById("filterStatus");
 
-const accountRows = document.querySelectorAll("#accountTableBody tr");
+const accountTableBody = document.getElementById("accountTableBody");
 const accountCount = document.getElementById("accountCount");
 const emptyState = document.getElementById("emptyState");
 
-let selectedAccountId = "SV2024001";
+let selectedAccountId = "079205003456";
 
+// ACCOUNT DATA - MATCHED WITH data.sql
 const accountData = {
-    SV2024001: {
-        name: "Nguyễn Minh Anh",
-        email: "minhanh@example.com",
-        role: "student"
+    "079205003456": {
+        username: "student01",
+        name: "Le Minh Khang",
+        email: "khang.le@student.edu.vn",
+        role: "student",
+        status: "active"
     },
-    SV2024002: {
-        name: "Trần Đức Anh",
-        email: "ducanh@example.com",
-        role: "student"
+
+    "079305004567": {
+        username: "student02",
+        name: "Pham Ngoc Mai",
+        email: "mai.pham@student.edu.vn",
+        role: "student",
+        status: "active"
     },
-    GV001: {
-        name: "Trần Quốc Huy",
-        email: "quochuy@example.com",
-        role: "lecturer"
+
+    "079204005678": {
+        username: "student03",
+        name: "Vo Quoc Huy",
+        email: "huy.vo@student.edu.vn",
+        role: "student",
+        status: "active"
     },
-    GV002: {
-        name: "Lê Thanh Hà",
-        email: "thanhha@example.com",
-        role: "lecturer"
+
+    "079082001234": {
+        username: "lecturer01",
+        name: "Nguyen Van An",
+        email: "an.nguyen@attendance.edu.vn",
+        role: "lecturer",
+        status: "active"
+    },
+
+    "079185002345": {
+        username: "lecturer02",
+        name: "Tran Thi Binh",
+        email: "binh.tran@attendance.edu.vn",
+        role: "lecturer",
+        status: "active"
     }
 };
+
+// GET CURRENT ACCOUNT ROWS
+function getAccountRows() {
+    return Array.from(
+        accountTableBody.querySelectorAll("tr")
+    );
+}
 
 // SEARCH AND FILTER
 function filterAccounts() {
@@ -40,14 +67,17 @@ function filterAccounts() {
 
     let visibleCount = 0;
 
-    accountRows.forEach((row) => {
-        const name = row.dataset.name.toLowerCase();
-        const id = row.dataset.id.toLowerCase();
+    getAccountRows().forEach((row) => {
+        const name = (row.dataset.name || "").toLowerCase();
+        const id = (row.dataset.id || "").toLowerCase();
+        const username = (row.dataset.username || "").toLowerCase();
         const role = row.dataset.role;
         const status = row.dataset.status;
 
         const matchesKeyword =
-            name.includes(keyword) || id.includes(keyword);
+            name.includes(keyword) ||
+            id.includes(keyword) ||
+            username.includes(keyword);
 
         const matchesRole =
             selectedRole === "all" || role === selectedRole;
@@ -66,7 +96,8 @@ function filterAccounts() {
     });
 
     accountCount.textContent = `${visibleCount} accounts`;
-    emptyState.style.display = visibleCount === 0 ? "block" : "none";
+    emptyState.style.display =
+        visibleCount === 0 ? "block" : "none";
 }
 
 searchInput.addEventListener("input", filterAccounts);
@@ -82,6 +113,7 @@ function selectAccount(accountId) {
     selectedAccountId = accountId;
 
     document.getElementById("selectedName").textContent = data.name;
+
     document.getElementById("selectedId").textContent =
         `${accountId} · ${data.role === "student" ? "Student" : "Lecturer"}`;
 
@@ -98,13 +130,23 @@ function selectAccount(accountId) {
         .toUpperCase();
 
     document.getElementById("selectedAvatar").textContent = initials;
+
+    // Update selected row
+    getAccountRows().forEach((row) => {
+        row.classList.toggle(
+            "selected",
+            row.dataset.id === accountId
+        );
+    });
 }
 
 // VIEW / EDIT BUTTONS
-document.querySelectorAll(".view-edit-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-        selectAccount(button.dataset.accountId);
-    });
+accountTableBody.addEventListener("click", (event) => {
+    const button = event.target.closest(".view-edit-btn");
+
+    if (!button) return;
+
+    selectAccount(button.dataset.accountId);
 });
 
 // EDIT BUTTON
@@ -116,6 +158,11 @@ document.getElementById("editAccountBtn").addEventListener("click", () => {
 document.getElementById("editAccountForm").addEventListener("submit", (event) => {
     event.preventDefault();
 
+    if (!selectedAccountId || !accountData[selectedAccountId]) {
+        alert("Please select an account first.");
+        return;
+    }
+
     const newName = document.getElementById("fullName").value.trim();
     const newEmail = document.getElementById("emailAddress").value.trim();
 
@@ -124,32 +171,56 @@ document.getElementById("editAccountForm").addEventListener("submit", (event) =>
         return;
     }
 
+    // Update local account data
     accountData[selectedAccountId].name = newName;
     accountData[selectedAccountId].email = newEmail;
 
-    const selectedRow = [...accountRows].find(
+    const selectedRow = getAccountRows().find(
         row => row.dataset.id === selectedAccountId
     );
 
     if (selectedRow) {
         selectedRow.dataset.name = newName;
-        selectedRow.querySelector(".user-cell strong").textContent = newName;
+
+        const nameElement = selectedRow.querySelector(".user-cell strong");
+
+        if (nameElement) {
+            nameElement.textContent = newName;
+        }
     }
 
     document.getElementById("selectedName").textContent = newName;
 
+    // Update avatar
+    const initials = newName
+        .split(" ")
+        .map(part => part[0])
+        .slice(-2)
+        .join("")
+        .toUpperCase();
+
+    document.getElementById("selectedAvatar").textContent = initials;
+
     alert("Account information updated successfully.");
+
     filterAccounts();
 });
 
 // CANCEL EDIT
 document.getElementById("cancelEditBtn").addEventListener("click", () => {
-    selectAccount(selectedAccountId);
+    if (selectedAccountId && accountData[selectedAccountId]) {
+        selectAccount(selectedAccountId);
+    }
 });
 
 // LOCK ACCOUNT
 document.getElementById("lockAccountBtn").addEventListener("click", () => {
-    const row = [...accountRows].find(
+    if (!selectedAccountId || !accountData[selectedAccountId]) {
+        alert("Please select an account first.");
+        return;
+    }
+
+    const row = getAccountRows().find(
         item => item.dataset.id === selectedAccountId
     );
 
@@ -160,21 +231,34 @@ document.getElementById("lockAccountBtn").addEventListener("click", () => {
         return;
     }
 
-    const confirmed = confirm("Are you sure you want to lock this account?");
+    const confirmed = confirm(
+        "Are you sure you want to lock this account?"
+    );
 
-    if (confirmed) {
-        row.dataset.status = "locked";
-        row.querySelector(".status-badge").textContent = "Locked";
-        row.querySelector(".status-badge").className =
-            "status-badge locked-status";
+    if (!confirmed) return;
 
-        alert("Account locked successfully.");
-        filterAccounts();
+    row.dataset.status = "locked";
+    accountData[selectedAccountId].status = "locked";
+
+    const statusBadge = row.querySelector(".status-badge");
+
+    if (statusBadge) {
+        statusBadge.textContent = "Locked";
+        statusBadge.className = "status-badge locked-status";
     }
+
+    alert("Account locked successfully.");
+
+    filterAccounts();
 });
 
 // RESET PASSWORD
 document.getElementById("resetPasswordBtn").addEventListener("click", () => {
+    if (!selectedAccountId || !accountData[selectedAccountId]) {
+        alert("Please select an account first.");
+        return;
+    }
+
     const confirmed = confirm(
         "Are you sure you want to reset this account's password?"
     );
@@ -186,13 +270,18 @@ document.getElementById("resetPasswordBtn").addEventListener("click", () => {
 
 // DELETE ACCOUNT
 document.getElementById("deleteAccountBtn").addEventListener("click", () => {
+    if (!selectedAccountId || !accountData[selectedAccountId]) {
+        alert("Please select an account first.");
+        return;
+    }
+
     const confirmed = confirm(
         "Are you sure you want to delete this account?"
     );
 
     if (!confirmed) return;
 
-    const row = [...accountRows].find(
+    const row = getAccountRows().find(
         item => item.dataset.id === selectedAccountId
     );
 
@@ -204,11 +293,16 @@ document.getElementById("deleteAccountBtn").addEventListener("click", () => {
 
     selectedAccountId = "";
 
-    document.getElementById("selectedName").textContent = "No account selected";
+    document.getElementById("selectedName").textContent =
+        "No account selected";
+
     document.getElementById("selectedId").textContent = "";
     document.getElementById("accountId").value = "";
     document.getElementById("fullName").value = "";
     document.getElementById("emailAddress").value = "";
+    document.getElementById("accountRole").value = "";
+
+    document.getElementById("selectedAvatar").textContent = "";
 
     filterAccounts();
 });
@@ -219,5 +313,5 @@ document.getElementById("createAccountBtn").addEventListener("click", () => {
 });
 
 // INITIALIZE
-selectAccount("SV2024001");
+selectAccount(selectedAccountId);
 filterAccounts();

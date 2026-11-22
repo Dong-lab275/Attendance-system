@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Attendance History</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/attendance-history.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 14V21C13 25 19 25 24 21V14"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M29 11V20"
+                              stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+
+                <div class="admin-brand-text">
+                    <span>Student Attendance</span>
+                    <small>MANAGEMENT SYSTEM</small>
+                </div>
+            </div>
+
+            <div class="sidebar-heading">
+                ADMINISTRATOR WORKSPACE
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="admin.html" class="nav-item">
+                    Account creation &amp; roles
+                </a>
+
+                <a href="accounts.html" class="nav-item">
+                    Student &amp; lecturer accounts
+                </a>
+
+                <a href="courses.html" class="nav-item">
+                    Course management
+                </a>
+
+                <a href="course-registrations.html" class="nav-item">
+                    Course registrations
+                </a>
+
+                <a href="lecturer-assignments.html" class="nav-item">
+                    Lecturer assignments
+                </a>
+
+                <a href="departments.html" class="nav-item">
+                    Departments
+                </a>
+
+                <a href="SessionSchedules.html" class="nav-item">
+                    Session schedules
+                </a>
+
+                <a href="attendance-reports.html" class="nav-item">
+                    Attendance reports
+                </a>
+
+                <a href="attendance-history.html" class="nav-item">
+                    Attendance history
+                </a>
+
+                <a href="personal-information.html" class="nav-item">
+                    Personal information
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <a href="personal-information.html#change-password" class="nav-item">
+                    Change password
+                </a>
+
+                <a href="../users/index.html" class="nav-item">
+                    Sign out
+                </a>
+
+            </div>
+
+        </aside>
+
+        <!-- Main workspace -->
+        <main class="workspace">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="breadcrumb">
+                    Administrator / Attendance history
+                </div>
+
+                <div class="admin-profile">
+                    <strong>System Administrator</strong>
+                    <small>079080000001 · Administrator</small>
+                </div>
+
+            </header>
+
+            <!-- Page content -->
+            <section class="page-content attendance-history-page">
+
+                <!-- Page heading -->
+                <div class="history-heading">
+
+                    <h1>Attendance history</h1>
+
+                    <p>
+                        Review attendance records, check-in times and status changes.
+                    </p>
+
+                </div>
+
+                <!-- Attendance record filters -->
+                <div class="attendance-filters">
+
+                    <div class="filter-search">
+                        <input
+                            type="text"
+                            id="searchStudent"
+                            placeholder="Search student name or ID"
+                            aria-label="Search student name or ID"
+                        >
+                    </div>
+
+                    <div class="filter-course">
+
+                        <select id="courseFilter" aria-label="Select course">
+
+                            <option value="all" selected>
+                                All courses
+                            </option>
+
+                            <option value="C0001">
+                                Database Systems · C0001
+                            </option>
+
+                            <option value="C0002">
+                                Software Engineering · C0002
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-date">
+
+                        <select id="dateFilter" aria-label="Select session date">
+
+                            <option value="all" selected>
+                                All dates
+                            </option>
+
+                            <option value="2026-09-07">
+                                07 Sep 2026
+                            </option>
+
+                            <option value="2026-09-09">
+                                09 Sep 2026
+                            </option>
+
+                            <option value="2026-09-14">
+                                14 Sep 2026
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="filter-status">
+
+                        <select id="statusFilter" aria-label="Select attendance status">
+
+                            <option value="all" selected>
+                                All statuses
+                            </option>
+
+                            <option value="Present">
+                                Present
+                            </option>
+
+                            <option value="Late">
+                                Late
+                            </option>
+
+                            <option value="Absent">
+                                Absent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- Attendance records -->
+                <section class="attendance-records-card">
+
+                    <h2>Attendance records</h2>
+
+                    <div class="attendance-table-wrapper">
+
+                        <table class="attendance-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Student / ID</th>
+                                    <th>Course / Session</th>
+                                    <th>Session date</th>
+                                    <th>Status</th>
+                                    <th>Check-in timestamp</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="attendanceTableBody">
+                                <!-- JavaScript renders attendance records -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="empty-records" id="emptyRecords" hidden>
+                        No attendance records found.
+                    </div>
+
+                </section>
+
+                <!-- Attendance modification history -->
+                <section class="modification-history-card">
+
+                    <h2>Attendance modification history</h2>
+
+                    <div class="empty-records" id="emptyModificationHistory">
+                        No attendance modification history is available.
+                    </div>
+
+                    <p class="modification-note">
+                        Saved attendance changes will be displayed here when
+                        modification history is recorded by the system.
+                    </p>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/admin-navigation.js"></script>
+    <script src="js/attendance-history.js"></script>
+
+</body>
+</html>

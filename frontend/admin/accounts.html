@@ -36,28 +36,33 @@
             <div class="sidebar-heading">ADMINISTRATOR WORKSPACE</div>
 
             <nav class="sidebar-nav">
-                <a href="admin.html" class="nav-item">
-                    Account creation & roles
-                </a>
+            <a href="admin.html" class="nav-item">
+                Account creation & roles
+            </a>
 
-                <a href="accounts.html" class="nav-item active">
-                    Student & lecturer accounts
-                </a>
+            <a href="accounts.html" class="nav-item">
+                Student & lecturer accounts
+            </a>
 
-                <a href="#" class="nav-item">Course management</a>
-                <a href="#" class="nav-item">Course registrations</a>
-                <a href="#" class="nav-item">Lecturer assignments</a>
-                <a href="#" class="nav-item">Departments</a>
-                <a href="#" class="nav-item">Session schedules</a>
-                <a href="#" class="nav-item">Attendance reports</a>
-                <a href="#" class="nav-item">Attendance history</a>
-                <a href="#" class="nav-item">Personal information</a>
-            </nav>
+            <a href="courses.html" class="nav-item">Course management</a>
+            <a href="course-registrations.html" class="nav-item">Course registrations</a>
+            <a href="lecturer-assignments.html" class="nav-item">Lecturer assignments</a>
+            <a href="departments.html" class="nav-item">Departments</a>
+            <a href="SessionSchedules.html" class="nav-item">Session schedules</a>
+            <a href="attendance-reports.html" class="nav-item">Attendance reports</a>
+            <a href="attendance-history.html" class="nav-item">Attendance history</a>
+            <a href="personal-information.html" class="nav-item">Personal information</a>
+        </nav>
 
             <div class="sidebar-bottom">
-                <a href="#" class="nav-item">Change password</a>
-                <a href="../index.html" class="nav-item">Sign out</a>
-            </div>
+            <a href="personal-information.html#change-password" class="nav-item">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="nav-item">
+                Sign out
+            </a>
+        </div>
         </aside>
 
         <!-- MAIN CONTENT -->
@@ -72,9 +77,9 @@
                 </div>
 
                 <div class="admin-profile">
-                        <strong>Lê Thanh Hà</strong>
-                        <small>AD001 · Administrator</small>
-                </div>
+                <strong>System Administrator</strong>
+                <small>079080000001 · Administrator</small>
+            </div>
             </header>
 
             <!-- PAGE CONTENT -->
@@ -86,9 +91,11 @@
                         <p>Create, view, update and manage student and lecturer accounts.</p>
                     </div>
 
-                    <button class="btn-create-account" id="createAccountBtn">
+                    <a href="admin.html"
+                    class="btn-create-account"
+                    id="createAccountBtn">
                         Create account & assign role
-                    </button>
+                    </a>
                 </section>
 
                 <!-- FILTERS -->
@@ -144,17 +151,19 @@
 
                                     <tbody id="accountTableBody">
 
+                                        <!-- STUDENT 01 -->
                                         <tr
-                                            data-name="Nguyễn Minh Anh"
-                                            data-id="SV2024001"
+                                            data-name="Le Minh Khang"
+                                            data-id="079205003456"
+                                            data-username="student01"
                                             data-role="student"
                                             data-status="active"
                                         >
                                             <td>
                                                 <div class="user-cell">
                                                     <div>
-                                                        <strong>Nguyễn Minh Anh</strong>
-                                                        <small>SV2024001</small>
+                                                        <strong>Le Minh Khang</strong>
+                                                        <small>079205003456</small>
                                                     </div>
                                                 </div>
                                             </td>
@@ -163,50 +172,79 @@
                                                 <span class="status-badge active-status">Active</span>
                                             </td>
                                             <td>
-                                                <button class="view-edit-btn"
-                                                        data-account-id="SV2024001">
+                                                <button class="view-edit-btn" data-account-id="079205003456">
                                                     View / Edit
                                                 </button>
                                             </td>
                                         </tr>
 
+                                        <!-- STUDENT 02 -->
                                         <tr
-                                            data-name="Trần Đức Anh"
-                                            data-id="SV2024002"
+                                            data-name="Pham Ngoc Mai"
+                                            data-id="079305004567"
+                                            data-username="student02"
                                             data-role="student"
-                                            data-status="locked"
+                                            data-status="active"
                                         >
                                             <td>
                                                 <div class="user-cell">
                                                     <div>
-                                                        <strong>Trần Đức Anh</strong>
-                                                        <small>SV2024002</small>
+                                                        <strong>Pham Ngoc Mai</strong>
+                                                        <small>079305004567</small>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>Student</td>
                                             <td>
-                                                <span class="status-badge locked-status">Locked</span>
+                                                <span class="status-badge active-status">Active</span>
                                             </td>
                                             <td>
-                                                <button class="view-edit-btn"
-                                                        data-account-id="SV2024002">
+                                                <button class="view-edit-btn" data-account-id="079305004567">
                                                     View / Edit
                                                 </button>
                                             </td>
                                         </tr>
 
+                                        <!-- STUDENT 03 -->
                                         <tr
-                                            data-name="Trần Quốc Huy"
-                                            data-id="GV001"
+                                            data-name="Vo Quoc Huy"
+                                            data-id="079204005678"
+                                            data-username="student03"
+                                            data-role="student"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Vo Quoc Huy</strong>
+                                                        <small>079204005678</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Student</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079204005678">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- LECTURER 01 -->
+                                        <tr
+                                            data-name="Nguyen Van An"
+                                            data-id="079082001234"
+                                            data-username="lecturer01"
                                             data-role="lecturer"
                                             data-status="active"
                                         >
                                             <td>
                                                 <div class="user-cell">
                                                     <div>
-                                                        <strong>Trần Quốc Huy</strong>
-                                                        <small>GV001</small>
+                                                        <strong>Nguyen Van An</strong>
+                                                        <small>079082001234</small>
                                                     </div>
                                                 </div>
                                             </td>
@@ -215,24 +253,25 @@
                                                 <span class="status-badge active-status">Active</span>
                                             </td>
                                             <td>
-                                                <button class="view-edit-btn"
-                                                        data-account-id="GV001">
+                                                <button class="view-edit-btn" data-account-id="079082001234">
                                                     View / Edit
                                                 </button>
                                             </td>
                                         </tr>
 
+                                        <!-- LECTURER 02 -->
                                         <tr
-                                            data-name="Lê Thanh Hà"
-                                            data-id="GV002"
+                                            data-name="Tran Thi Binh"
+                                            data-id="079185002345"
+                                            data-username="lecturer02"
                                             data-role="lecturer"
                                             data-status="active"
                                         >
                                             <td>
                                                 <div class="user-cell">
                                                     <div>
-                                                        <strong>Lê Thanh Hà</strong>
-                                                        <small>GV002</small>
+                                                        <strong>Tran Thi Binh</strong>
+                                                        <small>079185002345</small>
                                                     </div>
                                                 </div>
                                             </td>
@@ -241,8 +280,7 @@
                                                 <span class="status-badge active-status">Active</span>
                                             </td>
                                             <td>
-                                                <button class="view-edit-btn"
-                                                        data-account-id="GV002">
+                                                <button class="view-edit-btn" data-account-id="079185002345">
                                                     View / Edit
                                                 </button>
                                             </td>
@@ -267,11 +305,11 @@
                             </div>
 
                             <div class="selected-user">
-                                <div>
-                                    <strong id="selectedName">Nguyễn Minh Anh</strong>
-                                    <small id="selectedId">SV2024001 · Student</small>
-                                </div>
+                            <div>
+                                <strong id="selectedName">Le Minh Khang</strong>
+                                <small id="selectedId">079205003456 · Student</small>
                             </div>
+                        </div>
 
                             <div class="account-actions">
                                 <button class="action-btn edit-action" id="editAccountBtn">
@@ -355,6 +393,7 @@
         </main>
     </div>
 
+    <script src="js/admin-navigation.js"></script>
     <script src="js/accounts.js"></script>
 </body>
 </html>

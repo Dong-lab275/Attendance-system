@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Attendance Reports</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/attendance-reports.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar: giữ nguyên cấu trúc hiện tại của bạn -->
+        <aside class="sidebar">
+
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 14V21C13 25 19 25 24 21V14"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M29 11V20"
+                              stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+
+                <div class="admin-brand-text">
+                    <span>Student Attendance</span>
+                    <small>MANAGEMENT SYSTEM</small>
+                </div>
+            </div>
+
+            <div class="sidebar-heading">
+                ADMINISTRATOR WORKSPACE
+            </div>
+
+            <nav class="sidebar-nav">
+
+    <a href="admin.html" class="nav-item">
+        Account creation &amp; roles
+    </a>
+
+    <a href="accounts.html" class="nav-item">
+        Student &amp; lecturer accounts
+    </a>
+
+    <a href="courses.html" class="nav-item">
+        Course management
+    </a>
+
+    <a href="course-registrations.html" class="nav-item">
+        Course registrations
+    </a>
+
+    <a href="lecturer-assignments.html" class="nav-item">
+        Lecturer assignments
+    </a>
+
+    <a href="departments.html" class="nav-item">
+        Departments
+    </a>
+
+    <a href="SessionSchedules.html" class="nav-item">
+        Session schedules
+    </a>
+
+    <a href="attendance-reports.html" class="nav-item">
+        Attendance reports
+    </a>
+
+    <a href="attendance-history.html" class="nav-item">
+        Attendance history
+    </a>
+
+    <a href="personal-information.html" class="nav-item">
+        Personal information
+    </a>
+
+</nav>
+
+            <div class="sidebar-bottom">
+
+    <a href="personal-information.html#change-password" class="nav-item">
+        Change password
+    </a>
+
+    <a href="../users/index.html" class="nav-item">
+        Sign out
+    </a>
+
+</div>
+
+        </aside>
+
+        <!-- Main workspace -->
+        <main class="workspace">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="breadcrumb">
+                    Administrator / Attendance reports
+                </div>
+
+                <div class="admin-profile">
+                <strong>System Administrator</strong>
+                <small>079080000001 · Administrator</small>
+            </div>
+            </header>
+
+            <!-- Attendance reports page -->
+            <section class="attendance-page">
+
+                <!-- Page heading -->
+                <div class="attendance-heading">
+                    <div class="attendance-title">
+                        <h1>Attendance reports</h1>
+                        <p>
+                            Monitor course attendance and review attendance records.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Report filters -->
+                <div class="report-filters">
+
+                    <div class="filter-group">
+                        <label for="courseFilter">Course</label>
+                        <select id="courseFilter">
+                        <option value="all" selected>All courses</option>
+                        <option value="C0001">Database Systems</option>
+                        <option value="C0002">Software Engineering</option>
+                    </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="dateFilter">Date range</label>
+                        <select id="dateFilter">
+                            <option value="all">All dates</option>
+                            <option value="september">September 2026</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="statusFilter">Attendance status</label>
+                        <select id="statusFilter">
+                            <option value="all" selected>
+                                All attendance statuses
+                            </option>
+                            <option value="present">Present</option>
+                            <option value="late">Late</option>
+                            <option value="absent">Absent</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Report summary -->
+                <div class="report-summary">
+
+    <article class="summary-card">
+        <div class="summary-label">Attendance rate</div>
+
+        <div class="summary-value" id="attendanceRate">
+            75%
+        </div>
+
+        <div class="summary-description" id="attendanceDescription">
+            6 attended / 8 records
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <div class="summary-label">Present</div>
+
+        <div class="summary-value" id="presentCount">
+            4
+        </div>
+
+        <div class="summary-description">
+            On-time attendance
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <div class="summary-label">Late</div>
+
+        <div class="summary-value" id="lateCount">
+            2
+        </div>
+
+        <div class="summary-description">
+            Late attendance
+        </div>
+    </article>
+
+    <article class="summary-card">
+        <div class="summary-label">Absent</div>
+
+        <div class="summary-value" id="absentCount">
+            2
+        </div>
+
+        <div class="summary-description">
+            Missed attendance
+        </div>
+    </article>
+
+</div>
+
+                <!-- Session report -->
+                <section class="session-report-card">
+
+                    <div class="report-card-heading">
+    <h2 id="reportTitle">
+        All courses · Session report
+    </h2>
+
+    <span class="session-count" id="sessionCount">
+        3 completed sessions
+    </span>
+</div>
+
+                    <div class="report-table-wrapper">
+
+                        <table class="report-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Session / Date</th>
+                                    <th>Students</th>
+                                    <th>Present</th>
+                                    <th>Late</th>
+                                    <th>Absent</th>
+                                    <th>Rate</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="reportTableBody">
+
+                                <!-- JavaScript renders report rows here -->
+
+                            </tbody>
+
+                        </table>
+
+                        <div class="empty-state" id="emptyState" hidden>
+                            No attendance records found.
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Attendance guidance -->
+                <div class="attendance-guidance">
+                    <span class="guidance-icon">i</span>
+
+                    <p id="attendanceGuidance">
+                        3 completed sessions · 3 students.
+                       Attendance rate is calculated from Present and Late records.
+                    </p>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/admin-navigation.js"></script>
+<script src="js/attendance-reports.js"></script>
+
+</body>
+</html>

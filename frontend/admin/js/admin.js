@@ -1,59 +1,66 @@
 
-const createAccountForm = document.getElementById("createAccountForm");
-const assignRoleForm = document.getElementById("assignRoleForm");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Update selected role appearance
-const roleOptions = document.querySelectorAll(".role-option");
+    const createAccountForm = document.getElementById("createAccountForm");
+    const assignRoleForm = document.getElementById("assignRoleForm");
 
-roleOptions.forEach((option) => {
-    option.addEventListener("click", () => {
-        roleOptions.forEach((item) => {
-            item.classList.remove("selected");
+    // Update selected role appearance
+    const roleOptions = document.querySelectorAll(".role-option");
+
+    roleOptions.forEach((option) => {
+        option.addEventListener("click", () => {
+            roleOptions.forEach((item) => {
+                item.classList.remove("selected");
+            });
+
+            option.classList.add("selected");
         });
-
-        option.classList.add("selected");
     });
-});
 
-// Create account form
-createAccountForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+    // Create account form
+    if (createAccountForm) {
+        createAccountForm.addEventListener("submit", (event) => {
+            event.preventDefault();
 
-    const accountId = document.getElementById("accountId").value.trim();
-    const fullName = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const role = document.querySelector('input[name="role"]:checked').value;
+            const accountId = document.getElementById("accountId").value.trim();
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
 
-    alert(
-        `Account information:\n` +
-        `ID: ${accountId}\n` +
-        `Name: ${fullName}\n` +
-        `Email: ${email}\n` +
-        `Role: ${role}`
-    );
-});
+            const selectedRole = document.querySelector(
+                'input[name="role"]:checked'
+            );
 
-// Assign role form
-assignRoleForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+            if (!selectedRole) {
+                alert("Please select an account role.");
+                return;
+            }
 
-    const account = document.getElementById("selectedAccount").value;
-    const role = document.getElementById("assignedRole").value;
+            const role = selectedRole.value;
 
-    alert(`Role assignment:\nAccount: ${account}\nNew role: ${role}`);
-});
-
-
-const navItems = document.querySelectorAll(".sidebar-nav .nav-item");
-
-navItems.forEach((item) => {
-    item.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        navItems.forEach((nav) => {
-            nav.classList.remove("active");
+            alert(
+                `Account information:\n` +
+                `ID: ${accountId}\n` +
+                `Name: ${fullName}\n` +
+                `Email: ${email}\n` +
+                `Role: ${role}`
+            );
         });
+    }
 
-        item.classList.add("active");
-    });
+    // Assign role form
+    if (assignRoleForm) {
+        assignRoleForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const account = document.getElementById("selectedAccount").value;
+            const role = document.getElementById("assignedRole").value;
+
+            alert(
+                `Role assignment:\n` +
+                `Account: ${account}\n` +
+                `New role: ${role}`
+            );
+        });
+    }
+
 });

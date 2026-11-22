@@ -1,0 +1,982 @@
+
+/* ================================
+   GLOBAL
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #087F75;
+    --primary-dark: #066B63;
+    --heading: #162B35;
+    --text: #63767F;
+    --border: #E0E8EA;
+    --background: #F7F9FA;
+    --white: #FFFFFF;
+    --danger: #AD3F4E;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background: var(--background);
+    color: var(--heading);
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* ================================
+   ADMIN LAYOUT
+================================ */
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+
+/* ================================
+   SIDEBAR
+   GIỮ NGUYÊN THEO CSS GỐC
+================================ */
+
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 18px;
+
+    color: var(--white);
+    background: linear-gradient(
+        145deg,
+        rgba(9, 46, 53, 0.96),
+        rgba(7, 61, 59, 0.94),
+        rgba(6, 75, 69, 0.96)
+    );
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 38px;
+}
+
+.admin-brand-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.admin-brand-icon svg {
+    width: 25px;
+    height: 25px;
+    color: var(--white);
+}
+
+.admin-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-brand-text span {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-brand-text small {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    color: #C5D7D6;
+}
+
+.sidebar-heading {
+    width: 230px;
+    min-height: 52px;
+    margin-bottom: 20px;
+
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 145%;
+    color: var(--white);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-item {
+    width: 100%;
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 9px 8px;
+
+    border-radius: 6px;
+
+    color: #D5E5E3;
+    text-decoration: none;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 145%;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item.active {
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+}
+
+.sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    margin-top: auto;
+    padding-top: 25px;
+}
+
+.sidebar-bottom .nav-item {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
+.sidebar-bottom .nav-item:hover {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+/* ================================
+   MAIN WORKSPACE
+================================ */
+
+.workspace {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+}
+
+
+/* ================================
+   TOPBAR
+================================ */
+
+.topbar {
+    height: 76px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 36px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--text);
+    font-size: 12px;
+}
+
+.breadcrumb strong {
+    color: var(--heading);
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    color: #AAB8BD;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.profile-information {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-information strong {
+    color: var(--heading);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.profile-information small {
+    color: var(--text);
+    font-size: 10px;
+}
+
+
+/* ================================
+   PAGE CONTENT
+================================ */
+
+.assignments-page {
+    width: 100%;
+    min-height: calc(100vh - 76px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+
+    padding: 32px 40px 28px;
+}
+
+
+/* ================================
+   PAGE HEADING
+================================ */
+
+.assignments-heading {
+    width: 100%;
+    min-height: 67px;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.heading-information {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.heading-information h1 {
+    color: var(--heading);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+.heading-information p {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 145%;
+}
+
+
+/* ================================
+   BUTTONS
+================================ */
+
+.btn-primary {
+    min-height: 39px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 10px 14px;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+
+    background: var(--primary);
+    color: var(--white);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-create {
+    width: 155px;
+    height: 43px;
+    min-height: 43px;
+    padding: 12px 15px;
+
+    border-radius: 7px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.btn-create span {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.btn-secondary,
+.btn-danger {
+    min-height: 39px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background: var(--white);
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secondary {
+    width: 75px;
+    color: var(--primary);
+}
+
+.btn-secondary:hover {
+    background: #F3F8F7;
+    border-color: var(--primary);
+}
+
+.btn-danger {
+    width: 80px;
+    color: var(--danger);
+}
+
+.btn-danger:hover {
+    background: #FFF6F7;
+    border-color: var(--danger);
+}
+
+.btn-save {
+    width: 85px;
+    height: 37px;
+    min-height: 37px;
+}
+
+
+/* ================================
+   FILTERS
+================================ */
+
+.assignment-filters {
+    width: 100%;
+    min-height: 39px;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.search-field,
+.select-field {
+    height: 39px;
+    display: flex;
+    align-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+}
+
+.search-field {
+    width: 310px;
+    min-width: 230px;
+    gap: 8px;
+    padding: 0 12px;
+}
+
+.search-icon {
+    color: var(--primary);
+    font-size: 19px;
+    line-height: 1;
+}
+
+.search-field input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: #087F75;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.search-field input::placeholder {
+    color: #087F75;
+    opacity: 1;
+}
+
+.select-field {
+    position: relative;
+    width: 155px;
+    min-width: 130px;
+    padding: 0 12px;
+}
+
+.select-field select {
+    width: 100%;
+    height: 100%;
+    appearance: none;
+
+    border: none;
+    outline: none;
+    background: transparent;
+
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.select-field::after {
+    content: "⌄";
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-55%);
+
+    color: var(--primary);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.year-select {
+    width: 155px;
+}
+
+.semester-select {
+    width: 135px;
+}
+
+
+/* ================================
+   ASSIGNMENT MANAGEMENT
+================================ */
+
+.assignment-management {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+    gap: 24px;
+}
+
+.card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+
+/* ================================
+   ASSIGNMENT DIRECTORY
+================================ */
+
+.assignment-directory {
+    width: 100%;
+    min-height: 579px;
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.directory-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.directory-heading h2 {
+    color: var(--heading);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.directory-heading span {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.assignment-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+.assignment-table thead,
+.assignment-table thead tr {
+    background: transparent !important;
+}
+
+.assignment-table thead th {
+    height: 40px;
+    padding: 10px 9px;
+
+    background-color: #F3F7F8 !important;
+    color: var(--text);
+
+    font-size: 10px;
+    font-weight: 500;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.assignment-table th:nth-child(1) {
+    width: 23%;
+}
+
+.assignment-table th:nth-child(2) {
+    width: 25%;
+}
+
+.assignment-table th:nth-child(3) {
+    width: 19%;
+}
+
+.assignment-table th:nth-child(4) {
+    width: 15%;
+}
+
+.assignment-table th:nth-child(5) {
+    width: 18%;
+}
+
+.assignment-table td {
+    height: 67px;
+    padding: 10px 9px;
+
+    border-bottom: 1px solid #EDF1F2;
+    vertical-align: middle;
+
+    background-color: #FFFFFF;
+    color: var(--text);
+
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.assignment-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.assignment-table tbody tr:hover td {
+    background: #F8FBFB;
+}
+
+.assignment-table tbody tr.selected td {
+    background: #F0F8F7;
+}
+
+.lecturer-information,
+.course-information {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.lecturer-information strong,
+.course-information strong {
+    color: var(--heading);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+.lecturer-information span,
+.course-information span {
+    color: var(--text);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.academic-year-label,
+.semester-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    padding: 5px 7px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.academic-year-label {
+    color: #55736F;
+    background: #EDF7F4;
+}
+
+.semester-label {
+    color: #59758E;
+    background: #EFF4F8;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-link {
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+.action-link.delete-link {
+    color: var(--danger);
+}
+
+.empty-state {
+    padding: 35px 15px;
+    color: var(--text);
+    font-size: 12px;
+    text-align: center;
+}
+
+
+/* ================================
+   ASSIGNMENT EDITOR
+================================ */
+
+.assignment-editor {
+    width: 340px;
+    min-height: 438px;
+    padding: 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.editor-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.editor-heading h2 {
+    color: var(--heading);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.editor-heading p {
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+#assignmentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    height: 43px;
+    padding: 11px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    outline: none;
+
+    background: var(--white);
+    color: var(--heading);
+
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(8, 127, 117, 0.08);
+}
+
+.form-group input::placeholder {
+    color: #A3B0B5;
+}
+
+.form-group input:disabled {
+    background: #F3F6F7;
+    color: #8B999E;
+    cursor: not-allowed;
+}
+
+.editor-actions {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.form-message {
+    min-height: 16px;
+    color: var(--primary);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.form-message.error {
+    color: var(--danger);
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1200px) {
+    .assignments-page {
+        padding-right: 28px;
+        padding-left: 28px;
+    }
+
+    .assignment-management {
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 18px;
+    }
+
+    .assignment-editor {
+        width: 320px;
+    }
+
+    .assignment-filters {
+        gap: 8px;
+    }
+
+    .search-field {
+        flex: 1;
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 230px;
+        min-width: 230px;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .sidebar-heading {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .assignment-management {
+        grid-template-columns: 1fr;
+    }
+
+    .assignment-editor {
+        width: 100%;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+        padding: 18px;
+    }
+
+    .admin-brand {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-heading {
+        min-height: auto;
+        margin-bottom: 12px;
+    }
+
+    .sidebar-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sidebar-bottom {
+        margin-top: 15px;
+        padding-top: 12px;
+    }
+
+    .workspace {
+        width: 100%;
+    }
+
+    .topbar {
+        height: 65px;
+        padding: 0 18px;
+    }
+
+    .assignments-page {
+        padding: 24px 16px;
+        gap: 20px;
+    }
+
+    .assignments-heading {
+        align-items: flex-start;
+    }
+
+    .heading-information h1 {
+        font-size: 24px;
+    }
+
+    .heading-information p {
+        font-size: 12px;
+    }
+
+    .btn-create {
+        width: auto;
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+
+    .assignment-filters {
+        flex-wrap: wrap;
+    }
+
+    .search-field {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .select-field {
+        flex: 1;
+        width: auto;
+        min-width: 120px;
+    }
+
+    .assignment-directory {
+        padding: 16px;
+    }
+
+    .assignment-table {
+        min-width: 650px;
+    }
+
+    .admin-profile {
+        gap: 7px;
+    }
+
+    .profile-information strong {
+        font-size: 10px;
+    }
+
+    .profile-information small {
+        font-size: 9px;
+    }
+}
+
+
+/* ================================
+   HIDDEN ELEMENT
+================================ */
+
+[hidden] {
+    display: none !important;
+}

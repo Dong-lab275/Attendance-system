@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Session Schedules</title>
+
+    <!-- Administrator layout -->
+    <link rel="stylesheet" href="css/admin.css">
+
+    <!-- Session schedules page -->
+    <link rel="stylesheet" href="css/SessionSchedules.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar: giữ nguyên cấu trúc sidebar hiện tại -->
+        <aside class="sidebar">
+
+            <!-- Brand -->
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 14V21C13 25 19 25 24 21V14"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M29 11V20"
+                              stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+
+                <div class="admin-brand-text">
+                    <span>Student Attendance</span>
+                    <small>MANAGEMENT SYSTEM</small>
+                </div>
+            </div>
+
+            <!-- Workspace title -->
+            <div class="sidebar-heading">
+                ADMINISTRATOR WORKSPACE
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+
+    <a href="admin.html" class="nav-item">
+        Account creation &amp; roles
+    </a>
+
+    <a href="accounts.html" class="nav-item">
+        Student &amp; lecturer accounts
+    </a>
+
+    <a href="courses.html" class="nav-item">
+        Course management
+    </a>
+
+    <a href="course-registrations.html" class="nav-item">
+        Course registrations
+    </a>
+
+    <a href="lecturer-assignments.html" class="nav-item">
+        Lecturer assignments
+    </a>
+
+    <a href="departments.html" class="nav-item">
+        Departments
+    </a>
+
+    <a href="SessionSchedules.html" class="nav-item">
+        Session schedules
+    </a>
+
+    <a href="attendance-reports.html" class="nav-item">
+        Attendance reports
+    </a>
+
+    <a href="attendance-history.html" class="nav-item">
+        Attendance history
+    </a>
+
+    <a href="personal-information.html" class="nav-item">
+        Personal information
+    </a>
+
+</nav>
+
+            <!-- Bottom actions -->
+            <div class="sidebar-bottom">
+
+    <a href="personal-information.html#change-password" class="nav-item">
+        Change password
+    </a>
+
+    <a href="../users/index.html" class="nav-item">
+        Sign out
+    </a>
+
+</div>
+
+        </aside>
+
+        <!-- Main workspace -->
+        <main class="workspace">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="breadcrumb">
+                    Administrator / Session schedules
+                </div>
+
+                <div class="admin-profile">
+                     <strong>System Administrator</strong>
+                     <span>079080000001 · Administrator</span>
+                </div>
+
+            </header>
+
+            <!-- Page content -->
+            <section class="page-content session-page">
+
+                <!-- Page heading -->
+                <div class="session-page-heading">
+
+                    <div class="session-page-title">
+                        <h1>Session schedules</h1>
+                        <p>
+                            View and manage class sessions across all courses.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            class="btn-create-session"
+                            id="createSessionBtn">
+                        Create session
+                    </button>
+
+                </div>
+
+                <!-- Schedule filters -->
+                <div class="schedule-filters">
+
+                    <div class="filter-group date-filter">
+                        <input type="date"
+                               id="filterStartDate"
+                               aria-label="Start date">
+
+                        <span>–</span>
+
+                        <input type="date"
+                               id="filterEndDate"
+                               aria-label="End date">
+                    </div>
+
+                    <select id="courseFilter" class="schedule-filter">
+                         <option value="">All courses</option>
+                            <option value="C0001">Database Systems</option>
+                            <option value="C0002">Software Engineering</option>
+                    </select>
+
+                    <select id="lecturerFilter" class="schedule-filter">
+                         <option value="">All lecturers</option>
+                        <option value="Nguyen Van An">Nguyen Van An</option>
+                        <option value="Tran Thi Binh">Tran Thi Binh</option>
+                    </select>
+
+                </div>
+
+                <!-- Session schedule management -->
+                <div class="session-management">
+
+                    <!-- Schedule list -->
+                    <section class="schedule-list-card">
+
+                        <h2>Class session schedules</h2>
+
+                        <div class="schedule-table-wrapper">
+
+                            <table class="schedule-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>Course / Lecturer</th>
+                                        <th>Class schedule</th>
+                                        <th>Attendance</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="scheduleTableBody">
+
+                                    <!-- JavaScript renders schedule rows here -->
+
+                                </tbody>
+
+                            </table>
+
+                            <div class="empty-state" id="emptyState">
+                                No session schedules found.
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <!-- Session schedule editor -->
+                    <section class="session-editor-card">
+
+                        <h2 id="editorTitle">Edit session schedule</h2>
+
+                        <form id="sessionForm">
+
+                            <input type="hidden" id="sessionId">
+
+                            <!-- Course -->
+                            <div class="session-form-group">
+
+                                <label for="sessionCourse">
+                                    Course
+                                </label>
+
+                                <select id="sessionCourse" required>
+                                <option value="">Select course</option>
+                                <option value="C0001">Database Systems · C0001</option>
+                                <option value="C0002">Software Engineering · C0002</option>
+                            </select>
+
+                            </div>
+
+                            <!-- Session -->
+                            <div class="session-form-group">
+
+                                <label for="sessionNumber">
+                                    Session
+                                </label>
+
+                                <input type="number"
+                                       id="sessionNumber"
+                                       min="1"
+                                       placeholder="Enter session number"
+                                       required>
+
+                            </div>
+
+                            <!-- Session date -->
+                            <div class="session-form-group">
+
+                                <label for="sessionDate">
+                                    Session date
+                                </label>
+
+                                <input type="date"
+                                       id="sessionDate"
+                                       required>
+
+                            </div>
+
+                            <!-- Lecturer -->
+                            <div class="session-form-group">
+
+                                <label for="sessionLecturer">
+                                    Lecturer
+                                </label>
+
+                                <select id="sessionLecturer" required>
+                                <option value="">Select lecturer</option>
+                                <option value="Nguyen Van An">Nguyen Van An</option>
+                                <option value="Tran Thi Binh">Tran Thi Binh</option>
+                            </select>
+
+                            </div>
+
+                            <!-- Class times -->
+                            <div class="session-time-row">
+
+                                <div class="session-form-group">
+                                    <label for="startTime">
+                                        Start time
+                                    </label>
+
+                                    <input type="time"
+                                           id="startTime"
+                                           required>
+                                </div>
+
+                                <div class="session-form-group">
+                                    <label for="endTime">
+                                        End time
+                                    </label>
+
+                                    <input type="time"
+                                           id="endTime"
+                                           required>
+                                </div>
+
+                            </div>
+
+                            <!-- Attendance times -->
+                            <div class="session-time-row">
+
+                                <div class="session-form-group">
+                                    <label for="checkInOpens">
+                                        Check-in opens
+                                    </label>
+
+                                    <input type="time"
+                                           id="checkInOpens"
+                                           required>
+                                </div>
+
+                                <div class="session-form-group">
+                                    <label for="periodEnds">
+                                        Period ends
+                                    </label>
+
+                                    <input type="time"
+                                           id="periodEnds"
+                                           required>
+                                </div>
+
+                            </div>
+
+                            <!-- Automatic closure information -->
+                            <p class="automatic-closure-note"
+                               id="automaticClosureNote">
+                                Automatic closure: 09:30.
+                                Unrecorded students will be marked Absent.
+                            </p>
+
+                            <!-- Form actions -->
+                            <div class="session-form-actions">
+
+                                <button type="submit"
+                                        class="btn-save-session"
+                                        id="saveSessionBtn">
+                                    Save changes
+                                </button>
+
+                                <button type="button"
+                                        class="btn-cancel-session"
+                                        id="cancelSessionBtn">
+                                    Cancel
+                                </button>
+
+                            </div>
+
+                            <button type="button"
+                                    class="btn-delete-session"
+                                    id="deleteSessionBtn">
+                                Delete session
+                            </button>
+
+                        </form>
+
+                    </section>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/admin-navigation.js"></script>
+<script src="js/SessionSchedules.js"></script>
+
+</body>
+</html>
