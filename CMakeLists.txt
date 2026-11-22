@@ -82,8 +82,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(attendance_tests
     tests/test_gps.cpp
-    tests/test_lecturer_cases.cpp
-    tests/test_admin_system_cases.cpp
+    tests/test_case.cpp
     StudentModule/Course.cpp
     StudentModule/Student.cpp
     StudentModule/StudentController.cpp
