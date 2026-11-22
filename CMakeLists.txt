@@ -1,56 +1,107 @@
 
-cmake_minimum_required(VERSION 3.21)
-
-project(AttendanceSystem VERSION 1.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.16)
+project(AttendanceManagementSystem LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# PostgreSQL 18
-set(PostgreSQL_INCLUDE_DIR "C:/Program Files/PostgreSQL/18/include")
-set(PostgreSQL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libpq.lib")
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(OpenSSL REQUIRED)
 find_package(PostgreSQL REQUIRED)
+find_package(Threads REQUIRED)
 
-# OpenSSL
-set(OPENSSL_ROOT_DIR "C:/Program Files/PostgreSQL/18")
-set(OPENSSL_INCLUDE_DIR "C:/msys64/ucrt64/include")
-set(OPENSSL_CRYPTO_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libcrypto.lib")
-set(OPENSSL_SSL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libssl.lib")
-find_package(OpenSSL REQUIRED COMPONENTS Crypto)
-
-# HTTP Server and JSON
-set(CPP_HTTPLIB_INCLUDE_DIR
-    "${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib"
+find_path(HTTPLIB_INCLUDE_DIR
+    NAMES httplib.h
+    PATHS
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib
+        ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule
 )
 
-set(NLOHMANN_JSON_INCLUDE_DIR
-    "C:/msys64/ucrt64/include"
+set(CORE_SOURCES
+    StudentModule/Course.cpp
+    StudentModule/Student.cpp
+    StudentModule/StudentController.cpp
+    StudentModule/StudentView.cpp
+    # Bổ sung các file .cpp của Lecturer, Admin và AttendanceRecord khi ghép đầy đủ:
+    # StudentModule/AttendanceRecord.cpp
+    # src/controllers/AdministratorController.cpp
+    # src/controllers/UserController.cpp
 )
 
-# Main executable
-add_executable(AttendanceSystem
-    src/main.cpp
-
-    AdminUserModule/database/DatabaseConnection.cpp
-
-    AdminUserModule/models/User.cpp
-    AdminUserModule/models/Administrator.cpp
-
-    AdminUserModule/controllers/UserController.cpp
-    AdminUserModule/controllers/AdministratorController.cpp
+set(CORE_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule
+    ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule/StudentGUI
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/controllers
+    ${CMAKE_CURRENT_SOURCE_DIR}/models
+    ${CMAKE_CURRENT_SOURCE_DIR}/database
+    ${PostgreSQL_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
 )
 
-target_include_directories(AttendanceSystem PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_CURRENT_SOURCE_DIR}/AdminUserModule"
-    "${PostgreSQL_INCLUDE_DIR}"
-    "${OPENSSL_INCLUDE_DIR}"
-    "${CPP_HTTPLIB_INCLUDE_DIR}"
-    "${NLOHMANN_JSON_INCLUDE_DIR}"
+if(HTTPLIB_INCLUDE_DIR)
+    list(APPEND CORE_INCLUDE_DIRS ${HTTPLIB_INCLUDE_DIR})
+endif()
+
+add_executable(attendance_app
+    main.cpp
+    ${CORE_SOURCES}
 )
 
-target_link_libraries(AttendanceSystem PRIVATE
-    PostgreSQL::PostgreSQL
+target_include_directories(attendance_app PRIVATE ${CORE_INCLUDE_DIRS})
+
+target_link_libraries(attendance_app PRIVATE
     OpenSSL::Crypto
+    OpenSSL::SSL
+    PostgreSQL::PostgreSQL
+    Threads::Threads
 )
+
+if(WIN32)
+    target_link_libraries(attendance_app PRIVATE ws2_32)
+endif()
+
+# --- Google Test ---
+include(FetchContent)
+enable_testing()
+
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
+FetchContent_MakeAvailable(googletest)
+
+add_executable(attendance_tests
+    tests/test_gps.cpp
+    tests/test_lecturer_cases.cpp
+    tests/test_admin_system_cases.cpp
+    StudentModule/Course.cpp
+    StudentModule/Student.cpp
+    StudentModule/StudentController.cpp
+    StudentModule/StudentView.cpp
+)
+
+target_include_directories(attendance_tests PRIVATE ${CORE_INCLUDE_DIRS})
+
+target_link_libraries(attendance_tests PRIVATE
+    GTest::gtest_main
+    OpenSSL::Crypto
+    PostgreSQL::PostgreSQL
+    Threads::Threads
+)
+
+if(WIN32)
+    target_link_libraries(attendance_tests PRIVATE ws2_32)
+endif()
+
+include(GoogleTest)
+gtest_discover_tests(attendance_tests)
