@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========================================================
-   0. TỰ ĐỘNG ĐỒNG BỘ LINK SIDEBAR CHO MỌI TRANG
+   0. ĐỒNG BỘ LINK SIDEBAR THEO ĐÚNG TÊN FILE HIỆN TẠI
    ========================================================= */
 function initSidebarNavigation() {
   const routeMap = {
     'class session management': 'Class-Sessions.html',
-    'manual attendance': 'attendance.html',
-    'student search & filtering': 'student-search.html',
+    'manual attendance': 'attendance-register.html',
+    'student search & filtering': 'studentsearch-filtering.html',
     'attendance statistics': 'Student-statistics.html',
     'attendance history': 'attendance-history.html',
     'report export': 'report-export.html',
@@ -24,7 +24,7 @@ function initSidebarNavigation() {
   };
 
   const navLinks = document.querySelectorAll('.role-nav .nav-item, .sidebar a');
-  const currentFile = (window.location.pathname.split('/').pop() || '').toLowerCase();
+  const currentFile = decodeURIComponent(window.location.pathname.split('/').pop() || '').toLowerCase();
 
   navLinks.forEach((link) => {
     const labelText = (link.textContent || '')
@@ -33,21 +33,40 @@ function initSidebarNavigation() {
       .toLowerCase();
 
     const targetFile = routeMap[labelText];
-    if (targetFile) {
-      link.setAttribute('href', `./${targetFile}`);
-      if (currentFile === targetFile.toLowerCase()) {
-        link.classList.add('active');
-      }
-    }
+    if (!targetFile) return;
+
+    link.setAttribute('href', `./${targetFile}`);
+    link.classList.toggle('active', currentFile === targetFile.toLowerCase());
+
+    link.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+
+      const currentUrl = new URL(window.location.href);
+      const baseDir = currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/') + 1);
+      window.location.href = `${baseDir}${targetFile}`;
+    });
   });
 }
 
 /* =========================================================
-   1. ĐIỂM DANH THỦ CÔNG (attendance.html)
+   1. ĐIỂM DANH THỦ CÔNG (attendance-register.html)
    ========================================================= */
 function initAttendanceRegister() {
   const rows = document.querySelectorAll('.student-row');
   if (!rows.length) return;
+
+  const searchInput = document.getElementById('roster-search');
+  const statusSelect = document.getElementById('status-filter');
+  const shownCount = document.getElementById('shown-count');
+  const savedBadge = document.querySelector('.badge-saved');
+
+  function getRowStatus(row) {
+    if (row.querySelector('.choice-btn.is-present')) return 'present';
+    if (row.querySelector('.choice-btn.is-late')) return 'late';
+    if (row.querySelector('.choice-btn.is-absent')) return 'absent';
+    return 'none';
+  }
 
   function recalculateSummary() {
     let present = 0;
@@ -55,9 +74,10 @@ function initAttendanceRegister() {
     let absent = 0;
 
     rows.forEach((row) => {
-      if (row.querySelector('.choice-btn.is-present')) present++;
-      if (row.querySelector('.choice-btn.is-late')) late++;
-      if (row.querySelector('.choice-btn.is-absent')) absent++;
+      const st = getRowStatus(row);
+      if (st === 'present') present++;
+      if (st === 'late') late++;
+      if (st === 'absent') absent++;
     });
 
     const statValues = document.querySelectorAll('.summary-grid .stat-value');
@@ -68,56 +88,58 @@ function initAttendanceRegister() {
     }
   }
 
+  function applyRosterFilters() {
+    const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+    const statusVal = (statusSelect ? statusSelect.value : 'all').toLowerCase();
+    let visible = 0;
+
+    rows.forEach((row) => {
+      const text = (row.textContent || '').toLowerCase();
+      const st = getRowStatus(row);
+      const matchQuery = !query || text.includes(query);
+      const matchStatus = statusVal === 'all' || st === statusVal;
+      const show = matchQuery && matchStatus;
+
+      row.style.display = show ? 'flex' : 'none';
+      if (show) visible++;
+    });
+
+    if (shownCount) {
+      shownCount.textContent = `Showing ${visible} of 40 students`;
+    }
+  }
+
   rows.forEach((row) => {
     const buttons = row.querySelectorAll('.choice-btn');
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
-        buttons.forEach((b) => {
-          b.classList.remove('is-present', 'is-late', 'is-absent');
-        });
+        buttons.forEach((b) => b.classList.remove('is-present', 'is-late', 'is-absent'));
 
         const status = btn.textContent.trim();
         if (status === 'Present') btn.classList.add('is-present');
         if (status === 'Late') btn.classList.add('is-late');
         if (status === 'Absent') btn.classList.add('is-absent');
 
+        if (savedBadge) {
+          savedBadge.textContent = 'Unsaved changes';
+          savedBadge.classList.add('is-dirty');
+        }
+
         recalculateSummary();
+        applyRosterFilters();
       });
     });
   });
 
-  const filterChips = document.querySelectorAll('.roster-controls .filter-chip');
-  const statusFilterChip = filterChips[1];
-  const filterModes = ['All statuses', 'Present only', 'Late only', 'Absent only'];
-  let modeIndex = 0;
+  if (searchInput) searchInput.addEventListener('input', applyRosterFilters);
+  if (statusSelect) statusSelect.addEventListener('change', applyRosterFilters);
 
-  if (statusFilterChip) {
-    statusFilterChip.addEventListener('click', () => {
-      modeIndex = (modeIndex + 1) % filterModes.length;
-      const currentMode = filterModes[modeIndex];
-      statusFilterChip.textContent = currentMode;
-
-      rows.forEach((row) => {
-        const isPresent = Boolean(row.querySelector('.choice-btn.is-present'));
-        const isLate = Boolean(row.querySelector('.choice-btn.is-late'));
-        const isAbsent = Boolean(row.querySelector('.choice-btn.is-absent'));
-
-        let show = true;
-        if (currentMode === 'Present only') show = isPresent;
-        if (currentMode === 'Late only') show = isLate;
-        if (currentMode === 'Absent only') show = isAbsent;
-
-        row.style.display = show ? 'flex' : 'none';
-      });
-    });
-  }
-
-  const saveBtn = document.querySelector('.page-heading .btn-primary');
+  const saveBtn = document.getElementById('btn-save') || document.querySelector('.page-heading .btn-primary');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      const badge = document.querySelector('.badge-saved');
-      if (badge) {
-        badge.textContent = 'Saved just now';
+      if (savedBadge) {
+        savedBadge.textContent = 'Saved just now';
+        savedBadge.classList.remove('is-dirty');
       }
       alert('Đã lưu thay đổi điểm danh trên trình duyệt!');
     });
@@ -128,34 +150,101 @@ function initAttendanceRegister() {
    2. QUẢN LÝ BUỔI HỌC (Class-Sessions.html)
    ========================================================= */
 function initClassSessions() {
-  const editorCreateBtn = document.querySelector('.editor-actions .btn-primary');
-  const cancelBtn = document.querySelector('.editor-actions .btn-secondary');
   const sessionsCard = document.querySelector('.sessions-card');
+  const submitBtn = document.getElementById('btn-submit') || document.querySelector('.editor-actions .btn-primary');
+  const cancelBtn = document.getElementById('btn-cancel') || document.querySelector('.editor-actions .btn-secondary');
+  const dateInput = document.getElementById('f-date');
+  const startInput = document.getElementById('f-start');
+  const endInput = document.getElementById('f-end');
+  const openInput = document.getElementById('f-open');
+  const periodInput = document.getElementById('f-period');
+  const autoCloseSpan = document.getElementById('auto-close');
+  const errorEl = document.getElementById('form-error');
 
-  if (!editorCreateBtn || !sessionsCard) return;
+  if (!sessionsCard || !submitBtn) return;
 
   let nextSessionNumber = 16;
 
-  editorCreateBtn.addEventListener('click', () => {
-    const fieldBoxes = document.querySelectorAll('.session-editor .field-box');
-    const sessionDate = fieldBoxes[1] ? fieldBoxes[1].textContent.trim() : '02 Dec 2026';
-    const startTime = fieldBoxes[2] ? fieldBoxes[2].textContent.trim() : '09:00';
+  function updateAutoClose() {
+    if (!periodInput || !autoCloseSpan) return;
+    const match = periodInput.value.trim().match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) return;
+    const totalMins = parseInt(match[1], 10) * 60 + parseInt(match[2], 10) + 15;
+    const hh = String(Math.floor((totalMins / 60) % 24)).padStart(2, '0');
+    const mm = String(totalMins % 60).padStart(2, '0');
+    autoCloseSpan.textContent = `${hh}:${mm}`;
+  }
+
+  if (periodInput) {
+    periodInput.addEventListener('input', updateAutoClose);
+    updateAutoClose();
+  }
+
+  submitBtn.addEventListener('click', () => {
+    const sessionDate = dateInput ? dateInput.value.trim() : '02 Dec 2026';
+    const startTime = startInput ? startInput.value.trim() : '09:00';
+
+    if (!sessionDate || !startTime) {
+      if (errorEl) {
+        errorEl.textContent = 'Vui lòng nhập đầy đủ ngày học và giờ bắt đầu.';
+        errorEl.hidden = false;
+      }
+      return;
+    }
+
+    if (errorEl) {
+      errorEl.textContent = '';
+      errorEl.hidden = true;
+    }
 
     const newRow = document.createElement('div');
     newRow.className = 'table-row';
+    newRow.dataset.date = sessionDate;
+    newRow.dataset.start = startTime;
+    newRow.dataset.end = endInput ? endInput.value.trim() : '11:00';
+    newRow.dataset.open = openInput ? openInput.value.trim() : '09:00';
+    newRow.dataset.period = periodInput ? periodInput.value.trim() : '09:15';
     newRow.innerHTML = `
       <div class="col-session">${nextSessionNumber}</div>
       <div class="col-schedule">${sessionDate.replace(' 2026', '')} · ${startTime}</div>
       <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
-      <div class="col-action"><a href="#" class="action-link">View / Edit / Delete</a></div>
+      <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
     `;
 
     sessionsCard.appendChild(newRow);
     nextSessionNumber++;
   });
 
+  sessionsCard.addEventListener('click', (e) => {
+    const link = e.target.closest('.action-link');
+    if (!link) return;
+    e.preventDefault();
+
+    const row = link.closest('.table-row');
+    const action = link.dataset.action;
+
+    if (action === 'delete' && row) {
+      row.remove();
+    } else if (action === 'edit' && row) {
+      if (dateInput && row.dataset.date) dateInput.value = row.dataset.date;
+      if (startInput && row.dataset.start) startInput.value = row.dataset.start;
+      if (endInput && row.dataset.end) endInput.value = row.dataset.end;
+      if (openInput && row.dataset.open) openInput.value = row.dataset.open;
+      if (periodInput && row.dataset.period) periodInput.value = row.dataset.period;
+      updateAutoClose();
+    } else if (action === 'view' && row) {
+      const sessionNo = row.querySelector('.col-session')?.textContent.trim() || '';
+      const schedule = row.querySelector('.col-schedule')?.textContent.trim() || '';
+      alert(`Buổi học #${sessionNo} — ${schedule}`);
+    }
+  });
+
   if (cancelBtn) {
     cancelBtn.addEventListener('click', () => {
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
       alert('Đã hủy thao tác tạo buổi học.');
     });
   }
@@ -168,39 +257,75 @@ function initStudentStatisticsFilter() {
   const statsRows = document.querySelectorAll('.stats-table-row');
   const summaryValues = document.querySelectorAll('.stats-summary-grid .stat-value');
   const summarySubs = document.querySelectorAll('.stats-summary-grid .stat-sub');
+  const studentSelect = document.getElementById('student-filter');
+  const rateSelect = document.getElementById('rate-filter');
+  const emptyBox = document.getElementById('stats-empty');
 
   if (!statsRows.length || summaryValues.length < 3) return;
 
-  statsRows.forEach((row) => {
-    row.style.cursor = 'pointer';
-    row.addEventListener('click', () => {
-      const cols = row.children;
-      if (cols.length < 5) return;
+  function selectRow(row) {
+    statsRows.forEach((r) => r.classList.remove('is-selected'));
+    row.classList.add('is-selected');
 
-      const fullLabel = cols[0].textContent.trim();
-      const parts = fullLabel.split('·');
-      const studentName = parts[0] ? parts[0].trim() : fullLabel;
-      const studentId = parts[1] ? parts[1].trim() : '';
+    const cols = row.children;
+    if (cols.length < 5) return;
 
-      const completed = cols[1].textContent.trim();
-      const attended = cols[2].textContent.trim();
-      const attendanceRate = cols[3].textContent.trim();
-      const onTimeRate = cols[4].textContent.trim();
+    const fullLabel = cols[0].textContent.trim();
+    const parts = fullLabel.split('·');
+    const studentName = parts[0] ? parts[0].trim() : fullLabel;
+    const studentId = parts[1] ? parts[1].trim() : '';
 
-      summaryValues[0].textContent = studentName;
-      if (summarySubs[0]) summarySubs[0].textContent = studentId;
+    const completed = cols[1].textContent.trim();
+    const attended = cols[2].textContent.trim();
+    const attendanceRate = cols[3].textContent.trim();
+    const onTimeRate = cols[4].textContent.trim();
 
-      summaryValues[1].textContent = attendanceRate;
-      if (summarySubs[1]) summarySubs[1].textContent = `${attended} attended / ${completed} sessions`;
+    summaryValues[0].textContent = studentName;
+    if (summarySubs[0]) summarySubs[0].textContent = studentId;
 
-      summaryValues[2].textContent = onTimeRate;
-      if (summarySubs[2]) summarySubs[2].textContent = `On-time rate: ${onTimeRate}`;
+    summaryValues[1].textContent = attendanceRate;
+    if (summarySubs[1]) summarySubs[1].textContent = `${attended} attended / ${completed} sessions`;
+
+    summaryValues[2].textContent = onTimeRate;
+    if (summarySubs[2]) summarySubs[2].textContent = `On-time rate: ${onTimeRate}`;
+  }
+
+  function applyStatsFilters() {
+    const selectedId = studentSelect ? studentSelect.value : 'all';
+    const rateBand = rateSelect ? rateSelect.value : 'all';
+    let visibleCount = 0;
+
+    statsRows.forEach((row) => {
+      const text = row.textContent || '';
+      const rateText = row.children[3]?.textContent || '0';
+      const rateNum = parseFloat(rateText.replace('%', '')) || 0;
+
+      const matchStudent = selectedId === 'all' || text.includes(selectedId);
+      let matchRate = true;
+      if (rateBand === 'high') matchRate = rateNum >= 90;
+      if (rateBand === 'mid') matchRate = rateNum >= 75 && rateNum < 90;
+      if (rateBand === 'low') matchRate = rateNum < 75;
+
+      const show = matchStudent && matchRate;
+      row.style.display = show ? 'grid' : 'none';
+      if (show) visibleCount++;
     });
+
+    if (emptyBox) {
+      emptyBox.hidden = visibleCount > 0;
+    }
+  }
+
+  statsRows.forEach((row) => {
+    row.addEventListener('click', () => selectRow(row));
   });
+
+  if (studentSelect) studentSelect.addEventListener('change', applyStatsFilters);
+  if (rateSelect) rateSelect.addEventListener('change', applyStatsFilters);
 }
 
 /* =========================================================
-   4. TÌM KIẾM & LỌC SINH VIÊN (student-search.html)
+   4. TÌM KIẾM & LỌC SINH VIÊN (studentsearch-filtering.html)
    ========================================================= */
 function initStudentSearchFilter() {
   const applyBtn = document.getElementById('applyStudentFilters');
@@ -242,12 +367,14 @@ function initStudentSearchFilter() {
   applyBtn.addEventListener('click', runFilter);
 
   if (nameInput) {
+    nameInput.addEventListener('input', runFilter);
     nameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') runFilter();
     });
   }
 
   if (idInput) {
+    idInput.addEventListener('input', runFilter);
     idInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') runFilter();
     });
