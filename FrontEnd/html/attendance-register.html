@@ -22,10 +22,10 @@
         <a href="./class-sessions.html" class="nav-item">Class session management</a>
         <a href="./attendance-register.html" class="nav-item active">Manual attendance</a>
         <a href="#" class="nav-item">Student search &amp; filtering</a>
-        <a href="#" class="nav-item">Attendance statistics</a>
+        <a href="./student-statistics.html" class="nav-item">Attendance statistics</a>
         <a href="#" class="nav-item">Attendance history</a>
         <a href="#" class="nav-item">Report export</a>
-        <a href="#" class="nav-item">Personal information</a>
+        <a href="./personal-information.html" class="nav-item">Personal information</a>
       </nav>
 
       <div class="account-actions">
@@ -47,9 +47,9 @@
         <div class="page-heading">
           <div class="page-title">
             <h1>Manual attendance recording</h1>
-            <p>Record attendance and correct saved attendance s</p>
+            <p>Record attendance and correct saved attendance statuses.</p>
           </div>
-          <button type="button" class="btn-primary">Save attendance</button>
+          <button type="button" class="btn-primary" id="btn-save">Save attendance</button>
         </div>
 
         <div class="session-selection">
@@ -59,7 +59,7 @@
         </div>
 
         <div class="attendance-rule">
-          This session is closed. You can update a
+          Attendance status modification · This saved session is closed. Select a corrected status for a student, then save changes.
         </div>
 
         <section class="summary-grid">
@@ -90,11 +90,16 @@
 
         <section class="register-card">
           <div class="roster-controls">
-            <div class="filter-chip">Search by name or student ID</div>
-            <div class="filter-chip">All statuses</div>
+            <input type="search" class="filter-chip" id="roster-search" placeholder="Search by name or student ID" aria-label="Search by name or student ID" autocomplete="off" />
+            <select class="filter-chip" id="status-filter" aria-label="Filter by status">
+              <option value="all">All statuses</option>
+              <option value="present">Present</option>
+              <option value="absent">Absent</option>
+              <option value="late">Late</option>
+            </select>
           </div>
 
-          <p class="register-hint">Select Present, Absent or Late for each</p>
+          <p class="register-hint">Select Present, Absent or Late for each student.</p>
 
           <div class="register-columns">
             <div class="col-student-head">STUDENT</div>
@@ -154,10 +159,22 @@
             </div>
           </div>
 
-          <div class="roster-footer">Showing 4 of 40 students</div>
+          <div class="roster-footer">
+            <span id="shown-count">Showing 4 of 40 students</span>
+            <nav class="pagination">
+              <a href="#">Previous</a>
+              <a href="#">1</a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <span>…</span>
+              <a href="#">10</a>
+              <a href="#">Next</a>
+            </nav>
+          </div>
         </section>
       </main>
     </div>
   </div>
+  <script src="./script.js"></script>
 </body>
 </html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>23 · Lecturer — Student search &amp; filtering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./Class-Sessions.html" class="nav-item">Class session management</a>
+        <a href="./attendance.html" class="nav-item">Manual attendance</a>
+        <a href="./student-search.html" class="nav-item active">Student search &amp; filtering</a>
+        <a href="./Student-statistics.html" class="nav-item">Attendance statistics</a>
+        <a href="./attendance-history.html" class="nav-item">Attendance history</a>
+        <a href="./report-export.html" class="nav-item">Report export</a>
+        <a href="./personal-information.html" class="nav-item">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Student search &amp; filtering</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Student search &amp; filtering</h1>
+            <p>Review attendance and punctuality within your as</p>
+          </div>
+        </div>
+
+        <section class="search-criteria-card">
+          <div class="search-fields-grid">
+            <div class="search-field-group">
+              <label for="filterCourse" class="field-label">Assigned course</label>
+              <input id="filterCourse" type="text" class="search-input" value="Cơ sở dữ liệu · CS201" />
+            </div>
+
+            <div class="search-field-group">
+              <label for="filterStudentName" class="field-label">Student name</label>
+              <input id="filterStudentName" type="text" class="search-input" placeholder="Enter student name" />
+            </div>
+
+            <div class="search-field-group">
+              <label for="filterStudentId" class="field-label">Student ID</label>
+              <input id="filterStudentId" type="text" class="search-input" placeholder="Enter student ID" />
+            </div>
+          </div>
+
+          <div class="search-actions">
+            <button type="button" class="btn-primary btn-sm" id="applyStudentFilters">Apply filters</button>
+            <button type="button" class="btn-secondary" id="resetStudentFilters">Reset filters</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="card-title">Students in your class</h2>
+
+          <div class="students-table-header">
+            <div>Student</div>
+            <div>Student ID</div>
+            <div>Email address</div>
+            <div>View</div>
+          </div>
+
+          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
+            <div class="student-col-name">Nguyễn Minh Anh</div>
+            <div class="student-col-id">SV2024001</div>
+            <div class="student-col-email">minhanh.nguyen@university.edu.vn</div>
+            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          </div>
+
+          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
+            <div class="student-col-name">Trần Đức Anh</div>
+            <div class="student-col-id">SV2024002</div>
+            <div class="student-col-email">ducanh.tran@university.edu.vn</div>
+            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          </div>
+
+          <div class="students-table-
