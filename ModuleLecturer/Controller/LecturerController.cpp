@@ -14,11 +14,11 @@ string toLowerStr(const string& s) {
 }
 
 LecturerController::LecturerController() {
-    lecturerId = "GV001";
-    lecturerName = "Tran Quoc Huy";
-    department = "Cong nghe thong tin";
-    email = "quochuy.tran@university.edu.vn";
-    phone = "091 234 5678";
+    lecturerId = "079082001234";
+    lecturerName = "Nguyen Van An";
+    department = "Information Technology";
+    email = "an.nguyen@attendance.edu.vn";
+    phone = "0900000002";
     gender = "Male";
     seedSampleData();
 }
@@ -47,7 +47,7 @@ string LecturerController::minutesToTime(int totalMinutes) const {
 string LecturerController::computeAutoCloseTime(const string& periodEndTime) const {
     int endMin = timeToMinutes(periodEndTime);
     if (endMin < 0) {
-        return "09:30";
+        return "08:00";
     }
     // Quy dinh: tu dong dong sau 15 phut ke tu khi ket thuc thoi gian diem danh
     return minutesToTime(endMin + 15);
@@ -68,32 +68,27 @@ void LecturerController::seedSampleData() {
     students.clear();
     records.clear();
 
-    assignedCourses.push_back({"CS201", "Co so du lieu", lecturerId, lecturerName});
-    assignedCourses.push_back({"CS204", "Cau truc du lieu va giai thuat", lecturerId, lecturerName});
+    // Khop bang courses & lecturers trong data.sql (lecturer_id = '079082001234')
+    assignedCourses.push_back({"C0001", "Database Systems", lecturerId, lecturerName});
 
-    sessions.push_back({12, "CS201", "04 Nov 2026", "09:00", "11:00", "09:00", "09:15", "09:30", "Closed"});
-    sessions.push_back({13, "CS201", "11 Nov 2026", "09:00", "11:00", "09:00", "09:15", "09:30", "Open"});
-    sessions.push_back({14, "CS201", "18 Nov 2026", "09:00", "11:00", "09:00", "09:15", "09:30", "Scheduled"});
-    sessions.push_back({15, "CS201", "25 Nov 2026", "09:00", "11:00", "09:00", "09:15", "09:30", "Scheduled"});
-    sessions.push_back({1,  "CS204", "14 Nov 2026", "07:00", "09:00", "07:00", "07:15", "07:30", "Scheduled"});
+    // Khop bang class_sessions trong data.sql (SE001 -> 1, SE002 -> 2)
+    sessions.push_back({"SE001", 1, "C0001", "2026-09-07", "07:30", "09:30", "A.301", "07:15", "07:45", "08:00", "Closed"});
+    sessions.push_back({"SE002", 2, "C0001", "2026-09-14", "07:30", "09:30", "A.301", "07:15", "07:45", "08:00", "Closed"});
 
-    students.push_back({"SV2024001", "Nguyen Minh Anh", "minhanh.nguyen@university.edu.vn", "CS201"});
-    students.push_back({"SV2024002", "Tran Duc Anh",     "ducanh.tran@university.edu.vn",    "CS201"});
-    students.push_back({"SV2024003", "Le Ngoc Mai",      "ngocmai.le@university.edu.vn",     "CS201"});
-    students.push_back({"SV2024004", "Pham Gia Bao",     "giabao.pham@university.edu.vn",    "CS201"});
-    students.push_back({"SV2024005", "Vu Khanh Linh",    "khanhlinh.vu@university.edu.vn",   "CS204"});
+    // Khop bang students & course_registrations trong data.sql (course_id = 'C0001')
+    students.push_back({"079205003456", "Le Minh Khang", "khang.le@student.edu.vn", "C0001"});
+    students.push_back({"079305004567", "Pham Ngoc Mai", "mai.pham@student.edu.vn", "C0001"});
+    students.push_back({"079204005678", "Vo Quoc Huy",   "huy.vo@student.edu.vn",   "C0001"});
 
-    // Du lieu mau Session 12 (CS201)
-    records.push_back({"SV2024001", "Nguyen Minh Anh", "CS201", 12, "04 Nov 2026", "09:00-11:00", "09:03", "Present", "System", "04 Nov 2026 09:03"});
-    records.push_back({"SV2024002", "Tran Duc Anh",     "CS201", 12, "04 Nov 2026", "09:00-11:00", "09:02", "Present", "System", "04 Nov 2026 09:02"});
-    records.push_back({"SV2024003", "Le Ngoc Mai",      "CS201", 12, "04 Nov 2026", "09:00-11:00", "09:12", "Late",    "System", "04 Nov 2026 09:12"});
-    records.push_back({"SV2024004", "Pham Gia Bao",     "CS201", 12, "04 Nov 2026", "09:00-11:00", "",      "Absent",  "System", "04 Nov 2026 09:30"});
+    // Khop bang attendance_records trong data.sql cho SE001 (buoi 1)
+    records.push_back({"AT0000000001", "079205003456", "Le Minh Khang", "C0001", "SE001", 1, "2026-09-07", "07:30-09:30", "07:25", "Present", "",       "System", "2026-09-07 07:25:00"});
+    records.push_back({"AT0000000002", "079305004567", "Pham Ngoc Mai", "C0001", "SE001", 1, "2026-09-07", "07:30-09:30", "07:50", "Late",    "Checked in after the attendance period.", "System", "2026-09-07 07:50:00"});
+    records.push_back({"AT0000000003", "079204005678", "Vo Quoc Huy",   "C0001", "SE001", 1, "2026-09-07", "07:30-09:30", "",      "Absent",  "No attendance check-in.",              "System", "2026-09-07 09:45:00"});
 
-    // Du lieu mau Session 13 (CS201 - dang Open)
-    records.push_back({"SV2024001", "Nguyen Minh Anh", "CS201", 13, "11 Nov 2026", "09:00-11:00", "09:04", "Present", "System", "11 Nov 2026 09:04"});
-    records.push_back({"SV2024002", "Tran Duc Anh",     "CS201", 13, "11 Nov 2026", "09:00-11:00", "",      "Absent",  "System", "11 Nov 2026 09:00"});
-    records.push_back({"SV2024003", "Le Ngoc Mai",      "CS201", 13, "11 Nov 2026", "09:00-11:00", "",      "Absent",  "System", "11 Nov 2026 09:00"});
-    records.push_back({"SV2024004", "Pham Gia Bao",     "CS201", 13, "11 Nov 2026", "09:00-11:00", "",      "Absent",  "System", "11 Nov 2026 09:00"});
+    // Khop bang attendance_records trong data.sql cho SE002 (buoi 2)
+    records.push_back({"AT0000000004", "079205003456", "Le Minh Khang", "C0001", "SE002", 2, "2026-09-14", "07:30-09:30", "07:28", "Present", "",              "System", "2026-09-14 07:28:00"});
+    records.push_back({"AT0000000005", "079305004567", "Pham Ngoc Mai", "C0001", "SE002", 2, "2026-09-14", "07:30-09:30", "07:29", "Present", "",              "System", "2026-09-14 07:29:00"});
+    records.push_back({"AT0000000006", "079204005678", "Vo Quoc Huy",   "C0001", "SE002", 2, "2026-09-14", "07:30-09:30", "07:40", "Late",    "Late check-in.", "System", "2026-09-14 07:40:00"});
 }
 
 string LecturerController::getLecturerSummary() const {
@@ -150,16 +145,23 @@ bool LecturerController::createClassSession(const string& courseId, int sessionN
     }
 
     string autoClose = computeAutoCloseTime(checkInEndTime);
-    ClassSession newSession{sessionNumber, courseId, dateStr, startTime, endTime,
-                            checkInOpenTime, checkInEndTime, autoClose, "Scheduled"};
+    char sidBuf[6];
+    snprintf(sidBuf, sizeof(sidBuf), "SE%03d", sessionNumber);
+    string sessionId = string(sidBuf);
+
+    ClassSession newSession{sessionId, sessionNumber, courseId, dateStr, startTime, endTime,
+                            "A.301", checkInOpenTime, checkInEndTime, autoClose, "Scheduled"};
     sessions.push_back(newSession);
 
     // Khoi tao ban ghi diem danh mac dinh cho sinh vien thuoc khoa hoc
+    int recIdx = static_cast<int>(records.size()) + 1;
     for (size_t i = 0; i < students.size(); ++i) {
         if (students[i].courseId == courseId) {
-            records.push_back({students[i].studentId, students[i].fullName, courseId,
-                               sessionNumber, dateStr, startTime + "-" + endTime,
-                               "", "Absent", lecturerName, dateStr + " " + startTime});
+            char aidBuf[13];
+            snprintf(aidBuf, sizeof(aidBuf), "AT%010d", recIdx++);
+            records.push_back({string(aidBuf), students[i].studentId, students[i].fullName, courseId,
+                               sessionId, sessionNumber, dateStr, startTime + "-" + endTime,
+                               "", "Absent", "", lecturerName, dateStr + " " + startTime});
         }
     }
 
@@ -175,7 +177,7 @@ bool LecturerController::updateSessionWindow(const string& courseId, int session
             sessions[i].checkInOpenTime = newOpenTime;
             sessions[i].checkInEndTime = newEndTime;
             sessions[i].autoCloseTime = computeAutoCloseTime(newEndTime);
-            if (newStatus == "Scheduled" || newStatus == "Open" || newStatus == "Closed") {
+            if (newStatus == "Scheduled" || newStatus == "Open" || newStatus == "Closed" || newStatus == "Completed") {
                 sessions[i].status = newStatus;
             }
             if (sessions[i].status == "Closed") {
@@ -225,7 +227,7 @@ vector<AttendanceRecord> LecturerController::getSessionAttendance(const string& 
 bool LecturerController::recordStudentCheckInOrManual(const string& courseId, int sessionNumber,
                                                       const string& studentId, const string& inputTimeOrStatus,
                                                       bool isManualStatus, string& message) {
-    string periodEnd = "09:15";
+    string periodEnd = "07:45";
     for (size_t i = 0; i < sessions.size(); ++i) {
         if (sessions[i].courseId == courseId && sessions[i].sessionNumber == sessionNumber) {
             periodEnd = sessions[i].checkInEndTime;
