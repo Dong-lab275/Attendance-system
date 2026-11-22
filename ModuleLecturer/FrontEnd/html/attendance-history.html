@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>24 · Lecturer — Attendance history</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./Class-Sessions.html" class="nav-item">Class session management</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="./studentsearch-filtering.html" class="nav-item">Student search &amp; filtering</a>
+        <a href="./Student-statistics.html" class="nav-item">Attendance statistics</a>
+        <a href="./attendance-history.html" class="nav-item active">Attendance history</a>
+        <a href="./report-export.html" class="nav-item">Report export</a>
+        <a href="./personal-information.html" class="nav-item">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <!-- Workspace -->
+    <div class="workspace">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Attendance history</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <!-- Page body -->
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Attendance history</h1>
+            <p>Review attendance and punctuality within your assigned courses.</p>
+          </div>
+        </div>
+
+        <!-- History filters -->
+        <div class="history-filters">
+          <button type="button" class="filter-chip" id="historyCourseChip">Cơ sở dữ liệu · CS201</button>
+          <button type="button" class="filter-chip" id="historyStudentChip">Nguyễn Minh Anh · SV2024001</button>
+          <button type="button" class="filter-chip" id="historyStatusChip">All attendance statuses</button>
+        </div>
+
+        <!-- Selected student -->
+        <section class="selected-student-banner">
+          <div class="selected-student-title" id="historyStudentTitle">Nguyễn Minh Anh</div>
+          <div class="selected-student-meta" id="historyStudentMeta">SV2024001 · Cơ sở dữ liệu · 12 completed sessions</div>
+        </section>
+
+        <!-- Individual attendance history -->
+        <section class="card">
+          <h2 class="card-title">Individual attendance history</h2>
+
+          <div class="history-table-header">
+            <div>Session / Date</div>
+            <div>Class time</div>
+            <div>Check-in</div>
+            <div>Status</div>
+          </div>
+
+          <div class="history-table-row" data-status="Present">
+            <div class="history-session-col">12 · 04 Nov 2026</div>
+            <div>09:00–11:00</div>
+            <div>09:03</div>
+            <div><span class="status-pill-present">Present</span></div>
+          </div>
+
+          <div class="history-table-row" data-status="Late">
+            <div class="history-session-col">11 · 28 Oct 2026</div>
+            <div>09:00–11:00</div>
+            <div>09:12</div>
+            <div><span class="status-pill-late">Late</span></div>
+          </div>
+
+          <div class="history-table-row" data-status="Absent">
+            <div class="history-session-col">10 · 21 Oct 2026</div>
+            <div>09:00–11:00</div>
+            <div>—</div>
+            <div><span class="status-pill-absent">Absent</span></div>
+          </div>
+
+          <div class="history-table-row" data-status="Present">
+            <div class="history-session-col">09 · 14 Oct 2026</div>
+            <div>09:00–11:00</div>
+            <div>08:58</div>
+            <div><span class="status-pill-present">Present</span></div>
+          </div>
+        </section>
+
+        <div class="search-meta-bar">
+          <span id="historyShowingText">Showing 4 of 12 sessions</span>
+          <div class="pagination-controls">
+            <button type="button" class="page-link-btn">Previous</button>
+            <span class="page-num-active">1</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

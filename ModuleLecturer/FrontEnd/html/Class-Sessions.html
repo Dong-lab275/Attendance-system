@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>08 · Lecturer — Class sessions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./class-sessions.html" class="nav-item active">Class session management</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="#" class="nav-item">Student search &amp; filtering</a>
+        <a href="./student-statistics.html" class="nav-item">Attendance statistics</a>
+        <a href="#" class="nav-item">Attendance history</a>
+        <a href="#" class="nav-item">Report export</a>
+        <a href="./personal-information.html" class="nav-item">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Class session management</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Class sessions</h1>
+            <p>Manage schedules and attendance windows for your assigned courses.</p>
+          </div>
+          <button type="button" class="btn-primary" id="btn-new">Create session</button>
+        </div>
+
+        <div class="course-filter">
+          <button type="button" class="filter-chip">Cơ sở dữ liệu · CS201</button>
+          <button type="button" class="filter-chip">November 2026</button>
+        </div>
+
+        <div class="session-grid">
+          <div class="sessions-col">
+            <section class="card sessions-card">
+              <h2 class="card-title">Class sessions</h2>
+
+              <div class="table-header">
+                <div class="col-session">Session</div>
+                <div class="col-schedule">Schedule</div>
+                <div class="col-attendance">Attendance</div>
+                <div class="col-action">Action</div>
+              </div>
+
+              <div class="table-row" data-date="11 Nov 2026" data-start="09:00" data-end="11:00" data-open="09:00" data-period="09:15">
+                <div class="col-session">13</div>
+                <div class="col-schedule">11 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-open">Open</span></div>
+                <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
+              </div>
+
+              <div class="table-row" data-date="18 Nov 2026" data-start="09:00" data-end="11:00" data-open="09:00" data-period="09:15">
+                <div class="col-session">14</div>
+                <div class="col-schedule">18 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
+                <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
+              </div>
+
+              <div class="table-row" data-date="25 Nov 2026" data-start="09:00" data-end="11:00" data-open="09:00" data-period="09:15">
+                <div class="col-session">15</div>
+                <div class="col-schedule">25 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
+                <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
+              </div>
+
+              <div class="table-row" data-date="04 Nov 2026" data-start="09:00" data-end="11:00" data-open="09:00" data-period="09:15">
+                <div class="col-session">12</div>
+                <div class="col-schedule">04 Nov · 09:00</div>
+                <div class="col-attendance"><span class="badge badge-closed">Closed</span></div>
+                <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
+              </div>
+            </section>
+
+            <div class="attendance-rule">
+              Automatic closure: 15 minutes after the configured attendance period ends. Students without a check-in are then marked Absent.
+            </div>
+          </div>
+
+          <aside class="card session-editor">
+            <h2 class="editor-title" id="editor-title">Create session</h2>
+
+            <div class="field-group">
+              <label class="field-label">Course</label>
+              <div class="field-box">Cơ sở dữ liệu · CS201</div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="f-date">Session date</label>
+              <input class="field-box" id="f-date" type="text" value="18 Nov 2026" autocomplete="off" />
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label" for="f-start">Class starts</label>
+                <input class="field-box" id="f-start" type="text" value="09:00" autocomplete="off" />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="f-end">Class ends</label>
+                <input class="field-box" id="f-end" type="text" value="11:00" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label" for="f-open">Check-in opens</label>
+                <input class="field-box" id="f-open" type="text" value="09:00" autocomplete="off" />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="f-period">Period ends</label>
+                <input class="field-box" id="f-period" type="text" value="09:15" autocomplete="off" />
+              </div>
+            </div>
+
+            <p class="editor-note">
+              Automatically closes at <span id="auto-close">09:30</span>.<br />
+              Remaining students will be marked Absent.
+            </p>
+
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+
+            <div class="editor-actions">
+              <button type="button" class="btn-primary btn-sm" id="btn-submit">Create session</button>
+              <button type="button" class="btn-secondary" id="btn-cancel">Cancel</button>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

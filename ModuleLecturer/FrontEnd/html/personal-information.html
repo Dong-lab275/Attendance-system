@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11 · Lecturer — Personal information</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="system-identity">
+        <div class="sys-title">ATTENDANCE</div>
+        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
+      </div>
+
+      <nav class="role-nav">
+        <div class="nav-group-label">LECTURER WORKSPACE</div>
+        <a href="./Class-Sessions.html" class="nav-item">Class session management</a>
+        <a href="./attendance-register.html" class="nav-item">Manual attendance</a>
+        <a href="./studentsearch-filtering.html" class="nav-item">Student search &amp; filtering</a>
+        <a href="./Student-statistics.html" class="nav-item">Attendance statistics</a>
+        <a href="./attendance-history.html" class="nav-item">Attendance history</a>
+        <a href="./report-export.html" class="nav-item">Report export</a>
+        <a href="./personal-information.html" class="nav-item active">Personal information</a>
+      </nav>
+
+      <div class="account-actions">
+        <a href="#" class="account-link">Change password</a>
+        <a href="#" class="account-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Personal information</div>
+        <div class="account-identity">
+          <div class="account-name">Trần Quốc Huy</div>
+          <div class="account-role">GV001 · Lecturer</div>
+        </div>
+      </header>
+
+      <main class="page-body">
+        <div class="page-heading">
+          <div class="page-title">
+            <h1>Personal information</h1>
+            <p>Your lecturer information and account details.</p>
+          </div>
+        </div>
+
+        <section class="profile-card">
+          <div class="profile-header-name">Trần Quốc Huy</div>
+          <div class="profile-header-sub">GV001 · Lecturer</div>
+
+          <div class="profile-columns">
+            <div class="profile-col">
+              <div class="info-item">
+                <div class="info-label">Lecturer ID</div>
+                <div class="info-value">GV001</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Full name</div>
+                <div class="info-value">Trần Quốc Huy</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Date of birth</div>
+                <div class="info-value">15 Mar 1985</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Gender</div>
+                <div class="info-value">Male</div>
+              </div>
+            </div>
+
+            <div class="profile-col">
+              <div class="info-item">
+                <div class="info-label">Email address</div>
+                <div class="info-value">quochuy.tran@university.edu.vn</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Phone number</div>
+                <div class="info-value">091 234 5678</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">Department</div>
+                <div class="info-value">Công nghệ thông tin</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="security-card">
+          <h2 class="security-title">Account security</h2>
+          <p class="security-desc">Your lecturer account is provided and managed by the academic system.</p>
+          <button type="button" class="btn-secondary">Change password</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

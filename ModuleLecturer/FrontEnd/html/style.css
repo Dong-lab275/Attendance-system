@@ -1,0 +1,1256 @@
+/* Giao diện chung cho Lecturer Workspace */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F6F8F9;
+  color: #162B35;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 100vh;
+  width: 100%;
+  background: #F6F8F9;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px 20px;
+  gap: 32px;
+  width: 224px;
+  flex-shrink: 0;
+  background: #102F36;
+}
+
+.system-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.sys-title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 145%;
+  color: #FFFFFF;
+}
+
+.sys-subtitle {
+  font-weight: 500;
+  font-size: 8px;
+  line-height: 145%;
+  color: #A8C5C4;
+}
+
+.role-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.nav-group-label {
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 145%;
+  color: #A8C5C4;
+  margin-bottom: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 11px 12px;
+  width: 100%;
+  border-radius: 7px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #B6CECE;
+}
+
+.nav-item.active {
+  background: #1F5358;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.account-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.account-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #C6DAD8;
+}
+
+/* Workspace & Top bar */
+.workspace {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 80px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E0E8EA;
+}
+
+.breadcrumb {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.account-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.account-name {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.account-role {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+/* Page body & heading */
+.page-body {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 40px 28px;
+  gap: 24px;
+}
+
+.page-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.page-title h1 {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.page-title p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background: #087F75;
+  border: none;
+  border-radius: 7px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 145%;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.btn-sm {
+  padding: 10px 14px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.btn-secondary {
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 145%;
+  color: #087F75;
+  cursor: pointer;
+}
+
+.filter-chip {
+  padding: 10px 14px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 145%;
+  color: #087F75;
+  cursor: pointer;
+}
+
+.attendance-rule {
+  padding: 14px 18px;
+  background: #E7F4F1;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #27675F;
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+/* Trang 08: Class sessions */
+.course-filter {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.session-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.sessions-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sessions-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.table-header {
+  padding: 10px 0;
+  background: #F3F7F8;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.table-row {
+  padding: 8px 0;
+  font-size: 12px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.col-session {
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+}
+
+.badge-open {
+  background: #E7F4F1;
+  color: #087562;
+}
+
+.badge-scheduled {
+  background: #EDF1F7;
+  color: #4C6283;
+}
+
+.badge-closed {
+  background: #F0F3F5;
+  color: #63767F;
+}
+
+.action-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #087F75;
+}
+
+.session-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 340px;
+  flex-shrink: 0;
+}
+
+.editor-title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.field-label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.field-box {
+  padding: 10px 12px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.editor-note {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.editor-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+/* Trang 09: Attendance register */
+.session-selection {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.badge-saved {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  background: #E7F4F1;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+  color: #087562;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.stat-label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.stat-value {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.stat-sub {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.register-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.roster-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.register-hint {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.register-columns,
+.student-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+}
+
+.register-columns {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.col-student-head,
+.student-identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.col-checkin-head,
+.checkin-time {
+  flex: 1;
+  min-width: 0;
+}
+
+.col-status-head,
+.status-choices {
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.student-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.student-name {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.student-id {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.checkin-time {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.status-choices {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.choice-btn {
+  flex: 1;
+  padding: 8px 11px;
+  background: #F3F6F7;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+  cursor: pointer;
+  text-align: left;
+}
+
+.choice-btn.is-present {
+  background: #E7F4F1;
+  font-weight: 600;
+  color: #087562;
+}
+
+.choice-btn.is-late {
+  background: #FFF3DA;
+  font-weight: 600;
+  color: #8C641A;
+}
+
+.choice-btn.is-absent {
+  background: #FCECEE;
+  font-weight: 600;
+  color: #AD3F4E;
+}
+
+.roster-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 77px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 15.5px;
+}
+
+.pagination a {
+  color: inherit;
+  text-decoration: none;
+}
+/* Trang 10: Student statistics */
+.student-filters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.stats-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stats-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.stats-table-header,
+.stats-table-row {
+  display: grid;
+  grid-template-columns: 270px repeat(4, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.stats-table-header {
+  padding: 10px 0;
+  background: #F3F7F8;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.stats-table-row {
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.stats-student-col {
+  font-weight: 500;
+  color: #162B35;
+}
+
+.stats-ontime-col {
+  font-weight: 400;
+  color: #087F75;
+}
+
+.stats-formula {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+/* Trang 11: Personal information */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.profile-header-name {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.profile-header-sub {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.profile-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.profile-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-label {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.info-value {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.security-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 22px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.security-title {
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.security-desc {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+/* ===== Tương tác (hover, focus, form, thông báo) ===== */
+[hidden] {
+  display: none !important;
+}
+
+.nav-item:not(.active):hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+}
+
+.account-link:hover {
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: #066C63;
+}
+
+.btn-secondary:hover,
+.filter-chip:hover {
+  border-color: #087F75;
+}
+
+.action-link:hover {
+  text-decoration: underline;
+}
+
+.nav-item:focus-visible,
+.account-link:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.filter-chip:focus-visible,
+.choice-btn:focus-visible,
+.action-link:focus-visible,
+.stats-table-row:focus-visible {
+  outline: 2px solid #087F75;
+  outline-offset: 2px;
+}
+
+/* Trang 08: danh sách và form */
+.row-actions {
+  color: #087F75;
+  font-size: 12px;
+  line-height: 145%;
+}
+
+.table-row.is-active .col-session {
+  color: #087F75;
+}
+
+input.field-box {
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+
+input.field-box:focus {
+  border-color: #087F75;
+  box-shadow: 0 0 0 3px rgba(8, 127, 117, 0.15);
+}
+
+input.field-box[readonly] {
+  background: #F3F7F8;
+}
+
+.form-error {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #AD3F4E;
+}
+
+/* Trang 09: ô tìm kiếm, bộ lọc, trạng thái chưa lưu */
+input.filter-chip,
+select.filter-chip {
+  font-family: 'Inter', sans-serif;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  text-align: left;
+}
+
+input.filter-chip {
+  width: 201px;
+}
+
+input.filter-chip::placeholder {
+  color: #087F75;
+  opacity: 1;
+}
+
+input.filter-chip:not(:placeholder-shown) {
+  color: #162B35;
+  font-weight: 500;
+}
+
+input.filter-chip:focus,
+select.filter-chip:focus {
+  border-color: #087F75;
+  box-shadow: 0 0 0 3px rgba(8, 127, 117, 0.15);
+}
+
+select.filter-chip {
+  field-sizing: content;
+}
+
+.choice-btn:not(.is-present):not(.is-late):not(.is-absent):hover {
+  background: #E6ECEE;
+}
+
+.badge-saved.is-dirty {
+  background: #FFF3DA;
+  color: #8C641A;
+}
+
+/* Trang 10: chọn dòng sinh viên */
+.stats-table-row {
+  cursor: pointer;
+}
+
+.stats-table-row:hover,
+.stats-table-row.is-selected {
+  background: #F3F7F8;
+  box-shadow: -12px 0 0 #F3F7F8, 12px 0 0 #F3F7F8;
+}
+
+.stats-table-row.is-selected .stats-student-col {
+  color: #087F75;
+}
+
+.stats-empty {
+  padding: 12px 0;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+/* Thông báo nhỏ góc dưới */
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  padding: 12px 16px;
+  background: #102F36;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 145%;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: none;
+}
+/* Trang 23: Student search & filtering */
+.search-criteria-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.search-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.search-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 11px 12px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #087F75;
+}
+
+.search-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.students-table-header,
+.students-table-row {
+  display: grid;
+  grid-template-columns: 270px repeat(3, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.students-table-header {
+  padding: 10px 12px;
+  background: #F3F7F8;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.students-table-row {
+  padding: 12px 12px;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.student-col-name {
+  font-weight: 500;
+  color: #162B35;
+}
+
+.student-col-id {
+  font-weight: 400;
+  color: #162B35;
+}
+
+.student-col-email {
+  font-weight: 400;
+  color: #162B35;
+}
+
+.student-view-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #087F75;
+}
+
+.search-meta-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.pagination-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-link-btn {
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #63767F;
+  cursor: pointer;
+}
+
+.page-num-active {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: #087F75;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 12px;
+  color: #FFFFFF;
+}
+
+/* Trang 24: Attendance history */
+.history-filters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.selected-student-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.selected-student-title {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.selected-student-meta {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.history-table-header,
+.history-table-row {
+  display: grid;
+  grid-template-columns: 270px repeat(3, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.history-table-header {
+  padding: 10px 12px;
+  background: #F3F7F8;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.history-table-row {
+  padding: 12px 12px;
+  font-size: 13px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.history-session-col {
+  font-weight: 500;
+  color: #162B35;
+}
+
+.status-pill-present {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  background: #E7F4F1;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+  color: #087562;
+}
+
+.status-pill-late {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  background: #FFF3DA;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+  color: #8C641A;
+}
+
+.status-pill-absent {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  background: #FCECEE;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+  color: #AD3F4E;
+}
+
+/* Trang 25: Attendance report export */
+.report-config-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.report-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.report-preview-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.report-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.report-tag {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 145%;
+  color: #087F75;
+}
+
+.report-course-heading {
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.report-sub-meta {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.preview-table-header,
+.preview-table-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.preview-table-header {
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #E0E8EA;
+}
+
+.preview-table-row {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 145%;
+  color: #162B35;
+}
+
+.preview-student-sub {
+  display: block;
+  color: #63767F;
+}
+
+.preview-note {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 145%;
+  color: #63767F;
+}
+
+.report-summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E8EA;
+  border-radius: 10px;
+}
+
+.summary-metric-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
