@@ -1,0 +1,452 @@
+/* Pixel-aligned desktop geometry based on exported Figma frames (1440 x 960).
+   This stylesheet is loaded last; keep application JS and backend unchanged. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root { --ink:#182f3a; --muted:#6a808c; --teal:#00867d; --line:#dbe5e8; --surface:#f5f8f9; }
+html,body {min-height:100%;margin:0}
+body {font-family:Inter,Arial,Helvetica,sans-serif;font-size:13px;color:var(--ink);background:var(--surface)}
+.layout {display:flex;min-height:100vh;width:100%}
+.sidebar {position:relative;flex:0 0 225px;width:225px;min-width:225px;max-width:225px;min-height:100vh;padding:27px 20px 19px;background:linear-gradient(155deg,#0b2931 0%,#0a3033 48%,#00776e 100%);color:white}
+.sidebar .brand {gap:10px;margin:0;align-items:center}
+.sidebar .brand-logo {width:32px;height:32px;flex-basis:32px}
+.sidebar .brand-copy {font-size:13px;letter-spacing:0;font-weight:600}
+.sidebar .brand-copy small {font-size:7px;letter-spacing:.1px;margin-top:5px}
+.sidebar .section-label {margin:48px 0 8px;font-size:14px;letter-spacing:0;font-weight:700;color:#fff}
+.sidebar .nav {gap:6px}
+.sidebar .nav a {font-size:13px;padding:14px 12px;line-height:1.2;border-radius:6px;color:#bdd1d5}
+.sidebar .nav a.active {background:#245960;color:#fff;font-weight:600;box-shadow:0 4px 6px #0002}
+.sidebar .sidebar-bottom {padding:10px 0 0}
+.sidebar .sidebar-bottom a {font-size:12px;padding:10px 0;font-weight:600}
+.main {flex:1;min-width:0;background:var(--surface)}
+.topbar {height:80px;min-height:80px;padding:0 40px;border-bottom:1px solid #dce6e8;background:#fff}
+.breadcrumb {font-size:13px;color:#6e8490}
+.breadcrumb strong {font-weight:400;color:#6e8490}
+.user {font-size:12px;font-weight:700;color:#172e38}
+.user small {font-size:11px;color:#728795;margin-top:6px}
+.content {padding:36px 40px 32px;width:100%;max-width:none}
+h1 {font-size:28px;line-height:1.25;font-weight:700;margin:0 0 10px;color:#172e38}
+.subtitle {font-size:14px;color:#708590;line-height:1.5;margin:0 0 24px}
+.card {border:1px solid var(--line);border-radius:10px;padding:24px;margin:0 0 24px;background:white;box-shadow:none}
+h3 {font-size:16px;margin:0 0 18px;font-weight:700;color:#192e38}
+.notice {padding:15px 18px;margin:0 0 24px;border-radius:8px;background:#e5f4f1;color:#317c76;font-size:13px}
+.table-wrap {overflow-x:auto}
+table {width:100%;border-collapse:collapse}
+th {background:#f0f5f6;font-size:11px;color:#6a7f89;font-weight:400;text-align:left}
+th,td {padding:12px 0}
+td {font-size:12px;color:#19303a}
+tbody td {border-bottom:0}
+.course-name {font-weight:400;color:#172f39}
+.register-btn {font-size:12px;color:#008b80;background:transparent;border:0;padding:4px 0;font-weight:400}
+.badge {font-size:11px;padding:7px 10px;border-radius:5px;background:#edf1f7;color:#526b89}
+.note {font-size:12px;color:#718693;line-height:1.5}
+.content .card table tbody tr {height:54px}
+/* Registration: first and second cards have exact Figma table spacing. */
+body:has(#availableCourses) .content .card {padding:24px;margin-bottom:24px}
+body:has(#availableCourses) .content .card table tbody tr {height:54px}
+/* History: design intentionally places sidebar on right. */
+.history-layout {flex-direction:row}
+.history-layout .sidebar {background:linear-gradient(160deg,#0a2932 0%,#0b3638 45%,#00796e 100%)}
+.history-layout .content {padding:36px 40px}
+.history-layout .content > .card:first-of-type:has(.filters) {background:transparent;border:0;padding:0;margin:0 0 24px;box-shadow:none}
+.filters {gap:12px;display:flex;flex-wrap:wrap}
+.filters label {display:none}
+.filters select,.filters input {height:39px;max-width:100%;border:1px solid #dce6e8;background:#fff;color:#00867d;font-size:12px;font-weight:600;padding:8px 14px;border-radius:5px}
+.stats {gap:16px;margin-bottom:24px}
+.stat-card {padding:24px;min-height:152px;border-radius:10px;border:1px solid var(--line);background:white}
+.stat-label {font-size:12px;color:#718590}
+.stat-value {font-size:28px;margin:20px 0 18px;line-height:1.1}
+.stat-description {font-size:11px;color:#718590}
+.history-layout .stats {grid-template-columns:repeat(4,minmax(0,1fr))}
+.history-layout .content > .card:has(#historyTable) {padding:24px}
+.history-layout table tbody tr {height:62px}
+.history-layout .history-pagination {font-size:12px;margin-top:24px}
+/* Personal information */
+.page-header {margin-bottom:24px;align-items:flex-start}
+.page-header .subtitle {margin:8px 0 0}
+.page-header .button {font-size:12px;padding:14px 18px;border-radius:6px;background:#00877d}
+body:has(#studentName) .content > .card {padding:24px;margin-bottom:24px}
+.student-heading {margin:0 0 20px}
+.student-heading h2 {font-size:27px;margin:0 0 18px}
+.student-heading p {font-size:13px}
+.info-grid {grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,auto);grid-auto-flow:column;column-gap:36px;row-gap:26px}
+.info-label {font-size:12px;color:#718590;margin-bottom:10px}
+.info-value {font-size:14px;color:#1b303b;font-weight:500}
+.security-header {font-size:16px}
+.security-text {font-size:13px;color:#718590}
+/* Attendance rate */
+body:has(#rateTable) .page-header {align-items:flex-start;gap:24px;margin-bottom:24px}
+body:has(#rateTable) #courseFilter {height:39px;padding:8px 14px;font-size:12px;color:#00867d;border-radius:6px}
+body:has(#rateTable) .stats {grid-template-columns:repeat(3,minmax(0,1fr));max-width:896px}
+body:has(#rateTable) .stat-card {min-height:152px}
+body:has(#rateTable) .content > .card {padding:24px}
+body:has(#rateTable) .content > .card table tbody tr {height:60px}
+body:has(#rateTable) .content > .note {background:#e5f4f1;color:#317c76;padding:15px 18px;border-radius:8px}
+/* Check-in: retain backend functionality while reproducing Figma's visible layout. */
+body:has(#mainCheckin) .content {padding-top:36px}
+body:has(#mainCheckin) .content > .card:first-of-type {max-width:784px;min-height:279px}
+body:has(#mainCheckin) .course-title {font-size:27px;margin:16px 0}
+body:has(#mainCheckin) .course-info {font-size:13px;color:#6e8490;line-height:1.9}
+body:has(#mainCheckin) .small-label {font-size:11px;color:#6e8490}
+body:has(#mainCheckin) .card-header {align-items:flex-start}
+body:has(#mainCheckin) button {font-size:12px}
+body:has(#mainCheckin) .other-courses {max-width:none;min-height:300px}
+body:has(#mainCheckin) .other-courses .course-title {font-size:16px;margin:0 0 16px}
+body:has(#mainCheckin) .other-courses table tbody tr {height:62px}
+.closed-chip {display:inline-block;background:#eef2f3;color:#657b86;font-size:11px;padding:7px 11px;border-radius:5px}
+.figma-footnote {font-size:12px;color:#718590;margin:8px 0}
+.demo-tools {margin:0 0 20px}
+.demo-tools summary {font-size:12px;color:#6d838e;cursor:pointer;margin:0 0 10px}
+.demo-tools .card {max-width:784px}
+/* Responsive adaptation, desktop 1440px retains Figma's 225px sidebar. */
+@media(max-width:900px){.sidebar{flex-basis:185px;width:185px;min-width:185px;max-width:185px;padding:20px 12px}.sidebar .brand-copy{font-size:11px}.sidebar .section-label{font-size:11px}.sidebar .nav a{font-size:11px;padding:12px 8px}.topbar{padding:0 24px}.content,.history-layout .content{padding:28px 24px}.history-layout .stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.layout,.history-layout{display:block}.sidebar{min-height:auto;width:100%;max-width:none;min-width:0;padding:12px}.sidebar .section-label,.sidebar .sidebar-bottom{display:none}.sidebar .nav{flex-direction:row;flex-wrap:wrap;margin-top:10px}.topbar{height:64px;min-height:64px;padding:0 16px}.content,.history-layout .content{padding:22px 16px}.stats,.history-layout .stats,body:has(#rateTable) .stats{grid-template-columns:1fr}.info-grid{display:block}.info-grid>div{margin-bottom:20px}}
+/* Correct inherited centered width and button style; Figma reference 1440x960 */
+html { box-sizing:border-box; }
+*, *::before, *::after { box-sizing:inherit; }
+.layout > .sidebar { width:225px; flex:0 0 225px; min-width:225px; max-width:225px; }
+.layout > .main { width:calc(100% - 225px); min-width:0; }
+.main > .content { width:100%; max-width:none; margin:0; padding:36px 40px 32px; }
+.main > .topbar { height:80px; padding:0 40px; }
+.content table { width:100%; min-width:0; }
+.content th, .content td { padding:12px 0; border-bottom:0; }
+.content th { background:#f1f5f6; }
+.content .course-name { font-weight:400; color:#172f39; }
+.content button.register-btn, .content .register-btn { display:inline-block; background:transparent; border:0; box-shadow:none; color:#00877e; padding:4px 0; border-radius:0; font-family:inherit; font-size:12px; font-weight:400; text-decoration:none; cursor:pointer; }
+.content button.register-btn:hover { color:#006f66; text-decoration:underline; background:transparent; }
+.content .badge { border-radius:5px; background:#edf1f7; color:#526b89; font-weight:500; }
+.content .notice { border:0; }
+@media (min-width:901px) {
+ body:has(#availableCourses) .main > .content { padding:36px 40px 32px; }
+ body:has(#availableCourses) .content table { table-layout:fixed; }
+ body:has(#availableCourses) .content th, body:has(#availableCourses) .content td { width:25%; }
+ body:has(#availableCourses) .content .card { padding:24px; }
+ body:has(#availableCourses) .content .card tbody tr { height:54px; }
+}
+@media (max-width:900px) and (min-width:651px) {
+ .layout > .sidebar { width:185px; flex-basis:185px; min-width:185px; max-width:185px; }
+ .layout > .main { width:calc(100% - 185px); }
+ .main > .content { padding:28px 24px; }
+}
+@media (max-width:650px) {
+ .layout > .sidebar { width:100%; max-width:none; min-width:0; }
+ .layout > .main { width:100%; }
+ .main > .content { padding:22px 16px; }
+}
+
+
+/* Student Module - Shared UI Fix */
+
+@media (min-width: 901px) {
+    .layout > .sidebar {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+        flex: 0 0 260px;
+        padding: 32px 20px;
+    }
+
+    .layout > .main {
+        width: calc(100% - 260px);
+        flex: 1;
+    }
+}
+
+/* Brand and logo */
+.sidebar .brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.sidebar .brand-logo {
+    display: block;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    max-width: 42px;
+    flex: 0 0 42px;
+}
+
+.sidebar .brand-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+}
+
+.sidebar .brand-copy small {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+}
+
+/* Student workspace */
+.sidebar .section-label {
+    margin: 28px 0 20px;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+/* Navigation */
+.sidebar .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar .nav a {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.45;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.sidebar .nav a.active {
+    background: #245960;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Bottom actions */
+.sidebar .sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 24px;
+}
+
+.sidebar .sidebar-bottom a {
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Topbar */
+.main > .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+}
+
+.topbar .user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    text-align: right;
+}
+
+.topbar .user small {
+    display: block;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+    .sidebar .brand {
+        margin-bottom: 12px;
+    }
+
+    .sidebar .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebar .sidebar-bottom {
+        display: none;
+    }
+}
+
+/* Student Module - Shared UI Fix */
+
+@media (min-width: 901px) {
+    .layout > .sidebar {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+        flex: 0 0 260px;
+        padding: 32px 20px;
+    }
+
+    .layout > .main {
+        width: calc(100% - 260px);
+        flex: 1;
+    }
+}
+
+/* Brand and logo */
+.sidebar .brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.sidebar .brand-logo {
+    display: block;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    max-width: 42px;
+    flex: 0 0 42px;
+}
+
+.sidebar .brand-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+}
+
+.sidebar .brand-copy small {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+}
+
+/* Student workspace */
+.sidebar .section-label {
+    margin: 28px 0 20px;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.45;
+}
+
+/* Navigation */
+.sidebar .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar .nav a {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.45;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.sidebar .nav a.active {
+    background: #245960;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Bottom actions */
+.sidebar .sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 24px;
+}
+
+.sidebar .sidebar-bottom a {
+    display: block;
+    width: 100%;
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Topbar */
+.main > .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+}
+
+.topbar .user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    text-align: right;
+}
+
+.topbar .user small {
+    display: block;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+    .sidebar .brand {
+        margin-bottom: 12px;
+    }
+
+    .sidebar .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebar .sidebar-bottom {
+        display: none;
+    }
+}
+
+/* Course Registration - Unregister button */
+
+.unregister-btn {
+    display: inline-block;
+    padding: 7px 14px;
+    border: 1px solid #dce6e8;
+    border-radius: 5px;
+    background: #edf1f5;
+    color: #315b68;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.unregister-btn:hover {
+    background: #dce9e8;
+    border-color: #b8d5d0;
+}
+
+.unregister-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Keep course table buttons aligned */
+#registeredCourses td:last-child {
+    white-space: nowrap;
+    text-align: left;
+}

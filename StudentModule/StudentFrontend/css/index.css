@@ -1,0 +1,237 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f6f8f9;
+    color: #19383e;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 224px;
+    min-width: 224px;
+    background: #102f36;
+    color: white;
+    padding: 28px 16px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 12px 40px;
+}
+
+.nav a {
+    display: block;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    color: #c8d7da;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: #24515a;
+    color: white;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar {
+    height: 80px;
+    background: white;
+    border-bottom: 1px solid #e4e9eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+.user {
+    font-size: 14px;
+    color: #64767b;
+}
+
+.content {
+    max-width: 920px;
+    margin: 38px auto;
+    padding: 0 24px;
+}
+
+h1 {
+    margin: 0 0 10px;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: #74858a;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e2e8ea;
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 24px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.small-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #7c9095;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.course-title {
+    font-size: 23px;
+    margin: 12px 0;
+}
+
+.course-info {
+    color: #65797e;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+.status {
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    background: #edf0f1;
+    color: #68797e;
+}
+
+.status.open {
+    background: #e1f5ed;
+    color: #137950;
+}
+
+.status.closed {
+    background: #edf0f1;
+    color: #6a777b;
+}
+
+.separator {
+    height: 1px;
+    background: #e8edef;
+    margin: 25px 0;
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 13px 20px;
+    background: #117d77;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background: #0c6661;
+}
+
+button:disabled {
+    background: #d6dfe1;
+    color: #89999d;
+    cursor: not-allowed;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.message {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #62777c;
+    line-height: 1.6;
+}
+
+.message.success {
+    color: #147650;
+}
+
+.message.error {
+    color: #b13b3b;
+}
+
+.demo-tag {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 5px;
+    background: #fff1d8;
+    color: #98651b;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+th, td {
+    text-align: left;
+    padding: 15px 12px;
+    border-bottom: 1px solid #e9edef;
+}
+
+th {
+    color: #7c8c90;
+    font-size: 12px;
+}
+
+@media (max-width: 750px) {
+    .sidebar {
+        width: 170px;
+        min-width: 170px;
+    }
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .content {
+        padding: 0 15px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .card-header {
+        flex-direction: column;
+    }
+}
