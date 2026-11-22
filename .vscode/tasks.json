@@ -1,14 +1,14 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Build and Run Lecturer Console",
-            "type": "shell",
-            "command": "g++ -std=c++17 Main/Main.cpp ModuleLecturer/Model/ClassSession.cpp ModuleLecturer/Model/AttendanceRecord.cpp ModuleLecturer/Controller/LecturerController.cpp ModuleLecturer/View/LecturerView.cpp -IModuleLecturer -o Main/Main.exe ; if ($?) { .\\Main\\Main.exe }",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run Lecturer Console",
+      "type": "shell",
+      "command": "g++ -std=c++17 ModuleLecturer/Main/Main.cpp ModuleLecturer/Model/ClassSession.cpp ModuleLecturer/Model/AttendanceRecord.cpp ModuleLecturer/Controller/LecturerController.cpp ModuleLecturer/View/LecturerView.cpp -IModuleLecturer -o ModuleLecturer/Main/Main.exe ; if ($?) { .\\ModuleLecturer\\Main\\Main.exe }",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
 }
