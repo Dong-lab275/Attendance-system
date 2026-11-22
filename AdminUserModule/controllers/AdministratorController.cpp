@@ -1533,4 +1533,99 @@ bool AdministratorController::deleteUserAccount(string userId)
 
     cout << "User account deleted successfully!" << endl;
     return true;
+
+
+    bool AdministratorController::lockUserAccount(string userId)
+{
+    if (userId.empty() || userId.length() != 12)
+        return false;
+
+    if (database == nullptr)
+        return false;
+
+    PGconn* connection = database->getConnection();
+
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+        return false;
+
+    const char* query =
+        "UPDATE users "
+        "SET is_active = FALSE, updated_at = CURRENT_TIMESTAMP "
+        "WHERE user_id = $1 AND is_active = TRUE";
+
+    const char* params[1] = {userId.c_str()};
+
+    PGresult* result = PQexecParams(
+        connection, query, 1, nullptr,
+        params, nullptr, nullptr, 0
+    );
+
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK)
+    {
+        if (result != nullptr)
+            PQclear(result);
+
+        return false;
+    }
+
+    bool success = atoi(PQcmdTuples(result)) > 0;
+
+    PQclear(result);
+
+    if (success)
+        cout << "User account locked successfully!" << endl;
+    else
+        cout << "User account not found or already locked!" << endl;
+
+    return success;
+}
+
+bool AdministratorController::unlockUserAccount(string userId)
+{
+    if (userId.empty() || userId.length() != 12)
+        return false;
+
+    if (database == nullptr)
+        return false;
+
+    PGconn* connection = database->getConnection();
+
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+        return false;
+
+    const char* query =
+        "UPDATE users "
+        "SET is_active = TRUE, updated_at = CURRENT_TIMESTAMP "
+        "WHERE user_id = $1 AND is_active = FALSE";
+
+    const char* params[1] = {userId.c_str()};
+
+    PGresult* result = PQexecParams(
+        connection, query, 1, nullptr,
+        params, nullptr, nullptr, 0
+    );
+
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK)
+    {
+        if (result != nullptr)
+            PQclear(result);
+
+        return false;
+    }
+
+    bool success = atoi(PQcmdTuples(result)) > 0;
+
+    PQclear(result);
+
+    if (success)
+        cout << "User account unlocked successfully!" << endl;
+    else
+        cout << "User account not found or already active!" << endl;
+
+    return success;
+}
 }

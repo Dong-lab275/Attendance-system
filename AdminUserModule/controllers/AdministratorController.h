@@ -56,6 +56,9 @@ public:
 
     bool viewClassSessionCalendar();
     bool deleteUserAccount(string userId);
+
+    bool lockUserAccount(string userId);
+    bool unlockUserAccount(string userId);
 };
 
 #endif
