@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Controller/LecturerController.h"
-#include "View/LecturerView.h"
+#include "../Controller/LecturerController.h"
+#include "../View/LecturerView.h"
 
 using namespace std;
 
