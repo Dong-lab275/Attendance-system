@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Rate | Student Attendance</title>
+
+  <link rel="stylesheet" href="css/rate.css">
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 48 48"
+             role="img" aria-label="Student Attendance logo"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 4H32L44 16V32L32 44H16L4 32V16Z"
+                fill="none" stroke="#92bcb6"
+                stroke-width="1.7"/>
+          <path d="M9 20L24 13L39 20L24 27Z"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M16 24V30C21 34 27 34 32 30V24"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2.2"/>
+          <path d="M39 20V31"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2"/>
+          <circle cx="39" cy="33" r="2" fill="#f4ffff"/>
+        </svg>
+
+        <div class="brand-copy">
+          Student Attendance
+          <small>MANAGEMENT SYSTEM</small>
+        </div>
+      </div>
+
+      <div class="section-label">STUDENT WORKSPACE</div>
+
+      <nav class="nav">
+        <a href="index.html">Attendance check-in</a>
+        <a href="history.html">Attendance history</a>
+        <a href="courses.html">Course registration</a>
+        <a href="profile.html">Personal information</a>
+        <a class="active" href="rate.html">Attendance rate</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#" id="password-link">Change password</a>
+        <a href="#" id="signout-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="breadcrumb">
+          Student Workspace /
+          <strong>Attendance rate</strong>
+        </div>
+
+        <div class="user">
+          Nguyễn Minh Anh
+          <small>SV2024001 · Student (demo)</small>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <div class="page-header">
+          <div>
+            <h1>Attendance rate</h1>
+            <p class="subtitle">
+              Track your attendance rate for each registered course.
+            </p>
+          </div>
+
+          <select id="courseFilter" aria-label="Filter courses">
+            <option value="all">All registered courses</option>
+          </select>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Registered courses</div>
+            <div class="stat-value" id="registeredCount">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Completed sessions</div>
+            <div class="stat-value" id="completedCount">0</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Sessions attended</div>
+            <div class="stat-value" id="attendedCount">0</div>
+          </div>
+        </div>
+
+        <section class="card">
+          <h3>Attendance rate by course</h3>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Course / ID</th>
+                  <th>Sessions</th>
+                  <th>Present</th>
+                  <th>Late</th>
+                  <th>Absent</th>
+                  <th>Rate</th>
+                </tr>
+              </thead>
+
+              <tbody id="rateTable"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="note">
+          <strong>How attendance rate is calculated:</strong>
+          <p>
+            Attendance rate = (Present + Late) /
+            completed sessions × 100.
+          </p>
+          Open and future class sessions are excluded.
+          This page currently uses demonstration data.
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/rate.js"></script>
+</body>
+</html>

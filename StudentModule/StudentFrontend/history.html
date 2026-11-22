@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance History | Student Attendance</title>
+
+  <link rel="stylesheet" href="css/history.css">
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 48 48"
+             role="img" aria-label="Student Attendance logo"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 4H32L44 16V32L32 44H16L4 32V16Z"
+                fill="none" stroke="#92bcb6"
+                stroke-width="1.7"/>
+          <path d="M9 20L24 13L39 20L24 27Z"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M16 24V30C21 34 27 34 32 30V24"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2.2"/>
+          <path d="M39 20V31"
+                fill="none" stroke="#f4ffff"
+                stroke-width="2"/>
+          <circle cx="39" cy="33" r="2" fill="#f4ffff"/>
+        </svg>
+
+        <div class="brand-copy">
+          Student Attendance
+          <small>MANAGEMENT SYSTEM</small>
+        </div>
+      </div>
+
+      <div class="section-label">STUDENT WORKSPACE</div>
+
+      <nav class="nav">
+        <a href="index.html">Attendance check-in</a>
+        <a class="active" href="history.html">Attendance history</a>
+        <a href="courses.html">Course registration</a>
+        <a href="profile.html">Personal information</a>
+        <a href="rate.html">Attendance rate</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#" id="password-link">Change password</a>
+        <a href="#" id="signout-link">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="breadcrumb">
+          Student Workspace /
+          <strong>Attendance history</strong>
+        </div>
+
+        <div class="user">
+          Nguyễn Minh Anh
+          <small>SV2024001 · Student (demo)</small>
+        </div>
+      </header>
+
+      <main class="content">
+        <h1>Attendance history</h1>
+        <p class="subtitle">
+          Review your attendance and progress in each course.
+        </p>
+
+        <section class="card">
+          <div class="filters">
+            <div>
+              <label for="courseFilter">Course</label>
+              <select id="courseFilter">
+                <option value="all">All courses</option>
+                <option value="CS201">Cơ sở dữ liệu</option>
+                <option value="SE202">Công nghệ phần mềm</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="statusFilter">Attendance status</label>
+              <select id="statusFilter">
+                <option value="all">All attendance statuses</option>
+                <option value="Present">Present</option>
+                <option value="Late">Late</option>
+                <option value="Absent">Absent</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="dateFilter">Date</label>
+              <input type="date" id="dateFilter">
+            </div>
+          </div>
+        </section>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Attendance rate</div>
+            <div class="stat-value" id="rateValue">0%</div>
+            <div class="stat-description">Attended / completed sessions</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Present</div>
+            <div class="stat-value" id="presentValue">0</div>
+            <div class="stat-description">On-time check-ins</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Late</div>
+            <div class="stat-value" id="lateValue">0</div>
+            <div class="stat-description">Included in attended sessions</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Absent</div>
+            <div class="stat-value" id="absentValue">0</div>
+            <div class="stat-description">Missed sessions</div>
+          </div>
+        </div>
+
+        <section class="card">
+          <h3 id="historyTitle">Attendance records</h3>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Session</th>
+                  <th>Date &amp; time</th>
+                  <th>Check-in</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="historyTable"></tbody>
+            </table>
+<div class="history-pagination" id="historyPagination">
+    <span id="historyCount">Showing 0 of 0 sessions</span>
+    <div id="historyPageButtons"></div>
+</div>
+          </div>
+        </section>
+
+        <p class="note">
+          Attendance rate = (Present + Late) /
+          completed sessions × 100.
+          Open and future sessions are excluded.
+          This page currently uses demonstration data.
+        </p>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/history.js"></script>
+</body>
+</html>
