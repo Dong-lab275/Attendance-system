@@ -1,0 +1,633 @@
+
+/* =========================================
+   06 · STUDENT — COURSE REGISTRATION
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --page-background: #F6F8F9;
+    --sidebar-background: #102F36;
+    --sidebar-active: #1F5358;
+    --sidebar-text: #B6CECE;
+
+    --heading-color: #162B35;
+    --text-color: #63767F;
+    --border-color: #E0E8EA;
+    --primary-color: #087F75;
+
+    --white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--page-background);
+    color: var(--heading-color);
+    min-width: 320px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.student-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 224px;
+    min-width: 224px;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 28px 20px 32px;
+    gap: 32px;
+
+    background-color: var(--sidebar-background);
+    color: var(--white);
+
+    position: relative;
+    isolation: isolate;
+}
+
+/* System identity */
+
+.sidebar-brand {
+    width: 100%;
+    height: 49px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.brand-icon {
+    width: 34px;
+    height: 31px;
+    min-width: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(16, 47, 54, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 11px;
+}
+
+.brand-icon svg {
+    width: 25px;
+    height: 25px;
+    color: var(--white);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.brand-text span {
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.brand-text small {
+    font-size: 8px;
+    line-height: 12px;
+    font-weight: 400;
+    color: var(--white);
+}
+
+/* Student navigation */
+
+.sidebar-navigation {
+    position: absolute;
+    top: 106px;
+    left: 20px;
+
+    width: 184px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+.sidebar-heading {
+    height: 22px;
+
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 900;
+    color: var(--white);
+    white-space: nowrap;
+}
+
+.nav-item {
+    width: 184px;
+    min-height: 43px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    color: var(--sidebar-text);
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 400;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+}
+
+.nav-item.active {
+    background: var(--sidebar-active);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* Account actions */
+
+.sidebar-bottom {
+    width: 184px;
+
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.sidebar-action {
+    width: 184px;
+
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 800;
+
+    color: var(--white);
+}
+
+.sidebar-action:hover {
+    color: var(--sidebar-text);
+}
+
+/* =========================================
+   WORKSPACE
+========================================= */
+
+.workspace {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.topbar {
+    width: 100%;
+    height: 80px;
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 40px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+}
+
+.breadcrumb {
+    flex: 1;
+
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 400;
+
+    color: var(--text-color);
+}
+
+.breadcrumb span {
+    padding: 0 5px;
+}
+
+.student-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.student-profile strong {
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.student-profile small {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+/* =========================================
+   PAGE CONTENT
+========================================= */
+
+.page-content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 32px 40px 28px;
+    gap: 24px;
+}
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.page-heading {
+    width: 100%;
+    height: 67px;
+
+    display: flex;
+    align-items: center;
+}
+
+.page-title {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.page-title h1 {
+    width: 100%;
+
+    font-size: 28px;
+    line-height: 41px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.page-title p {
+    width: 100%;
+
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+/* =========================================
+   REGISTRATION GUIDANCE
+========================================= */
+
+.registration-guidance {
+    width: 100%;
+    height: 47px;
+    min-height: 47px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 14px 18px;
+
+    background: #E7F4F1;
+    border-radius: 8px;
+}
+
+.registration-guidance p {
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 400;
+    color: #27675F;
+}
+
+.guidance-dot {
+    padding: 0 7px;
+}
+
+/* =========================================
+   COURSE SECTIONS
+========================================= */
+
+.course-section {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+
+    padding: 22px 24px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.available-section {
+    height: 227px;
+    min-height: 227px;
+}
+
+.registered-section {
+    min-height: 386px;
+}
+
+.section-title {
+    width: 100%;
+    height: 23px;
+    min-height: 23px;
+
+    font-size: 16px;
+    line-height: 23px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+/* =========================================
+   COURSE TABLE
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.course-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.course-table thead {
+    background: #F3F7F8;
+}
+
+.course-table th {
+    height: 36px;
+
+    padding: 10px 12px;
+
+    text-align: left;
+
+    color: var(--text-color);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+}
+
+.course-table td {
+    height: 46px;
+
+    padding: 10px 12px;
+
+    color: var(--heading-color);
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+
+    border-bottom: 1px solid #EEF2F3;
+    vertical-align: middle;
+}
+
+.course-table th:first-child,
+.course-table td:first-child {
+    padding-left: 0;
+}
+
+.course-table th:last-child,
+.course-table td:last-child {
+    padding-right: 0;
+}
+
+.course-table th:nth-child(1),
+.course-table td:nth-child(1) {
+    width: 25%;
+}
+
+.course-table th:nth-child(2),
+.course-table td:nth-child(2) {
+    width: 25%;
+}
+
+.course-table th:nth-child(3),
+.course-table td:nth-child(3) {
+    width: 25%;
+}
+
+.course-table th:nth-child(4),
+.course-table td:nth-child(4) {
+    width: 25%;
+}
+
+.course-name {
+    font-weight: 500 !important;
+}
+
+/* Available course rows */
+
+.available-section .course-table td {
+    height: 37px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* =========================================
+   REGISTER BUTTON
+========================================= */
+
+.register-button {
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    color: var(--primary-color);
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+.register-button:hover {
+    color: #065F59;
+    text-decoration: underline;
+}
+
+.register-button:disabled {
+    color: #63767F;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+/* =========================================
+   REGISTERED STATUS
+========================================= */
+
+.registration-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 78px;
+    height: 26px;
+
+    padding: 5px 10px;
+
+    background: #EDF1F7;
+    border-radius: 5px;
+
+    color: #4C6283;
+
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
+/* =========================================
+   EMPTY MESSAGE
+========================================= */
+
+.empty-message {
+    padding: 20px 0;
+
+    text-align: center;
+
+    color: var(--text-color);
+    font-size: 12px;
+    line-height: 18px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+    .page-content {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .topbar {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+}
+
+@media (max-width: 700px) {
+    .student-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .sidebar-navigation {
+        position: static;
+        width: 100%;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .sidebar-bottom {
+        width: 100%;
+        margin-top: 0;
+
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .topbar {
+        height: auto;
+        min-height: 70px;
+        padding: 16px 20px;
+    }
+
+    .page-content {
+        padding: 24px 20px;
+    }
+
+    .page-title h1 {
+        font-size: 24px;
+    }
+
+    .course-section {
+        padding: 18px;
+    }
+
+    .course-table {
+        min-width: 700px;
+    }
+
+    .available-section {
+        height: auto;
+        min-height: 227px;
+    }
+}

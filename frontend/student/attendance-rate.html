@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student - Attendance Rate</title>
+    <link rel="stylesheet" href="css/attendance-rate.css">
+</head>
+<body>
+
+<div class="student-layout">
+
+    <!-- Sidebar: giữ nguyên giao diện cũ -->
+    <aside class="sidebar">
+
+        <div class="brand-mark">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 14V21C13 25 19 25 24 21V14"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M29 11V20"
+                      stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="system-identity">
+            <span>Student Attendance</span>
+            <small>MANAGEMENT SYSTEM</small>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="sidebar-heading">STUDENT WORKSPACE</div>
+
+            <a href="attendance-check-in.html" class="nav-item">
+                Attendance check-in
+            </a>
+
+            <a href="attendance-history.html" class="nav-item">
+                Attendance history
+            </a>
+
+            <a href="course-registration.html" class="nav-item">
+                Course registration
+            </a>
+
+            <a href="personal-information.html" class="nav-item">
+                Personal information
+            </a>
+
+            <a href="attendance-rate.html" class="nav-item active">
+                Attendance rate
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="personal-information.html#change-password" class="bottom-link">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="bottom-link">
+                Sign out
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Main workspace -->
+    <main class="workspace">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                Student <span>/</span> Attendance rate
+            </div>
+
+            <div class="account-identity">
+                <strong>Le Minh Khang</strong>
+                <small>079205003456</small>
+            </div>
+
+        </header>
+
+        <!-- Page content -->
+        <section class="page-content">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+
+                <div class="page-title">
+                    <h1>Attendance rate</h1>
+
+                    <p>
+                        Review your attendance and progress in each course.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Course selection -->
+            <div class="course-selection">
+
+                <select id="courseFilter" class="course-filter">
+                    <option value="all">All registered courses</option>
+                    <option value="C0001">Database Systems</option>
+                    <option value="C0002">Software Engineering</option>
+                </select>
+
+            </div>
+
+            <!-- Attendance summary -->
+            <section class="attendance-summary">
+
+                <div class="summary-card">
+
+                    <span class="summary-label">
+                        Registered courses
+                    </span>
+
+                    <strong class="summary-value" id="registeredCourses">
+                        2
+                    </strong>
+
+                    <span class="summary-description" id="registeredDescription">
+                        Approved course registrations
+                    </span>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <span class="summary-label">
+                        Completed sessions
+                    </span>
+
+                    <strong class="summary-value" id="completedSessions">
+                        3
+                    </strong>
+
+                    <span class="summary-description">
+                        Across your registered courses
+                    </span>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <span class="summary-label">
+                        Sessions attended
+                    </span>
+
+                    <strong class="summary-value" id="sessionsAttended">
+                        3
+                    </strong>
+
+                    <span class="summary-description">
+                        Present or Late
+                    </span>
+
+                </div>
+
+            </section>
+
+            <!-- Attendance rate by course -->
+            <section class="attendance-table-section">
+
+                <h2>Attendance rate by course</h2>
+
+                <div class="table-wrapper">
+
+                    <table class="attendance-table">
+
+                        <thead>
+                            <tr>
+                                <th class="course-column">Course / ID</th>
+                                <th>Sessions</th>
+                                <th>Present</th>
+                                <th>Late</th>
+                                <th>Absent</th>
+                                <th>Rate</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="attendanceTableBody">
+
+                            <tr data-course="C0001">
+
+                                <td class="course-column">
+                                    <strong>Database Systems</strong>
+                                    <small>C0001</small>
+                                </td>
+
+                                <td>2</td>
+                                <td>2</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>100%</td>
+
+                            </tr>
+
+                            <tr data-course="C0002">
+
+                                <td class="course-column">
+                                    <strong>Software Engineering</strong>
+                                    <small>C0002</small>
+                                </td>
+
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>100%</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="empty-state" id="emptyState" hidden>
+                        No attendance records available.
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Attendance explanation -->
+            <div class="attendance-explanation">
+
+                <span class="explanation-dot"></span>
+
+                <p>
+                    Attendance rate = (Present + Late) ÷ Completed sessions × 100%.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/attendance-rate.js"></script>
+
+</body>
+</html>

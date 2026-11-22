@@ -14,9 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
         resetPasswordForm
     ];
 
+    const params = new URLSearchParams(window.location.search);
+
     function showForm(formToShow) {
         allForms.forEach(form => {
-            form.hidden = form !== formToShow;
+            if (form) {
+                form.hidden = form !== formToShow;
+            }
         });
     }
 
@@ -31,43 +35,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Automatically open Change Password form
-    // when coming from Administrator Personal Information
-    const params = new URLSearchParams(window.location.search);
-
     if (params.get("mode") === "change-password") {
         showForm(changePasswordForm);
     }
 
     // Forgot Password -> Reset Password
-    forgotPassword.addEventListener("click", event => {
-        event.preventDefault();
+    if (forgotPassword) {
+        forgotPassword.addEventListener("click", event => {
+            event.preventDefault();
 
-        resetPasswordForm.reset();
-        clearMessages();
-        showForm(resetPasswordForm);
-    });
+            resetPasswordForm.reset();
+            clearMessages();
+            showForm(resetPasswordForm);
+        });
+    }
 
     // Change Password -> Personal Information or Login
-    backToLogin.addEventListener("click", () => {
-        changePasswordForm.reset();
-        clearMessages();
+    if (backToLogin) {
+        backToLogin.addEventListener("click", () => {
+            changePasswordForm.reset();
+            clearMessages();
 
-        const returnPage = params.get("return");
+            const returnPage = params.get("return");
 
-        if (returnPage === "admin") {
-            window.location.href = "../admin/personal-information.html";
-            return;
-        }
+            if (returnPage === "student") {
+                window.location.href =
+                    "../student/personal-information.html";
+                return;
+            }
 
-        showForm(loginForm);
-    });
+            if (returnPage === "admin") {
+                window.location.href =
+                    "../admin/personal-information.html";
+                return;
+            }
+
+            showForm(loginForm);
+        });
+    }
 
     // Reset Password -> Login
-    backFromReset.addEventListener("click", () => {
-        resetPasswordForm.reset();
-        clearMessages();
-        showForm(loginForm);
-    });
+    if (backFromReset) {
+        backFromReset.addEventListener("click", () => {
+            resetPasswordForm.reset();
+            clearMessages();
+            showForm(loginForm);
+        });
+    }
 
     // Password visibility
     document.querySelectorAll(".toggle-password").forEach(button => {
@@ -95,27 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Login validation
-    loginForm.addEventListener("submit", event => {
-        event.preventDefault();
-        clearMessages();
-
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value;
-
-        if (!username) {
-            document.getElementById("usernameError").textContent =
-                "Please enter your username.";
-            return;
-        }
-
-        if (!password) {
-            document.getElementById("passwordError").textContent =
-                "Please enter your password.";
-            return;
-        }
-
-        
     // Login validation and backend integration
     loginForm.addEventListener("submit", async event => {
         event.preventDefault();
@@ -156,11 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const authData = result.data;
 
-            // Remove any previous login information
             localStorage.removeItem("samsAuth");
             sessionStorage.removeItem("samsAuth");
 
-            // Save login information
             const storage = rememberMe.checked
                 ? localStorage
                 : sessionStorage;
@@ -173,21 +164,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 expiresIn: authData.expiresIn
             }));
 
-            loginMessage.textContent =
-                "Login successful. Welcome, " + authData.username + "!";
-
             console.log("Login successful:", authData);
+
             if (authData.role === "Administrator") {
-            window.location.href = "../admin/admin.html";
-            return;
+                window.location.href = "../admin/admin.html";
+                return;
+            }
+
+            if (authData.role === "Student") {
+                window.location.href =
+                    "../student/attendance-check-in.html";
+                return;
+            }
+
+            if (authData.role === "Lecturer") {
+    window.location.href = "/ModuleLecturer/FrontEnd/html/Class-Sessions.html";
+    return;
 }
+
+
+            throw new Error("Unknown user role.");
 
         } catch (error) {
             loginMessage.textContent = error.message;
             console.error("Login error:", error);
         }
-    });
-
     });
 
     // Change Password validation

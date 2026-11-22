@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student - Attendance Check-in</title>
+    <link rel="stylesheet" href="css/attendance-check-in.css">
+</head>
+<body>
+
+<div class="student-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand-mark">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 14V21C13 25 19 25 24 21V14"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M29 11V20"
+                      stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="system-identity">
+            <span>Student Attendance</span>
+            <small>MANAGEMENT SYSTEM</small>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="sidebar-heading">STUDENT WORKSPACE</div>
+
+            <a href="attendance-check-in.html" class="nav-item active">
+                Attendance check-in
+            </a>
+
+            <a href="attendance-history.html" class="nav-item">
+                Attendance history
+            </a>
+
+            <a href="course-registration.html" class="nav-item">
+                Course registration
+            </a>
+
+            <a href="personal-information.html" class="nav-item">
+                Personal information
+            </a>
+
+            <a href="attendance-rate.html" class="nav-item">
+                Attendance rate
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="personal-information.html#change-password" class="bottom-link">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="bottom-link">
+                Sign out
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Main workspace -->
+    <main class="workspace">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="breadcrumb">
+                Student <span>/</span> Check-in
+            </div>
+
+            <div class="account-identity">
+                <strong class="js-full-name">Le Minh Khang</strong>
+                <small class="js-student-id">079205003456</small>
+            </div>
+        </header>
+
+        <!-- Page body -->
+        <section class="page-content">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+                <h1>Check in to class</h1>
+                <p>Record your attendance during an active class session.</p>
+            </div>
+
+            <!-- Attendance guidance -->
+            <div class="attendance-guidance">
+                <span class="guidance-dot"></span>
+                <span id="guidanceMessage">
+                    No active attendance session.
+                    Please check your class schedule.
+                </span>
+            </div>
+
+            <!-- Active session -->
+            <section class="active-session">
+
+                <div class="session-card">
+
+                    <div class="session-status">
+                        <span class="status-badge closed" id="sessionStatus">
+                            No active session
+                        </span>
+
+                        <span class="session-label">ATTENDANCE SESSION</span>
+                    </div>
+
+                    <h2>No active class session</h2>
+
+                    <p class="session-description">
+                        There is currently no attendance session available
+                        for check-in.
+                    </p>
+
+                    <div class="session-facts">
+
+                        <div class="fact-item">
+                            <span class="fact-label">Registered courses</span>
+                            <strong>Database Systems, Software Engineering</strong>
+                        </div>
+
+                        <div class="fact-item">
+                            <span class="fact-label">Attendance status</span>
+                            <strong>No active session</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="check-in-action">
+                        <button
+                            type="button"
+                            class="btn-check-in"
+                            id="checkInButton"
+                            disabled
+                        >
+                            Check in now
+                        </button>
+
+                        <span class="remaining-time" id="remainingTime">
+                            No check-in session available
+                        </span>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Other courses -->
+            <section class="other-courses">
+
+                <h2>Your other courses</h2>
+
+                <div class="course-table">
+
+                    <div class="table-header">
+                        <div>Course</div>
+                        <div>Next session</div>
+                        <div>Check-in status</div>
+                    </div>
+
+                    <div class="course-row">
+                        <div class="course-name">
+                            Database Systems
+                        </div>
+
+                        <div class="course-date">
+                            14 Sep 2026 · 07:30
+                        </div>
+
+                        <div>
+                            <span class="status-badge closed">Completed</span>
+                        </div>
+                    </div>
+
+                    <div class="course-row">
+                        <div class="course-name">
+                            Software Engineering
+                        </div>
+
+                        <div class="course-date">
+                            09 Sep 2026 · 13:00
+                        </div>
+
+                        <div>
+                            <span class="status-badge closed">Completed</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <p class="page-note">
+                Attendance can only be recorded during an active check-in session
+                and when you are within the permitted school location.
+            </p>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/attendance-check-in.js"></script>
+</body>
+</html>

@@ -1,27 +1,32 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>23 · Lecturer — Student search &amp; filtering</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
   <div class="app-layout">
+
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="system-identity">
-        <div class="sys-title">ATTENDANCE</div>
-        <div class="sys-subtitle">STUDENT ATTENDANCE SYSTEM</div>
-      </div>
+      <div class="brand"><span>Student Attendance</span>
+          <small>MANAGEMENT SYSTEM</small></div>
 
       <nav class="role-nav">
         <div class="nav-group-label">LECTURER WORKSPACE</div>
+
         <a href="./Class-Sessions.html" class="nav-item">Class session management</a>
         <a href="./attendance.html" class="nav-item">Manual attendance</a>
-        <a href="./student-search.html" class="nav-item active">Student search &amp; filtering</a>
+        <a href="./studentsearch-filtering.html" class="nav-item active">Student search &amp; filtering</a>
         <a href="./Student-statistics.html" class="nav-item">Attendance statistics</a>
         <a href="./attendance-history.html" class="nav-item">Attendance history</a>
         <a href="./report-export.html" class="nav-item">Report export</a>
@@ -29,55 +34,104 @@
       </nav>
 
       <div class="account-actions">
-        <a href="#" class="account-link">Change password</a>
+        <a href="../users/index.html?mode=change-password&return=lecturer" class="account-link">Change password</a>
         <a href="#" class="account-link">Sign out</a>
       </div>
     </aside>
 
+    <!-- Workspace -->
     <div class="workspace">
+
+      <!-- Top bar -->
       <header class="topbar">
-        <div class="breadcrumb">Lecturer &nbsp;/&nbsp; Student search &amp; filtering</div>
+        <div class="breadcrumb">
+          Lecturer &nbsp;/&nbsp; Student search &amp; filtering
+        </div>
+
         <div class="account-identity">
-          <div class="account-name">Trần Quốc Huy</div>
-          <div class="account-role">GV001 · Lecturer</div>
+          <div class="account-name">Nguyen Van An</div>
+          <div class="account-role">079082001234 · Lecturer</div>
         </div>
       </header>
 
+      <!-- Page body -->
       <main class="page-body">
+
+        <!-- Page heading -->
         <div class="page-heading">
           <div class="page-title">
             <h1>Student search &amp; filtering</h1>
-            <p>Review attendance and punctuality within your as</p>
+            <p>Search and view students enrolled in your assigned courses.</p>
           </div>
         </div>
 
+        <!-- Student search criteria -->
         <section class="search-criteria-card">
+
           <div class="search-fields-grid">
+
             <div class="search-field-group">
               <label for="filterCourse" class="field-label">Assigned course</label>
-              <input id="filterCourse" type="text" class="search-input" value="Cơ sở dữ liệu · CS201" />
+
+              <input
+                id="filterCourse"
+                type="text"
+                class="search-input"
+                value="Database Systems · C0001"
+                readonly
+              />
             </div>
 
             <div class="search-field-group">
               <label for="filterStudentName" class="field-label">Student name</label>
-              <input id="filterStudentName" type="text" class="search-input" placeholder="Enter student name" />
+
+              <input
+                id="filterStudentName"
+                type="text"
+                class="search-input"
+                placeholder="Enter student name"
+              />
             </div>
 
             <div class="search-field-group">
               <label for="filterStudentId" class="field-label">Student ID</label>
-              <input id="filterStudentId" type="text" class="search-input" placeholder="Enter student ID" />
+
+              <input
+                id="filterStudentId"
+                type="text"
+                class="search-input"
+                placeholder="Enter student ID"
+              />
             </div>
+
           </div>
 
           <div class="search-actions">
-            <button type="button" class="btn-primary btn-sm" id="applyStudentFilters">Apply filters</button>
-            <button type="button" class="btn-secondary" id="resetStudentFilters">Reset filters</button>
+            <button
+              type="button"
+              class="btn-primary btn-sm"
+              id="applyStudentFilters"
+            >
+              Apply filters
+            </button>
+
+            <button
+              type="button"
+              class="btn-secondary"
+              id="resetStudentFilters"
+            >
+              Reset filters
+            </button>
           </div>
+
         </section>
 
+        <!-- Students in your class -->
         <section class="card">
+
           <h2 class="card-title">Students in your class</h2>
 
+          <!-- Table header -->
           <div class="students-table-header">
             <div>Student</div>
             <div>Student ID</div>
@@ -85,18 +139,165 @@
             <div>View</div>
           </div>
 
-          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
-            <div class="student-col-name">Nguyễn Minh Anh</div>
-            <div class="student-col-id">SV2024001</div>
-            <div class="student-col-email">minhanh.nguyen@university.edu.vn</div>
-            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          <!-- Student 1 -->
+          <div
+            class="students-table-row"
+            data-course="Database Systems · C0001"
+          >
+            <div class="student-col-name">Le Minh Khang</div>
+
+            <div class="student-col-id">079205003456</div>
+
+            <div class="student-col-email">khang.le@student.edu.vn</div>
+
+            <div>
+              <a
+                href="./Student-statistics.html"
+                class="student-view-link"
+              >
+                History / Statistics
+              </a>
+            </div>
           </div>
 
-          <div class="students-table-row" data-course="Cơ sở dữ liệu · CS201">
-            <div class="student-col-name">Trần Đức Anh</div>
-            <div class="student-col-id">SV2024002</div>
-            <div class="student-col-email">ducanh.tran@university.edu.vn</div>
-            <div><a href="./Student-statistics.html" class="student-view-link">History / Statistics</a></div>
+          <!-- Student 2 -->
+          <div
+            class="students-table-row"
+            data-course="Database Systems · C0001"
+          >
+            <div class="student-col-name">Pham Ngoc Mai</div>
+
+            <div class="student-col-id">079305004567</div>
+
+            <div class="student-col-email">mai.pham@student.edu.vn</div>
+
+            <div>
+              <a
+                href="./Student-statistics.html"
+                class="student-view-link"
+              >
+                History / Statistics
+              </a>
+            </div>
           </div>
 
-          <div class="students-table-
+          <!-- Student 3 -->
+          <div
+            class="students-table-row"
+            data-course="Database Systems · C0001"
+          >
+            <div class="student-col-name">Vo Quoc Huy</div>
+
+            <div class="student-col-id">079204005678</div>
+
+            <div class="student-col-email">huy.vo@student.edu.vn</div>
+
+            <div>
+              <a
+                href="./Student-statistics.html"
+                class="student-view-link"
+              >
+                History / Statistics
+              </a>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- Pagination -->
+        <div class="students-pagination">
+          <span id="studentShowingText">Showing 3 of 3 students</span>
+          <div class="pagination-controls">
+            <button type="button" class="pagination-button" disabled>
+              Previous
+            </button>
+            <span class="pagination-current">1</span>
+            <button type="button" class="pagination-button" disabled>
+              Next
+            </button>
+          </div>
+        </div>
+
+        <!-- Attendance explanation -->
+        <div class="attendance-explanation">
+          Search results include only students enrolled in your assigned course.
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+
+  <!-- Student search and filtering -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const nameInput = document.getElementById("filterStudentName");
+      const idInput = document.getElementById("filterStudentId");
+
+      const applyButton = document.getElementById("applyStudentFilters");
+      const resetButton = document.getElementById("resetStudentFilters");
+
+      const studentRows = document.querySelectorAll(".students-table-row");
+      const showingText = document.getElementById("studentShowingText");
+
+      const totalStudents = studentRows.length;
+
+      function filterStudents() {
+        const studentName = nameInput.value.trim().toLowerCase();
+        const studentId = idInput.value.trim().toLowerCase();
+
+        let visibleCount = 0;
+
+        studentRows.forEach((row) => {
+          const name = row.querySelector(".student-col-name")
+            .textContent.trim().toLowerCase();
+
+          const id = row.querySelector(".student-col-id")
+            .textContent.trim().toLowerCase();
+
+          const matchesName = name.includes(studentName);
+          const matchesId = id.includes(studentId);
+
+          const isVisible = matchesName && matchesId;
+
+          row.style.display = isVisible ? "flex" : "none";
+
+          if (isVisible) {
+            visibleCount++;
+          }
+        });
+
+        showingText.textContent =
+          `Showing ${visibleCount} of ${totalStudents} students`;
+      }
+
+      applyButton.addEventListener("click", filterStudents);
+
+      resetButton.addEventListener("click", () => {
+        nameInput.value = "";
+        idInput.value = "";
+
+        studentRows.forEach((row) => {
+          row.style.display = "flex";
+        });
+
+        showingText.textContent =
+          `Showing ${totalStudents} of ${totalStudents} students`;
+      });
+
+      nameInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          filterStudents();
+        }
+      });
+
+      idInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          filterStudents();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

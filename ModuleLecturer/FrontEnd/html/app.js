@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   initSidebarNavigation();
   initAttendanceRegister();
@@ -6,11 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initStudentSearchFilter();
   initAttendanceHistoryFilter();
   initReportExport();
-  initAccountActions();
 });
 
 /* =========================================================
-   0. ĐỒNG BỘ LINK SIDEBAR THEO ĐÚNG TÊN FILE HIỆN TẠI
+   0. SIDEBAR NAVIGATION
    ========================================================= */
 function initSidebarNavigation() {
   const routeMap = {
@@ -23,488 +23,807 @@ function initSidebarNavigation() {
     'personal information': 'personal-information.html'
   };
 
-  const navLinks = document.querySelectorAll('.role-nav .nav-item, .sidebar a');
-  const currentFile = decodeURIComponent(window.location.pathname.split('/').pop() || '').toLowerCase();
+  const navLinks = document.querySelectorAll('.role-nav .nav-item');
+  const currentFile = decodeURIComponent(
+    window.location.pathname.split('/').pop() || ''
+  ).toLowerCase();
 
   navLinks.forEach((link) => {
-    const labelText = (link.textContent || '')
+    const label = (link.textContent || '')
       .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
 
-    const targetFile = routeMap[labelText];
+    const targetFile = routeMap[label];
     if (!targetFile) return;
 
     link.setAttribute('href', `./${targetFile}`);
-    link.classList.toggle('active', currentFile === targetFile.toLowerCase());
-
-    link.addEventListener('click', (e) => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-      e.preventDefault();
-
-      const currentUrl = new URL(window.location.href);
-      const baseDir = currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/') + 1);
-      window.location.href = `${baseDir}${targetFile}`;
-    });
+    link.classList.toggle(
+      'active',
+      currentFile === targetFile.toLowerCase()
+    );
   });
 }
 
 /* =========================================================
-   1. ĐIỂM DANH THỦ CÔNG (attendance-register.html)
+   1. MANUAL ATTENDANCE
+   attendance-register.html
    ========================================================= */
 function initAttendanceRegister() {
-  const rows = document.querySelectorAll('.student-row');
+  const rows = [...document.querySelectorAll('.student-row')];
+
   if (!rows.length) return;
 
   const searchInput = document.getElementById('roster-search');
   const statusSelect = document.getElementById('status-filter');
   const shownCount = document.getElementById('shown-count');
   const savedBadge = document.querySelector('.badge-saved');
+  const saveButton = document.getElementById('btn-save');
+
+  const totalStudents = rows.length;
 
   function getRowStatus(row) {
     if (row.querySelector('.choice-btn.is-present')) return 'present';
     if (row.querySelector('.choice-btn.is-late')) return 'late';
     if (row.querySelector('.choice-btn.is-absent')) return 'absent';
+
     return 'none';
   }
 
-  function recalculateSummary() {
+  function updateSummary() {
     let present = 0;
     let late = 0;
     let absent = 0;
 
     rows.forEach((row) => {
-      const st = getRowStatus(row);
-      if (st === 'present') present++;
-      if (st === 'late') late++;
-      if (st === 'absent') absent++;
+      const status = getRowStatus(row);
+
+      if (status === 'present') present++;
+      if (status === 'late') late++;
+      if (status === 'absent') absent++;
     });
 
-    const statValues = document.querySelectorAll('.summary-grid .stat-value');
-    if (statValues.length >= 4) {
-      statValues[1].textContent = present;
-      statValues[2].textContent = late;
-      statValues[3].textContent = absent;
+    const values = document.querySelectorAll(
+      '.summary-grid .stat-value'
+    );
+
+    if (values.length >= 4) {
+      values[0].textContent = totalStudents;
+      values[1].textContent = present;
+      values[2].textContent = late;
+      values[3].textContent = absent;
     }
   }
 
-  function applyRosterFilters() {
-    const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
-    const statusVal = (statusSelect ? statusSelect.value : 'all').toLowerCase();
-    let visible = 0;
+  function applyFilters() {
+    const query = (searchInput?.value || '')
+      .trim()
+      .toLowerCase();
+
+    const selectedStatus = (statusSelect?.value || 'all')
+      .trim()
+      .toLowerCase();
+
+    let visibleCount = 0;
 
     rows.forEach((row) => {
-      const text = (row.textContent || '').toLowerCase();
-      const st = getRowStatus(row);
-      const matchQuery = !query || text.includes(query);
-      const matchStatus = statusVal === 'all' || st === statusVal;
-      const show = matchQuery && matchStatus;
+      const rowText = row.textContent.toLowerCase();
+      const rowStatus = getRowStatus(row);
 
-      row.style.display = show ? 'flex' : 'none';
-      if (show) visible++;
+      const matchSearch = !query || rowText.includes(query);
+      const matchStatus =
+        selectedStatus === 'all' ||
+        selectedStatus === rowStatus;
+
+      const isVisible = matchSearch && matchStatus;
+
+      row.style.display = isVisible ? 'flex' : 'none';
+
+      if (isVisible) visibleCount++;
     });
 
     if (shownCount) {
-      shownCount.textContent = `Showing ${visible} of 40 students`;
+      shownCount.textContent =
+        `Showing ${visibleCount} of ${totalStudents} students`;
     }
   }
 
   rows.forEach((row) => {
     const buttons = row.querySelectorAll('.choice-btn');
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        buttons.forEach((b) => b.classList.remove('is-present', 'is-late', 'is-absent'));
 
-        const status = btn.textContent.trim();
-        if (status === 'Present') btn.classList.add('is-present');
-        if (status === 'Late') btn.classList.add('is-late');
-        if (status === 'Absent') btn.classList.add('is-absent');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((item) => {
+          item.classList.remove(
+            'is-present',
+            'is-late',
+            'is-absent'
+          );
+        });
+
+        const status = button.textContent.trim().toLowerCase();
+
+        if (status === 'present') {
+          button.classList.add('is-present');
+        } else if (status === 'late') {
+          button.classList.add('is-late');
+        } else if (status === 'absent') {
+          button.classList.add('is-absent');
+        }
 
         if (savedBadge) {
           savedBadge.textContent = 'Unsaved changes';
           savedBadge.classList.add('is-dirty');
         }
 
-        recalculateSummary();
-        applyRosterFilters();
+        updateSummary();
+        applyFilters();
       });
     });
   });
 
-  if (searchInput) searchInput.addEventListener('input', applyRosterFilters);
-  if (statusSelect) statusSelect.addEventListener('change', applyRosterFilters);
+  searchInput?.addEventListener('input', applyFilters);
+  statusSelect?.addEventListener('change', applyFilters);
 
-  const saveBtn = document.getElementById('btn-save') || document.querySelector('.page-heading .btn-primary');
-  if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      if (savedBadge) {
-        savedBadge.textContent = 'Saved just now';
-        savedBadge.classList.remove('is-dirty');
-      }
-      alert('Đã lưu thay đổi điểm danh trên trình duyệt!');
-    });
-  }
+  saveButton?.addEventListener('click', () => {
+    if (savedBadge) {
+      savedBadge.textContent = 'Saved just now';
+      savedBadge.classList.remove('is-dirty');
+    }
+
+    alert(
+      'Attendance changes have been updated in the current page. Database saving requires API integration.'
+    );
+  });
+
+  updateSummary();
+  applyFilters();
 }
 
 /* =========================================================
-   2. QUẢN LÝ BUỔI HỌC (Class-Sessions.html)
+   2. CLASS SESSION MANAGEMENT
+   Class-Sessions.html
    ========================================================= */
 function initClassSessions() {
   const sessionsCard = document.querySelector('.sessions-card');
-  const submitBtn = document.getElementById('btn-submit') || document.querySelector('.editor-actions .btn-primary');
-  const cancelBtn = document.getElementById('btn-cancel') || document.querySelector('.editor-actions .btn-secondary');
+
+  const submitButton = document.getElementById('btn-submit');
+  const cancelButton = document.getElementById('btn-cancel');
+
   const dateInput = document.getElementById('f-date');
   const startInput = document.getElementById('f-start');
   const endInput = document.getElementById('f-end');
   const openInput = document.getElementById('f-open');
   const periodInput = document.getElementById('f-period');
-  const autoCloseSpan = document.getElementById('auto-close');
-  const errorEl = document.getElementById('form-error');
 
-  if (!sessionsCard || !submitBtn) return;
+  const autoClose = document.getElementById('auto-close');
+  const errorMessage = document.getElementById('form-error');
+  const editorTitle = document.getElementById('editor-title');
 
-  let nextSessionNumber = 16;
+  if (!sessionsCard) return;
 
-  function updateAutoClose() {
-    if (!periodInput || !autoCloseSpan) return;
+  let editingRow = null;
+
+  function getSessionList() {
+    const firstRow = sessionsCard.querySelector('.table-row');
+
+    return firstRow ? firstRow.parentElement : sessionsCard;
+  }
+
+  function calculateAutoClose() {
+    if (!periodInput || !autoClose) return;
+
     const match = periodInput.value.trim().match(/^(\d{1,2}):(\d{2})$/);
-    if (!match) return;
-    const totalMins = parseInt(match[1], 10) * 60 + parseInt(match[2], 10) + 15;
-    const hh = String(Math.floor((totalMins / 60) % 24)).padStart(2, '0');
-    const mm = String(totalMins % 60).padStart(2, '0');
-    autoCloseSpan.textContent = `${hh}:${mm}`;
-  }
 
-  if (periodInput) {
-    periodInput.addEventListener('input', updateAutoClose);
-    updateAutoClose();
-  }
-
-  submitBtn.addEventListener('click', () => {
-    const sessionDate = dateInput ? dateInput.value.trim() : '02 Dec 2026';
-    const startTime = startInput ? startInput.value.trim() : '09:00';
-
-    if (!sessionDate || !startTime) {
-      if (errorEl) {
-        errorEl.textContent = 'Vui lòng nhập đầy đủ ngày học và giờ bắt đầu.';
-        errorEl.hidden = false;
-      }
+    if (!match) {
+      autoClose.textContent = '--:--';
       return;
     }
 
-    if (errorEl) {
-      errorEl.textContent = '';
-      errorEl.hidden = true;
+    const totalMinutes =
+      Number(match[1]) * 60 +
+      Number(match[2]) +
+      15;
+
+    const hours = String(
+      Math.floor(totalMinutes / 60) % 24
+    ).padStart(2, '0');
+
+    const minutes = String(totalMinutes % 60).padStart(2, '0');
+
+    autoClose.textContent = `${hours}:${minutes}`;
+  }
+
+  function showError(message) {
+    if (!errorMessage) return;
+
+    errorMessage.textContent = message;
+    errorMessage.hidden = Boolean(!message);
+  }
+
+  function formatDate(dateValue) {
+    if (!dateValue) return '';
+
+    const date = new Date(`${dateValue}T00:00:00`);
+
+    if (Number.isNaN(date.getTime())) {
+      return dateValue;
     }
 
-    const newRow = document.createElement('div');
-    newRow.className = 'table-row';
-    newRow.dataset.date = sessionDate;
-    newRow.dataset.start = startTime;
-    newRow.dataset.end = endInput ? endInput.value.trim() : '11:00';
-    newRow.dataset.open = openInput ? openInput.value.trim() : '09:00';
-    newRow.dataset.period = periodInput ? periodInput.value.trim() : '09:15';
-    newRow.innerHTML = `
-      <div class="col-session">${nextSessionNumber}</div>
-      <div class="col-schedule">${sessionDate.replace(' 2026', '')} · ${startTime}</div>
-      <div class="col-attendance"><span class="badge badge-scheduled">Scheduled</span></div>
-      <div class="col-action"><span class="row-actions"><a href="#" class="action-link" data-action="view">View</a> / <a href="#" class="action-link" data-action="edit">Edit</a> / <a href="#" class="action-link" data-action="delete">Delete</a></span></div>
-    `;
-
-    sessionsCard.appendChild(newRow);
-    nextSessionNumber++;
-  });
-
-  sessionsCard.addEventListener('click', (e) => {
-    const link = e.target.closest('.action-link');
-    if (!link) return;
-    e.preventDefault();
-
-    const row = link.closest('.table-row');
-    const action = link.dataset.action;
-
-    if (action === 'delete' && row) {
-      row.remove();
-    } else if (action === 'edit' && row) {
-      if (dateInput && row.dataset.date) dateInput.value = row.dataset.date;
-      if (startInput && row.dataset.start) startInput.value = row.dataset.start;
-      if (endInput && row.dataset.end) endInput.value = row.dataset.end;
-      if (openInput && row.dataset.open) openInput.value = row.dataset.open;
-      if (periodInput && row.dataset.period) periodInput.value = row.dataset.period;
-      updateAutoClose();
-    } else if (action === 'view' && row) {
-      const sessionNo = row.querySelector('.col-session')?.textContent.trim() || '';
-      const schedule = row.querySelector('.col-schedule')?.textContent.trim() || '';
-      alert(`Buổi học #${sessionNo} — ${schedule}`);
-    }
-  });
-
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', () => {
-      if (errorEl) {
-        errorEl.textContent = '';
-        errorEl.hidden = true;
-      }
-      alert('Đã hủy thao tác tạo buổi học.');
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
     });
   }
+
+  function getNextSessionId() {
+    const existingIds = [
+      ...sessionsCard.querySelectorAll('.col-session')
+    ].map((element) => {
+      const match = element.textContent.trim().match(/SE(\d+)/i);
+      return match ? Number(match[1]) : 0;
+    });
+
+    const nextNumber = Math.max(0, ...existingIds) + 1;
+
+    return `SE${String(nextNumber).padStart(3, '0')}`;
+  }
+
+  function resetEditor() {
+    editingRow = null;
+
+    if (dateInput) dateInput.value = '';
+    if (startInput) startInput.value = '';
+    if (endInput) endInput.value = '';
+    if (openInput) openInput.value = '';
+    if (periodInput) periodInput.value = '';
+
+    if (editorTitle) {
+      editorTitle.textContent = 'Create New Session';
+    }
+
+    showError('');
+    calculateAutoClose();
+  }
+
+  function createSessionRow(sessionId, date, start, end, open, period) {
+    const row = document.createElement('div');
+
+    row.className = 'table-row';
+
+    row.dataset.date = date;
+    row.dataset.start = start;
+    row.dataset.end = end;
+    row.dataset.open = open;
+    row.dataset.period = period;
+
+    const sessionCell = document.createElement('div');
+    sessionCell.className = 'col-session';
+    sessionCell.textContent = sessionId;
+
+    const scheduleCell = document.createElement('div');
+    scheduleCell.className = 'col-schedule';
+    scheduleCell.textContent =
+      `${formatDate(date)} · ${start}–${end}`;
+
+    const attendanceCell = document.createElement('div');
+    attendanceCell.className = 'col-attendance';
+
+    const statusBadge = document.createElement('span');
+    statusBadge.className = 'badge badge-scheduled';
+    statusBadge.textContent = 'Scheduled';
+
+    attendanceCell.appendChild(statusBadge);
+
+    const actionCell = document.createElement('div');
+    actionCell.className = 'col-action';
+
+    const actions = document.createElement('span');
+    actions.className = 'row-actions';
+
+    [
+      ['view', 'View'],
+      ['edit', 'Edit'],
+      ['delete', 'Delete']
+    ].forEach(([action, label], index) => {
+      if (index > 0) {
+        actions.appendChild(document.createTextNode(' / '));
+      }
+
+      const link = document.createElement('a');
+      link.href = '#';
+      link.className = 'action-link';
+      link.dataset.action = action;
+      link.textContent = label;
+
+      actions.appendChild(link);
+    });
+
+    actionCell.appendChild(actions);
+
+    row.append(
+      sessionCell,
+      scheduleCell,
+      attendanceCell,
+      actionCell
+    );
+
+    return row;
+  }
+
+  periodInput?.addEventListener('input', calculateAutoClose);
+
+  submitButton?.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const date = dateInput?.value.trim() || '';
+    const start = startInput?.value.trim() || '';
+    const end = endInput?.value.trim() || '';
+    const open = openInput?.value.trim() || '';
+    const period = periodInput?.value.trim() || '';
+
+    if (!date || !start || !end || !open || !period) {
+      showError('Please complete all session fields.');
+      return;
+    }
+
+    if (start >= end) {
+      showError('End time must be later than start time.');
+      return;
+    }
+
+    if (open > period) {
+      showError(
+        'Attendance opening time must be earlier than or equal to the attendance period end time.'
+      );
+      return;
+    }
+
+    showError('');
+
+    if (editingRow) {
+      editingRow.dataset.date = date;
+      editingRow.dataset.start = start;
+      editingRow.dataset.end = end;
+      editingRow.dataset.open = open;
+      editingRow.dataset.period = period;
+
+      const scheduleCell = editingRow.querySelector('.col-schedule');
+
+      if (scheduleCell) {
+        scheduleCell.textContent =
+          `${formatDate(date)} · ${start}–${end}`;
+      }
+
+      resetEditor();
+      return;
+    }
+
+    const sessionId = getNextSessionId();
+
+    const newRow = createSessionRow(
+      sessionId,
+      date,
+      start,
+      end,
+      open,
+      period
+    );
+
+    getSessionList().appendChild(newRow);
+
+    resetEditor();
+  });
+
+  sessionsCard.addEventListener('click', (event) => {
+    const link = event.target.closest('.action-link');
+
+    if (!link) return;
+
+    event.preventDefault();
+
+    const row = link.closest('.table-row');
+    if (!row) return;
+
+    const action = link.dataset.action;
+
+    if (action === 'delete') {
+      if (confirm('Are you sure you want to delete this session?')) {
+        row.remove();
+
+        if (editingRow === row) {
+          resetEditor();
+        }
+      }
+
+      return;
+    }
+
+    if (action === 'edit') {
+      editingRow = row;
+
+      if (dateInput) dateInput.value = row.dataset.date || '';
+      if (startInput) startInput.value = row.dataset.start || '';
+      if (endInput) endInput.value = row.dataset.end || '';
+      if (openInput) openInput.value = row.dataset.open || '';
+      if (periodInput) periodInput.value = row.dataset.period || '';
+
+      if (editorTitle) {
+        editorTitle.textContent = 'Edit Class Session';
+      }
+
+      calculateAutoClose();
+      showError('');
+
+      return;
+    }
+
+    if (action === 'view') {
+      const sessionId =
+        row.querySelector('.col-session')?.textContent.trim() || '';
+
+      const schedule =
+        row.querySelector('.col-schedule')?.textContent.trim() || '';
+
+      alert(`Session: ${sessionId}\nSchedule: ${schedule}`);
+    }
+  });
+
+  cancelButton?.addEventListener('click', (event) => {
+    event.preventDefault();
+    resetEditor();
+  });
+
+  calculateAutoClose();
 }
 
 /* =========================================================
-   3. THỐNG KÊ SINH VIÊN (Student-statistics.html)
+   3. STUDENT ATTENDANCE STATISTICS
+   Student-statistics.html
    ========================================================= */
 function initStudentStatisticsFilter() {
-  const statsRows = document.querySelectorAll('.stats-table-row');
-  const summaryValues = document.querySelectorAll('.stats-summary-grid .stat-value');
-  const summarySubs = document.querySelectorAll('.stats-summary-grid .stat-sub');
+  const rows = [
+    ...document.querySelectorAll('.stats-table-row')
+  ];
+
+  const summaryValues = document.querySelectorAll(
+    '.stats-summary-grid .stat-value'
+  );
+
+  const summarySubs = document.querySelectorAll(
+    '.stats-summary-grid .stat-sub'
+  );
+
   const studentSelect = document.getElementById('student-filter');
   const rateSelect = document.getElementById('rate-filter');
   const emptyBox = document.getElementById('stats-empty');
 
-  if (!statsRows.length || summaryValues.length < 3) return;
+  if (!rows.length) return;
 
-  function selectRow(row) {
-    statsRows.forEach((r) => r.classList.remove('is-selected'));
-    row.classList.add('is-selected');
-
-    const cols = row.children;
-    if (cols.length < 5) return;
-
-    const fullLabel = cols[0].textContent.trim();
-    const parts = fullLabel.split('·');
-    const studentName = parts[0] ? parts[0].trim() : fullLabel;
-    const studentId = parts[1] ? parts[1].trim() : '';
-
-    const completed = cols[1].textContent.trim();
-    const attended = cols[2].textContent.trim();
-    const attendanceRate = cols[3].textContent.trim();
-    const onTimeRate = cols[4].textContent.trim();
-
-    summaryValues[0].textContent = studentName;
-    if (summarySubs[0]) summarySubs[0].textContent = studentId;
-
-    summaryValues[1].textContent = attendanceRate;
-    if (summarySubs[1]) summarySubs[1].textContent = `${attended} attended / ${completed} sessions`;
-
-    summaryValues[2].textContent = onTimeRate;
-    if (summarySubs[2]) summarySubs[2].textContent = `On-time rate: ${onTimeRate}`;
-  }
-
-  function applyStatsFilters() {
-    const selectedId = studentSelect ? studentSelect.value : 'all';
-    const rateBand = rateSelect ? rateSelect.value : 'all';
-    let visibleCount = 0;
-
-    statsRows.forEach((row) => {
-      const text = row.textContent || '';
-      const rateText = row.children[3]?.textContent || '0';
-      const rateNum = parseFloat(rateText.replace('%', '')) || 0;
-
-      const matchStudent = selectedId === 'all' || text.includes(selectedId);
-      let matchRate = true;
-      if (rateBand === 'high') matchRate = rateNum >= 90;
-      if (rateBand === 'mid') matchRate = rateNum >= 75 && rateNum < 90;
-      if (rateBand === 'low') matchRate = rateNum < 75;
-
-      const show = matchStudent && matchRate;
-      row.style.display = show ? 'grid' : 'none';
-      if (show) visibleCount++;
+  function selectStudent(row) {
+    rows.forEach((item) => {
+      item.classList.remove('is-selected');
     });
 
-    if (emptyBox) {
-      emptyBox.hidden = visibleCount > 0;
+    row.classList.add('is-selected');
+
+    const columns = row.children;
+
+    if (columns.length < 5) return;
+
+    const identity = columns[0].textContent.trim().split('·');
+
+    const studentName = identity[0]?.trim() || '';
+    const studentId = identity[1]?.trim() || '';
+
+    const completed = columns[1].textContent.trim();
+    const attended = columns[2].textContent.trim();
+    const attendanceRate = columns[3].textContent.trim();
+    const onTimeRate = columns[4].textContent.trim();
+
+    if (summaryValues[0]) {
+      summaryValues[0].textContent = studentName;
+    }
+
+    if (summarySubs[0]) {
+      summarySubs[0].textContent = studentId;
+    }
+
+    if (summaryValues[1]) {
+      summaryValues[1].textContent = attendanceRate;
+    }
+
+    if (summarySubs[1]) {
+      summarySubs[1].textContent =
+        `${attended} attended / ${completed} sessions`;
+    }
+
+    if (summaryValues[2]) {
+      summaryValues[2].textContent = onTimeRate;
+    }
+
+    if (summarySubs[2]) {
+      summarySubs[2].textContent =
+        `On-time rate: ${onTimeRate}`;
     }
   }
 
-  statsRows.forEach((row) => {
-    row.addEventListener('click', () => selectRow(row));
-  });
-
-  if (studentSelect) studentSelect.addEventListener('change', applyStatsFilters);
-  if (rateSelect) rateSelect.addEventListener('change', applyStatsFilters);
-}
-
-/* =========================================================
-   4. TÌM KIẾM & LỌC SINH VIÊN (studentsearch-filtering.html)
-   ========================================================= */
-function initStudentSearchFilter() {
-  const applyBtn = document.getElementById('applyStudentFilters');
-  const resetBtn = document.getElementById('resetStudentFilters');
-  const nameInput = document.getElementById('filterStudentName');
-  const idInput = document.getElementById('filterStudentId');
-  const courseInput = document.getElementById('filterCourse');
-  const rows = document.querySelectorAll('.students-table-row');
-  const showingText = document.getElementById('studentShowingText');
-
-  if (!applyBtn || !rows.length) return;
-
-  function runFilter() {
-    const nameQuery = (nameInput ? nameInput.value : '').trim().toLowerCase();
-    const idQuery = (idInput ? idInput.value : '').trim().toLowerCase();
-    const courseQuery = (courseInput ? courseInput.value : '').trim().toLowerCase();
+  function applyFilters() {
+    const selectedStudent = studentSelect?.value || 'all';
+    const selectedRate = rateSelect?.value || 'all';
 
     let visibleCount = 0;
 
     rows.forEach((row) => {
-      const studentName = (row.querySelector('.student-col-name')?.textContent || '').trim().toLowerCase();
-      const studentId = (row.querySelector('.student-col-id')?.textContent || '').trim().toLowerCase();
-      const rowCourse = (row.dataset.course || '').trim().toLowerCase();
+      const columns = row.children;
 
-      const matchName = !nameQuery || studentName.includes(nameQuery);
-      const matchId = !idQuery || studentId.includes(idQuery);
-      const matchCourse = !courseQuery || rowCourse.includes(courseQuery) || courseQuery.includes(rowCourse);
+      const identity = columns[0]?.textContent || '';
+      const rateText = columns[3]?.textContent || '0';
 
-      const isMatch = matchName && matchId && matchCourse;
-      row.style.display = isMatch ? 'grid' : 'none';
-      if (isMatch) visibleCount++;
+      const rate = parseFloat(
+        rateText.replace('%', '')
+      ) || 0;
+
+      const matchStudent =
+        selectedStudent === 'all' ||
+        identity.includes(selectedStudent);
+
+      let matchRate = true;
+
+      if (selectedRate === 'high') {
+        matchRate = rate >= 90;
+      } else if (selectedRate === 'mid') {
+        matchRate = rate >= 75 && rate < 90;
+      } else if (selectedRate === 'low') {
+        matchRate = rate < 75;
+      }
+
+      const visible = matchStudent && matchRate;
+
+      row.style.display = visible ? 'grid' : 'none';
+
+      if (visible) visibleCount++;
     });
 
-    if (showingText) {
-      showingText.textContent = `Showing ${visibleCount} of 40 students`;
+    if (emptyBox) {
+      emptyBox.hidden = visibleCount !== 0;
+    }
+
+    const selectedRow = rows.find(
+      (row) => row.style.display !== 'none'
+    );
+
+    if (selectedRow) {
+      selectStudent(selectedRow);
     }
   }
 
-  applyBtn.addEventListener('click', runFilter);
-
-  if (nameInput) {
-    nameInput.addEventListener('input', runFilter);
-    nameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') runFilter();
+  rows.forEach((row) => {
+    row.addEventListener('click', () => {
+      if (row.style.display !== 'none') {
+        selectStudent(row);
+      }
     });
-  }
+  });
 
-  if (idInput) {
-    idInput.addEventListener('input', runFilter);
-    idInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') runFilter();
-    });
-  }
+  studentSelect?.addEventListener('change', applyFilters);
+  rateSelect?.addEventListener('change', applyFilters);
 
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (nameInput) nameInput.value = '';
-      if (idInput) idInput.value = '';
-      if (courseInput) courseInput.value = 'Cơ sở dữ liệu · CS201';
-      runFilter();
-    });
-  }
+  applyFilters();
 }
 
 /* =========================================================
-   5. LỊCH SỬ ĐIỂM DANH (attendance-history.html)
+   4. STUDENT SEARCH & FILTERING
+   studentsearch-filtering.html
+   ========================================================= */
+function initStudentSearchFilter() {
+  const applyButton = document.getElementById('applyStudentFilters');
+  const resetButton = document.getElementById('resetStudentFilters');
+
+  const nameInput = document.getElementById('filterStudentName');
+  const idInput = document.getElementById('filterStudentId');
+  const courseInput = document.getElementById('filterCourse');
+
+  const rows = [
+    ...document.querySelectorAll('.students-table-row')
+  ];
+
+  const showingText = document.getElementById('studentShowingText');
+
+  if (!rows.length) return;
+
+  const totalStudents = rows.length;
+
+  function runFilter() {
+    const nameQuery = (nameInput?.value || '')
+      .trim()
+      .toLowerCase();
+
+    const idQuery = (idInput?.value || '')
+      .trim()
+      .toLowerCase();
+
+    const courseQuery = (courseInput?.value || '')
+      .trim()
+      .toLowerCase();
+
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+      const name = (
+        row.querySelector('.student-col-name')?.textContent || ''
+      ).trim().toLowerCase();
+
+      const id = (
+        row.querySelector('.student-col-id')?.textContent || ''
+      ).trim().toLowerCase();
+
+      const course = (
+        row.dataset.course || ''
+      ).trim().toLowerCase();
+
+      const matchName = !nameQuery || name.includes(nameQuery);
+      const matchId = !idQuery || id.includes(idQuery);
+
+      const matchCourse =
+        !courseQuery ||
+        course.includes(courseQuery) ||
+        row.textContent.toLowerCase().includes(courseQuery);
+
+      const visible = matchName && matchId && matchCourse;
+
+      row.style.display = visible ? 'grid' : 'none';
+
+      if (visible) visibleCount++;
+    });
+
+    if (showingText) {
+      showingText.textContent =
+        `Showing ${visibleCount} of ${totalStudents} students`;
+    }
+  }
+
+  applyButton?.addEventListener('click', runFilter);
+
+  nameInput?.addEventListener('input', runFilter);
+  idInput?.addEventListener('input', runFilter);
+  courseInput?.addEventListener('input', runFilter);
+
+  [nameInput, idInput, courseInput].forEach((input) => {
+    input?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        runFilter();
+      }
+    });
+  });
+
+  resetButton?.addEventListener('click', () => {
+    if (nameInput) nameInput.value = '';
+    if (idInput) idInput.value = '';
+    if (courseInput) courseInput.value = '';
+
+    runFilter();
+  });
+
+  runFilter();
+}
+
+/* =========================================================
+   5. ATTENDANCE HISTORY
+   attendance-history.html
    ========================================================= */
 function initAttendanceHistoryFilter() {
   const statusChip = document.getElementById('historyStatusChip');
   const studentChip = document.getElementById('historyStudentChip');
-  const studentTitle = document.getElementById('historyStudentTitle');
-  const studentMeta = document.getElementById('historyStudentMeta');
-  const rows = document.querySelectorAll('.history-table-row');
+
+  const rows = [
+    ...document.querySelectorAll('.history-table-row')
+  ];
+
   const showingText = document.getElementById('historyShowingText');
 
   if (!rows.length) return;
 
-  const statusModes = ['All attendance statuses', 'Present', 'Late', 'Absent'];
+  const totalRows = rows.length;
+
+  const statusModes = [
+    'All attendance statuses',
+    'Present',
+    'Late',
+    'Absent'
+  ];
+
   let statusIndex = 0;
 
-  function applyHistoryFilter() {
+  function applyStatusFilter() {
     const selectedStatus = statusModes[statusIndex];
     let visibleCount = 0;
 
     rows.forEach((row) => {
-      const rowStatus = row.dataset.status || '';
-      const isMatch = selectedStatus === 'All attendance statuses' || rowStatus === selectedStatus;
-      row.style.display = isMatch ? 'grid' : 'none';
-      if (isMatch) visibleCount++;
+      const rowStatus = (
+        row.dataset.status || ''
+      ).trim().toLowerCase();
+
+      const match =
+        selectedStatus === 'All attendance statuses' ||
+        rowStatus === selectedStatus.toLowerCase();
+
+      row.style.display = match ? 'grid' : 'none';
+
+      if (match) visibleCount++;
     });
 
     if (showingText) {
-      showingText.textContent = `Showing ${visibleCount} of 12 sessions`;
+      showingText.textContent =
+        `Showing ${visibleCount} of ${totalRows} sessions`;
     }
   }
 
-  if (statusChip) {
-    statusChip.addEventListener('click', () => {
-      statusIndex = (statusIndex + 1) % statusModes.length;
-      statusChip.textContent = statusModes[statusIndex];
-      applyHistoryFilter();
-    });
-  }
+  statusChip?.addEventListener('click', () => {
+    statusIndex = (statusIndex + 1) % statusModes.length;
 
-  const sampleStudents = [
-    {
-      label: 'Nguyễn Minh Anh · SV2024001',
-      name: 'Nguyễn Minh Anh',
-      meta: 'SV2024001 · Cơ sở dữ liệu · 12 completed sess'
-    },
-    {
-      label: 'Trần Đức Anh · SV2024002',
-      name: 'Trần Đức Anh',
-      meta: 'SV2024002 · Cơ sở dữ liệu · 12 completed sess'
-    },
-    {
-      label: 'Lê Ngọc Mai · SV2024003',
-      name: 'Lê Ngọc Mai',
-      meta: 'SV2024003 · Cơ sở dữ liệu · 12 completed sess'
-    }
-  ];
-  let studentIndex = 0;
+    statusChip.textContent = statusModes[statusIndex];
 
+    applyStatusFilter();
+  });
+
+  /*
+   * Lịch sử hiện tại đang hiển thị dữ liệu của:
+   * Le Minh Khang - 079205003456
+   * Database Systems - C0001
+   *
+   * Không tự động đổi sang sinh viên giả.
+   */
   if (studentChip) {
-    studentChip.addEventListener('click', () => {
-      studentIndex = (studentIndex + 1) % sampleStudents.length;
-      const currentStudent = sampleStudents[studentIndex];
-      studentChip.textContent = currentStudent.label;
-      if (studentTitle) studentTitle.textContent = currentStudent.name;
-      if (studentMeta) studentMeta.textContent = currentStudent.meta;
-    });
+    studentChip.textContent =
+      'Le Minh Khang · 079205003456';
   }
+
+  applyStatusFilter();
 }
 
 /* =========================================================
-   6. XUẤT BÁO CÁO ĐIỂM DANH (report-export.html)
+   6. ATTENDANCE REPORT EXPORT
+   report-export.html
    ========================================================= */
 function initReportExport() {
   const scopeInput = document.getElementById('reportScope');
   const formatInput = document.getElementById('reportFormat');
+
   const metaLine = document.getElementById('previewMetaLine');
-  const exportButtons = document.querySelectorAll('.export-pdf-btn');
 
-  if (!exportButtons.length) return;
+  const exportButtons = document.querySelectorAll(
+    '.export-pdf-btn'
+  );
 
-  if (scopeInput && metaLine) {
-    scopeInput.addEventListener('input', () => {
-      const scopeVal = scopeInput.value.trim() || 'Session 12 · 04 Nov 2026';
-      metaLine.innerHTML = `CS201 · ${scopeVal}<br />Lecturer: Trần Quốc Huy (GV001)`;
-    });
+  const lecturerName = 'Nguyen Van An';
+  const lecturerId = '079082001234';
+
+  function updatePreview() {
+    if (!metaLine) return;
+
+    const scope = scopeInput?.value.trim() || 'All sessions';
+
+    metaLine.textContent =
+      `C0001 · ${scope} · Lecturer: ${lecturerName} (${lecturerId})`;
   }
 
-  exportButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const fmt = (formatInput ? formatInput.value.trim() : 'PDF') || 'PDF';
-      const scope = (scopeInput ? scopeInput.value.trim() : 'Session 12 · 04 Nov 2026');
-      alert(`Đang chuẩn bị xuất báo cáo (${fmt}) cho phạm vi: ${scope}.`);
+  scopeInput?.addEventListener('input', updatePreview);
+
+  exportButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const format = formatInput?.value.trim() || 'PDF';
+
+      if (format.toLowerCase() === 'pdf') {
+        window.print();
+      } else {
+        alert(
+          'This export format has not been implemented yet.'
+        );
+      }
     });
   });
-}
 
-/* =========================================================
-   7. CÁC NÚT TÀI KHOẢN CHUNG
-   ========================================================= */
-function initAccountActions() {
-  const changePwdBtns = document.querySelectorAll('.security-card .btn-secondary, .account-actions .account-link');
-  changePwdBtns.forEach((el) => {
-    const text = el.textContent.trim().toLowerCase();
-    if (text.includes('change password')) {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Tính năng đổi mật khẩu sẽ được kết nối với hệ thống xác thực.');
-      });
-    }
-    if (text.includes('sign out')) {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Bạn đã đăng xuất khỏi phiên làm việc hiện tại.');
-      });
-    }
-  });
+  updatePreview();
 }

@@ -859,27 +859,40 @@ void ApiServer::start()
         }
     );
 
-    // ========================================
-    // 10. START SERVER
-    // ========================================
+    if (!server.set_mount_point("/frontend", "./frontend"))
+{
+    cerr << "Cannot mount main frontend!" << endl;
+}
 
-    cout << "Starting SAMS API Server..." << endl;
+// Lecturer Frontend
+if (!server.set_mount_point(
+    "/lecturer",
+    "./ModuleLecturer/FrontEnd/html"))
+{
+    cerr << "Cannot mount lecturer frontend!" << endl;
+}
 
-    bool serverStarted = server.listen(
-        "127.0.0.1",
-        8080
-    );
+// ========================================
+// 11. START SERVER
+// ========================================
 
-    if (!serverStarted)
-    {
-        cerr << "ERROR: Cannot start API Server!" << endl;
+cout << "Starting SAMS API Server..." << endl;
 
-        cerr << "Possible causes: port 8080 is unavailable "
-             << "or socket initialization failed."
-             << endl;
-    }
-    else
-    {
-        cout << "SAMS API Server stopped." << endl;
-    }
+bool serverStarted = server.listen(
+    "127.0.0.1",
+    8080
+);
+
+if (!serverStarted)
+{
+    cerr << "ERROR: Cannot start API Server!" << endl;
+
+    cerr << "Possible causes: port 8080 is unavailable "
+         << "or socket initialization failed."
+         << endl;
+}
+else
+{
+    cout << "SAMS API Server stopped." << endl;
+}
 }

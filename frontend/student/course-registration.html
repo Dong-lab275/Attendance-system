@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student - Course Registration</title>
+
+    <link rel="stylesheet" href="css/course-registration.css">
+</head>
+<body>
+
+<div class="student-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                    <path d="M8 14V21C13 25 19 25 24 21V14"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                    <path d="M29 11V20"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="brand-text">
+                <span>Student Attendance</span>
+                <small>MANAGEMENT SYSTEM</small>
+            </div>
+        </div>
+
+        <nav class="sidebar-navigation">
+
+            <h2 class="sidebar-heading">STUDENT WORKSPACE</h2>
+
+            <a href="attendance-check-in.html" class="nav-item">
+                Attendance check-in
+            </a>
+
+            <a href="attendance-history.html" class="nav-item">
+                Attendance history
+            </a>
+
+            <a href="course-registration.html"
+               class="nav-item active"
+               aria-current="page">
+                Course registration
+            </a>
+
+            <a href="personal-information.html" class="nav-item">
+                Personal information
+            </a>
+
+            <a href="attendance-rate.html" class="nav-item">
+                Attendance rate
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="personal-information.html#change-password"
+               class="sidebar-action">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="sidebar-action">
+                Sign out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= WORKSPACE ================= -->
+    <main class="workspace">
+
+        <!-- Top bar -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                Student <span>/</span> Course registration
+            </div>
+
+            <div class="student-profile">
+                <strong>Le Minh Khang</strong>
+                <small>079205003456</small>
+            </div>
+
+        </header>
+
+
+        <!-- Page content -->
+        <section class="page-content">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+
+                <div class="page-title">
+                    <h1>Course registration</h1>
+
+                    <p>
+                        View your registered courses and registration status.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Registration guidance -->
+            <div class="registration-guidance">
+                <p>
+                    You have successfully registered for 2 courses.
+                </p>
+            </div>
+
+
+            <!-- ================= AVAILABLE COURSES ================= -->
+            <section class="course-section available-section">
+
+                <h2 class="section-title">
+                    Available courses
+                </h2>
+
+                <div class="table-wrapper">
+
+                    <table class="course-table">
+
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Course ID</th>
+                                <th>Lecturer</th>
+                                <th>Registration</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="availableCoursesBody">
+                            <!-- No additional available courses in current SQL data -->
+                        </tbody>
+
+                    </table>
+
+                    <p class="empty-message" id="availableEmptyMessage">
+                        No available courses.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= REGISTERED COURSES ================= -->
+            <section class="course-section registered-section">
+
+                <h2 class="section-title">
+                    Your registered courses
+                </h2>
+
+                <div class="table-wrapper">
+
+                    <table class="course-table">
+
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Course ID</th>
+                                <th>Lecturer</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="registeredCoursesBody">
+
+                            <!-- Database Systems -->
+                            <tr data-course-id="C0001">
+
+                                <td class="course-name">
+                                    Database Systems
+                                </td>
+
+                                <td>C0001</td>
+
+                                <td>Nguyen Van An</td>
+
+                                <td>
+                                    <span class="registration-status">
+                                        Approved
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- Software Engineering -->
+                            <tr data-course-id="C0002">
+
+                                <td class="course-name">
+                                    Software Engineering
+                                </td>
+
+                                <td>C0002</td>
+
+                                <td>Tran Thi Binh</td>
+
+                                <td>
+                                    <span class="registration-status">
+                                        Approved
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="empty-message" id="registeredEmptyMessage" hidden>
+                        You have not registered for any courses.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/course-registration.js"></script>
+
+</body>
+</html>
