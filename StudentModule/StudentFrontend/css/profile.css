@@ -1,0 +1,248 @@
+
+const studentId = "ST001";
+
+let currentProfile = null;
+
+function getElement(id) {
+    return document.getElementById(id);
+}
+
+function showValue(value) {
+    if (value === null || value === undefined || value === "") {
+        return "Not provided";
+    }
+
+    return value;
+}
+
+function setText(id, value) {
+    const element = getElement(id);
+
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+// Display student information
+function displayProfile(student) {
+    currentProfile = student;
+
+    setText("studentId", student.studentId);
+    setText("studentName", showValue(student.fullName));
+    setText("headerStudentName", showValue(student.fullName));
+    setText("fullName", showValue(student.fullName));
+    setText("dateOfBirth", showValue(student.dateOfBirth));
+    setText("gender", showValue(student.gender));
+    setText("emailAddress", showValue(student.emailAddress));
+    setText("phoneNumber", showValue(student.phoneNumber));
+    setText("address", showValue(student.address));
+
+    setText(
+        "studentSummary",
+        student.studentId + " · Student"
+    );
+
+    const headerUser = document.querySelector(".topbar .user");
+
+    if (headerUser) {
+        headerUser.replaceChildren(
+            document.createTextNode(
+                student.fullName || "Not provided"
+            )
+        );
+
+        const small = document.createElement("small");
+        small.textContent = student.studentId;
+        headerUser.appendChild(small);
+    }
+}
+
+// Load student profile
+async function loadProfile() {
+    try {
+        const response = await fetch(
+            "/api/student-profile?studentId=" +
+            encodeURIComponent(studentId),
+            { cache: "no-store" }
+        );
+
+        if (!response.ok) {
+            throw new Error("Cannot load student profile.");
+        }
+
+        const student = await response.json();
+
+        displayProfile(student);
+        return true;
+
+    } catch (error) {
+        console.error("Load profile error:", error);
+        setText("studentName", "Unable to load");
+        setText("headerStudentName", "Unable to load");
+        return false;
+    }
+}
+
+// Open edit form
+function openEditForm() {
+    if (!currentProfile) {
+        alert("Student information is not loaded yet.");
+        return;
+    }
+
+    const editFormCard = getElement("editFormCard");
+
+    if (!editFormCard) {
+        alert("Edit form not found.");
+        return;
+    }
+
+    const fields = {
+        editFullName: currentProfile.fullName,
+        editDateOfBirth: currentProfile.dateOfBirth,
+        editGender: currentProfile.gender,
+        editEmail: currentProfile.emailAddress,
+        editPhone: currentProfile.phoneNumber,
+        editAddress: currentProfile.address
+    };
+
+    for (const [id, value] of Object.entries(fields)) {
+        const input = getElement(id);
+
+        if (input) {
+            input.value = value || "";
+        }
+    }
+
+    editFormCard.hidden = false;
+
+    editFormCard.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+// Close edit form
+function closeEditForm() {
+    const editFormCard = getElement("editFormCard");
+
+    if (editFormCard) {
+        editFormCard.hidden = true;
+    }
+}
+
+// Save student information
+async function saveProfile(event) {
+    event.preventDefault();
+
+    const profileForm = getElement("profileForm");
+
+    if (!profileForm) {
+        return;
+    }
+
+    const saveButton = profileForm.querySelector(
+        'button[type="submit"]'
+    );
+
+    const getInputValue = (id) => {
+        const input = getElement(id);
+        return input ? input.value.trim() : "";
+    };
+
+    const profile = {
+        studentId: studentId,
+        fullName: getInputValue("editFullName"),
+        dateOfBirth: getInputValue("editDateOfBirth"),
+        gender: getInputValue("editGender"),
+        emailAddress: getInputValue("editEmail"),
+        phoneNumber: getInputValue("editPhone"),
+        address: getInputValue("editAddress")
+    };
+
+    if (!profile.fullName) {
+        alert("Please enter your full name.");
+        return;
+    }
+
+    const formData = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(profile)) {
+        formData.append(key, value);
+    }
+
+    if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = "Saving...";
+    }
+
+    try {
+        const response = await fetch(
+            "/api/update-profile",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/x-www-form-urlencoded"
+                },
+                body: formData.toString()
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Cannot save profile."
+            );
+        }
+
+        const loaded = await loadProfile();
+
+        if (!loaded) {
+            throw new Error(
+                "Profile saved but cannot reload information."
+            );
+        }
+
+        closeEditForm();
+        alert("Profile updated successfully.");
+
+    } catch (error) {
+        console.error("Save profile error:", error);
+        alert(error.message);
+
+    } finally {
+        if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.textContent = "Save changes";
+        }
+    }
+}
+
+// Initialize page
+document.addEventListener("DOMContentLoaded", () => {
+    const editButton = getElement("editButton");
+    const cancelButton = getElement("cancelEditButton");
+    const profileForm = getElement("profileForm");
+    const editFormCard = getElement("editFormCard");
+
+    if (editFormCard) {
+        editFormCard.hidden = true;
+    }
+
+    if (editButton) {
+        editButton.disabled = false;
+        editButton.addEventListener("click", openEditForm);
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener("click", closeEditForm);
+    }
+
+    if (profileForm) {
+        profileForm.addEventListener("submit", saveProfile);
+    }
+
+    loadProfile();
+});

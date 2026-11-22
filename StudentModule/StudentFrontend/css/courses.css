@@ -1,0 +1,255 @@
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7f8;
+      color: #213b3a;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 248px;
+      flex-shrink: 0;
+      padding: 30px 17px;
+      background: linear-gradient(180deg, #123e3a, #092c2b);
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 3px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      font-size: 14px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .brand-copy small {
+      display: block;
+      margin-top: 4px;
+      font-size: 8px;
+      letter-spacing: 1px;
+      font-weight: normal;
+      color: #b7d3cf;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      color: #b1c9c6;
+      margin: 54px 12px 15px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav a,
+    .sidebar-bottom a {
+      display: block;
+      padding: 13px 15px;
+      border-radius: 8px;
+      color: #d8e8e6;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav a:hover,
+    .sidebar-bottom a:hover {
+      background: #245b54;
+    }
+
+    .nav a.active {
+      background: #28786b;
+      color: white;
+      font-weight: bold;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 30px;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 76px;
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-bottom: 1px solid #e3e9e8;
+      gap: 16px;
+    }
+
+    .breadcrumb {
+      color: #71817e;
+      font-size: 13px;
+    }
+
+    .breadcrumb strong {
+      color: #164e45;
+    }
+
+    .user {
+      text-align: right;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .user small {
+      display: block;
+      margin-top: 5px;
+      font-weight: normal;
+      color: #778784;
+    }
+
+    .content {
+      padding: 38px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 29px;
+      margin: 0 0 10px;
+    }
+
+    .subtitle {
+      color: #73827f;
+      margin: 0 0 26px;
+      font-size: 14px;
+    }
+
+    .notice {
+      background: #e7f4f0;
+      color: #206253;
+      border: 1px solid #d0e7df;
+      padding: 15px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2e9e7;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      margin: 0 0 20px;
+      font-size: 17px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: #f7f9f8;
+      color: #73817d;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 15px 13px;
+      border-bottom: 1px solid #edf0ef;
+    }
+
+    td {
+      font-size: 13px;
+    }
+
+    .course-name {
+      font-weight: bold;
+      color: #214e45;
+    }
+
+    .register-btn {
+      border: 0;
+      border-radius: 6px;
+      background: #0b8068;
+      color: white;
+      padding: 9px 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .register-btn:disabled {
+      background: #e9efec;
+      color: #899691;
+      cursor: not-allowed;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #e6f5ed;
+      color: #137c55;
+    }
+
+    .note {
+      color: #74847f;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 760px) {
+      .layout { display: block; }
+      .sidebar { width: 100%; padding: 16px; }
+      .section-label, .sidebar-bottom { display: none; }
+
+      .nav {
+        display: flex;
+        overflow-x: auto;
+        margin-top: 15px;
+      }
+
+      .nav a {
+        white-space: nowrap;
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      .topbar { height: auto; padding: 17px; }
+      .content { padding: 22px 16px; }
+      .card { padding: 19px; }
+      h1 { font-size: 25px; }
+    }
