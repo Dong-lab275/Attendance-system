@@ -30,6 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Automatically open Change Password form
+    // when coming from Administrator Personal Information
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("mode") === "change-password") {
+        showForm(changePasswordForm);
+    }
+
     // Forgot Password -> Reset Password
     forgotPassword.addEventListener("click", event => {
         event.preventDefault();
@@ -39,14 +47,22 @@ document.addEventListener("DOMContentLoaded", () => {
         showForm(resetPasswordForm);
     });
 
-    // Change Password -> Login (arrow button)
+    // Change Password -> Personal Information or Login
     backToLogin.addEventListener("click", () => {
         changePasswordForm.reset();
         clearMessages();
+
+        const returnPage = params.get("return");
+
+        if (returnPage === "admin") {
+            window.location.href = "../admin/personal-information.html";
+            return;
+        }
+
         showForm(loginForm);
     });
 
-    // Reset Password -> Login (Back to sign in)
+    // Reset Password -> Login
     backFromReset.addEventListener("click", () => {
         resetPasswordForm.reset();
         clearMessages();
@@ -99,8 +115,79 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        document.getElementById("loginMessage").textContent =
-            "Login interface is ready for backend integration.";
+        
+    // Login validation and backend integration
+    loginForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        clearMessages();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+        const loginMessage = document.getElementById("loginMessage");
+        const rememberMe = document.getElementById("rememberMe");
+
+        if (!username) {
+            document.getElementById("usernameError").textContent =
+                "Please enter your username.";
+            return;
+        }
+
+        if (!password) {
+            document.getElementById("passwordError").textContent =
+                "Please enter your password.";
+            return;
+        }
+
+        try {
+            loginMessage.textContent = "Signing in...";
+
+            const result = await apiRequest(
+                "/auth/login",
+                "POST",
+                {
+                    username: username,
+                    password: password
+                }
+            );
+
+            if (result.status !== "success" || !result.data) {
+                throw new Error(result.message || "Login failed.");
+            }
+
+            const authData = result.data;
+
+            // Remove any previous login information
+            localStorage.removeItem("samsAuth");
+            sessionStorage.removeItem("samsAuth");
+
+            // Save login information
+            const storage = rememberMe.checked
+                ? localStorage
+                : sessionStorage;
+
+            storage.setItem("samsAuth", JSON.stringify({
+                token: authData.token,
+                userId: authData.userId,
+                username: authData.username,
+                role: authData.role,
+                expiresIn: authData.expiresIn
+            }));
+
+            loginMessage.textContent =
+                "Login successful. Welcome, " + authData.username + "!";
+
+            console.log("Login successful:", authData);
+            if (authData.role === "Administrator") {
+            window.location.href = "../admin/admin.html";
+            return;
+}
+
+        } catch (error) {
+            loginMessage.textContent = error.message;
+            console.error("Login error:", error);
+        }
+    });
+
     });
 
     // Change Password validation

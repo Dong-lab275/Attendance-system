@@ -7,17 +7,25 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# PostgreSQL 18
-set(PostgreSQL_INCLUDE_DIR "C:/Program Files/PostgreSQL/18/include")
-set(PostgreSQL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libpq.lib")
+# MSYS2 UCRT64
+set(MSYS2_ROOT "C:/msys64/ucrt64")
+
+# PostgreSQL
+set(PostgreSQL_INCLUDE_DIR "${MSYS2_ROOT}/include")
+set(PostgreSQL_LIBRARY "${MSYS2_ROOT}/lib/libpq.dll.a")
+
 find_package(PostgreSQL REQUIRED)
 
 # OpenSSL
-set(OPENSSL_ROOT_DIR "C:/Program Files/PostgreSQL/18")
-set(OPENSSL_INCLUDE_DIR "C:/msys64/ucrt64/include")
-set(OPENSSL_CRYPTO_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libcrypto.lib")
-set(OPENSSL_SSL_LIBRARY "C:/Program Files/PostgreSQL/18/lib/libssl.lib")
+set(OPENSSL_ROOT_DIR "${MSYS2_ROOT}")
+set(OPENSSL_INCLUDE_DIR "${MSYS2_ROOT}/include")
+set(OPENSSL_CRYPTO_LIBRARY "${MSYS2_ROOT}/lib/libcrypto.dll.a")
+set(OPENSSL_SSL_LIBRARY "${MSYS2_ROOT}/lib/libssl.dll.a")
+
 find_package(OpenSSL REQUIRED COMPONENTS Crypto)
+
+# Threads
+find_package(Threads REQUIRED)
 
 # HTTP Server and JSON
 set(CPP_HTTPLIB_INCLUDE_DIR
@@ -25,12 +33,14 @@ set(CPP_HTTPLIB_INCLUDE_DIR
 )
 
 set(NLOHMANN_JSON_INCLUDE_DIR
-    "C:/msys64/ucrt64/include"
+    "${MSYS2_ROOT}/include"
 )
 
 # Main executable
 add_executable(AttendanceSystem
     src/main.cpp
+
+    AdminUserModule/api/ApiServer.cpp
 
     AdminUserModule/database/DatabaseConnection.cpp
 
@@ -41,16 +51,19 @@ add_executable(AttendanceSystem
     AdminUserModule/controllers/AdministratorController.cpp
 )
 
+# Include directories
 target_include_directories(AttendanceSystem PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/AdminUserModule"
-    "${PostgreSQL_INCLUDE_DIR}"
-    "${OPENSSL_INCLUDE_DIR}"
     "${CPP_HTTPLIB_INCLUDE_DIR}"
     "${NLOHMANN_JSON_INCLUDE_DIR}"
 )
 
+# Link libraries
 target_link_libraries(AttendanceSystem PRIVATE
     PostgreSQL::PostgreSQL
     OpenSSL::Crypto
+    OpenSSL::SSL
+    Threads::Threads
+    ws2_32
 )

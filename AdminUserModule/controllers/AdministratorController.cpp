@@ -1542,3 +1542,188 @@ bool AdministratorController::deleteUserAccount(string userId)
     cout << "User account deleted successfully!" << endl;
     return true;
 }
+
+bool AdministratorController::lockUserAccount(string userId)
+{
+    if (userId.empty() || userId.length() != 12)
+        return false;
+
+    if (database == nullptr)
+        return false;
+
+    PGconn* connection = database->getConnection();
+
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+        return false;
+
+    const char* query =
+        "UPDATE users "
+        "SET is_active = FALSE, updated_at = CURRENT_TIMESTAMP "
+        "WHERE user_id = $1 AND is_active = TRUE";
+
+    const char* params[1] = {userId.c_str()};
+
+    PGresult* result = PQexecParams(
+        connection, query, 1, nullptr,
+        params, nullptr, nullptr, 0
+    );
+
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK)
+    {
+        if (result != nullptr)
+            PQclear(result);
+
+        return false;
+    }
+
+    bool success = atoi(PQcmdTuples(result)) > 0;
+
+    PQclear(result);
+
+    if (success)
+        cout << "User account locked successfully!" << endl;
+    else
+        cout << "User account not found or already locked!" << endl;
+
+    return success;
+}
+
+bool AdministratorController::unlockUserAccount(string userId)
+{
+    if (userId.empty() || userId.length() != 12)
+        return false;
+
+    if (database == nullptr)
+        return false;
+
+    PGconn* connection = database->getConnection();
+
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+        return false;
+
+    const char* query =
+        "UPDATE users "
+        "SET is_active = TRUE, updated_at = CURRENT_TIMESTAMP "
+        "WHERE user_id = $1 AND is_active = FALSE";
+
+    const char* params[1] = {userId.c_str()};
+
+    PGresult* result = PQexecParams(
+        connection, query, 1, nullptr,
+        params, nullptr, nullptr, 0
+    );
+
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK)
+    {
+        if (result != nullptr)
+            PQclear(result);
+
+        return false;
+    }
+
+    bool success = atoi(PQcmdTuples(result)) > 0;
+
+    PQclear(result);
+
+    if (success)
+        cout << "User account unlocked successfully!" << endl;
+    else
+        cout << "User account not found or already active!" << endl;
+
+    return success;
+}
+
+bool AdministratorController::getUserAccounts(vector<UserAccountInfo> &accounts)
+{
+    // Clear previous results
+    accounts.clear();
+
+    // Check database object
+    if (database == nullptr)
+    {
+        cerr << "Database connection is not initialized!" << endl;
+        return false;
+    }
+
+    PGconn* connection = database->getConnection();
+
+    // Check database connection
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+    {
+        cerr << "Database connection failed!" << endl;
+        return false;
+    }
+
+    // Get accounts and corresponding profile information
+    const char* query =
+        "SELECT "
+        "u.user_id, "
+        "u.username, "
+        "u.role, "
+        "COALESCE(s.full_name, l.full_name, a.full_name, '') AS full_name, "
+        "COALESCE(s.email, l.email, a.email, '') AS email, "
+        "COALESCE(s.phone, l.phone, a.phone, '') AS phone, "
+        "u.is_active "
+        "FROM users u "
+        "LEFT JOIN students s ON u.user_id = s.user_id "
+        "LEFT JOIN lecturers l ON u.user_id = l.user_id "
+        "LEFT JOIN administrators a ON u.user_id = a.user_id "
+        "ORDER BY u.created_at DESC";
+
+    PGresult* result = PQexec(connection, query);
+
+    // Check query result
+    if (result == nullptr)
+    {
+        cerr << "Failed to execute account query!" << endl;
+        return false;
+    }
+
+    if (PQresultStatus(result) != PGRES_TUPLES_OK)
+    {
+        cerr << "Failed to retrieve user accounts: "
+             << PQerrorMessage(connection) << endl;
+
+        PQclear(result);
+        return false;
+    }
+
+    // Read returned rows
+    int rowCount = PQntuples(result);
+
+    for (int i = 0; i < rowCount; i++)
+    {
+        UserAccountInfo account;
+
+        account.userId = PQgetvalue(result, i, 0);
+        account.username = PQgetvalue(result, i, 1);
+        account.role = PQgetvalue(result, i, 2);
+        account.fullName = PQgetvalue(result, i, 3);
+        account.email = PQgetvalue(result, i, 4);
+        account.phone = PQgetvalue(result, i, 5);
+
+        account.active =
+            string(PQgetvalue(result, i, 6)) == "t";
+
+        // Remove trailing spaces from CHAR columns
+        while (!account.userId.empty() &&
+               account.userId.back() == ' ')
+        {
+            account.userId.pop_back();
+        }
+
+        accounts.push_back(account);
+    }
+
+    PQclear(result);
+
+    cout << "Retrieved " << accounts.size()
+         << " user accounts successfully!" << endl;
+
+    return true;
+}
