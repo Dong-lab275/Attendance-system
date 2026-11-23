@@ -1,10 +1,21 @@
 #ifndef ADMINISTRATORCONTROLLER_H
 #define ADMINISTRATORCONTROLLER_H
-
+#include <vector>
 #include <string>
 #include "../database/DatabaseConnection.h"
 
 using namespace std;
+
+struct UserAccountInfo
+{
+    string userId;
+    string username;
+    string role;
+    string fullName;
+    string email;
+    string phone;
+    bool active;
+};
 
 class AdministratorController
 {
@@ -59,6 +70,8 @@ public:
 
     bool lockUserAccount(string userId);
     bool unlockUserAccount(string userId);
+
+    bool getUserAccounts(vector<UserAccountInfo>& accounts);
 };
 
 #endif

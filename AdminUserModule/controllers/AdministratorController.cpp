@@ -100,17 +100,23 @@ bool AdministratorController::addCourseEnrollment(string courseId, string studen
     cout << "Student ID: " << studentId << endl;
     cout << "Course ID: " << courseId << endl;
 
-    cout << "Student exists: " << PQgetvalue(checkResult, 0, 0) << endl;
+    cout << "Student exists: "
+     << PQgetvalue(checkResult, 0, 0) << endl;
 
-    cout << "Course exists: "<< PQgetvalue(checkResult, 0, 1) << endl;
+    cout << "Course exists: "
+     << PQgetvalue(checkResult, 0, 1) << endl;
 
-    cout << "Enrollment exists: "<< PQgetvalue(checkResult, 0, 2) << endl;
+    cout << "Enrollment exists: "
+     << PQgetvalue(checkResult, 0, 2) << endl;
 
-    bool studentExists = string(PQgetvalue(checkResult, 0, 0)) == "t";
+    bool studentExists =
+    string(PQgetvalue(checkResult, 0, 0)) == "t";
 
-    bool courseExists = string(PQgetvalue(checkResult, 0, 1)) == "t";
+    bool courseExists =
+    string(PQgetvalue(checkResult, 0, 1)) == "t";
 
-    bool enrollmentExists = string(PQgetvalue(checkResult, 0, 2)) == "t";
+    bool enrollmentExists =
+    string(PQgetvalue(checkResult, 0, 2)) == "t";
 
     PQclear(checkResult);
 
@@ -224,7 +230,8 @@ bool AdministratorController::addCourse(string courseId, string courseName, stri
         params, nullptr, nullptr, 0
     );
 
-    if (result == nullptr || PQresultStatus(result) != PGRES_COMMAND_OK) {
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK) {
 
         cout << "Add course failed: "
              << PQerrorMessage(connection) << endl;
@@ -295,13 +302,14 @@ bool AdministratorController::updateCourse(string courseId, string courseName, s
         params, nullptr, nullptr, 0
     );
 
-    if (result == nullptr || PQresultStatus(result) != PGRES_COMMAND_OK) {
+    if (result == nullptr ||
+        PQresultStatus(result) != PGRES_COMMAND_OK) {
 
-        cout << "Update course failed: " << PQerrorMessage(connection) << endl;
+        cout << "Update course failed: "
+             << PQerrorMessage(connection) << endl;
 
-        if (result != nullptr){
+        if (result != nullptr)
             PQclear(result);
-        }
 
         return false;
     }
@@ -1533,9 +1541,9 @@ bool AdministratorController::deleteUserAccount(string userId)
 
     cout << "User account deleted successfully!" << endl;
     return true;
+}
 
-
-    bool AdministratorController::lockUserAccount(string userId)
+bool AdministratorController::lockUserAccount(string userId)
 {
     if (userId.empty() || userId.length() != 12)
         return false;
@@ -1628,4 +1636,94 @@ bool AdministratorController::unlockUserAccount(string userId)
 
     return success;
 }
+
+bool AdministratorController::getUserAccounts(vector<UserAccountInfo> &accounts)
+{
+    // Clear previous results
+    accounts.clear();
+
+    // Check database object
+    if (database == nullptr)
+    {
+        cerr << "Database connection is not initialized!" << endl;
+        return false;
+    }
+
+    PGconn* connection = database->getConnection();
+
+    // Check database connection
+    if (connection == nullptr ||
+        PQstatus(connection) != CONNECTION_OK)
+    {
+        cerr << "Database connection failed!" << endl;
+        return false;
+    }
+
+    // Get accounts and corresponding profile information
+    const char* query =
+        "SELECT "
+        "u.user_id, "
+        "u.username, "
+        "u.role, "
+        "COALESCE(s.full_name, l.full_name, a.full_name, '') AS full_name, "
+        "COALESCE(s.email, l.email, a.email, '') AS email, "
+        "COALESCE(s.phone, l.phone, a.phone, '') AS phone, "
+        "u.is_active "
+        "FROM users u "
+        "LEFT JOIN students s ON u.user_id = s.user_id "
+        "LEFT JOIN lecturers l ON u.user_id = l.user_id "
+        "LEFT JOIN administrators a ON u.user_id = a.user_id "
+        "ORDER BY u.created_at DESC";
+
+    PGresult* result = PQexec(connection, query);
+
+    // Check query result
+    if (result == nullptr)
+    {
+        cerr << "Failed to execute account query!" << endl;
+        return false;
+    }
+
+    if (PQresultStatus(result) != PGRES_TUPLES_OK)
+    {
+        cerr << "Failed to retrieve user accounts: "
+             << PQerrorMessage(connection) << endl;
+
+        PQclear(result);
+        return false;
+    }
+
+    // Read returned rows
+    int rowCount = PQntuples(result);
+
+    for (int i = 0; i < rowCount; i++)
+    {
+        UserAccountInfo account;
+
+        account.userId = PQgetvalue(result, i, 0);
+        account.username = PQgetvalue(result, i, 1);
+        account.role = PQgetvalue(result, i, 2);
+        account.fullName = PQgetvalue(result, i, 3);
+        account.email = PQgetvalue(result, i, 4);
+        account.phone = PQgetvalue(result, i, 5);
+
+        account.active =
+            string(PQgetvalue(result, i, 6)) == "t";
+
+        // Remove trailing spaces from CHAR columns
+        while (!account.userId.empty() &&
+               account.userId.back() == ' ')
+        {
+            account.userId.pop_back();
+        }
+
+        accounts.push_back(account);
+    }
+
+    PQclear(result);
+
+    cout << "Retrieved " << accounts.size()
+         << " user accounts successfully!" << endl;
+
+    return true;
 }

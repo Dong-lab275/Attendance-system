@@ -163,7 +163,6 @@ CREATE TABLE IF NOT EXISTS attendance_records (
         UNIQUE (student_id, session_id)
 );
 
-<<<<<<< HEAD
 CREATE SEQUENCE IF NOT EXISTS registration_id_seq
 START WITH 1
 INCREMENT BY 1;
@@ -183,42 +182,6 @@ CREATE INDEX IF NOT EXISTS idx_courses_lecturer_id
 CREATE INDEX IF NOT EXISTS idx_registrations_course_id
     ON course_registrations(course_id);
 
-CREATE INDEX IF NOT EXISTS idx_class_sessions_course_id
-    ON class_sessions(course_id);
-
-CREATE INDEX IF NOT EXISTS idx_class_sessions_class_date
-    ON class_sessions(class_date);
-
-CREATE INDEX IF NOT EXISTS idx_attendance_student_id
-    ON attendance_records(student_id);
-
-CREATE INDEX IF NOT EXISTS idx_attendance_session_id
-    ON attendance_records(session_id);
-
-CREATE INDEX IF NOT EXISTS idx_password_changes_user_id
-    ON password_changes(user_id);
-
-=======
-CREATE SEQUENCE IF NOT EXISTS registration_id_seq
-START WITH 1
-INCREMENT BY 1;
-
-CREATE INDEX IF NOT EXISTS idx_students_user_id
-    ON students(user_id);
-
-CREATE INDEX IF NOT EXISTS idx_lecturers_department_id
-    ON lecturers(department_id);
-
-CREATE INDEX IF NOT EXISTS idx_lecturers_user_id
-    ON lecturers(user_id);
-
-CREATE INDEX IF NOT EXISTS idx_courses_lecturer_id
-    ON courses(lecturer_id);
-
-CREATE INDEX IF NOT EXISTS idx_registrations_course_id
-    ON course_registrations(course_id);
-
->>>>>>> Đông
 CREATE INDEX IF NOT EXISTS idx_class_sessions_course_id
     ON class_sessions(course_id);
 

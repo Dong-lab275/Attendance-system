@@ -3,3 +3,5 @@ build/
 attendance_backup.sql
 .env
 docker-compose.yml
+
+/build-msys2/
