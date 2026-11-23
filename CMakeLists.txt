@@ -1,106 +1,102 @@
 
-cmake_minimum_required(VERSION 3.16)
-project(AttendanceManagementSystem LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.20)
+
+project(StudentAttendanceManagementSystem LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(MSVC)
-    add_compile_options(/W4)
-else()
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+# =========================================
+# 1. Admin / User System
+# =========================================
 
-find_package(OpenSSL REQUIRED)
+add_executable(AttendanceSystem
+    src/main_admin.cpp
+
+    AdminUserModule/controllers/UserController.cpp
+    AdminUserModule/controllers/AdministratorController.cpp
+
+    AdminUserModule/database/DatabaseConnection.cpp
+
+    AdminUserModule/models/User.cpp
+    AdminUserModule/models/Administrator.cpp
+
+    AdminUserModule/api/ApiServer.cpp
+)
+
+target_include_directories(AttendanceSystem PRIVATE
+    ${CMAKE_SOURCE_DIR}/AdminUserModule
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/controllers
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/database
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/models
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/api
+    ${CMAKE_SOURCE_DIR}/StudentModule
+)
+
+# PostgreSQL
 find_package(PostgreSQL REQUIRED)
-find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
 
-find_path(HTTPLIB_INCLUDE_DIR
-    NAMES httplib.h
-    PATHS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib
-        ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule
-)
-
-set(CORE_SOURCES
-    StudentModule/Course.cpp
-    StudentModule/Student.cpp
-    StudentModule/StudentController.cpp
-    StudentModule/StudentView.cpp
-    # Bổ sung các file .cpp của Lecturer, Admin và AttendanceRecord khi ghép đầy đủ:
-    # StudentModule/AttendanceRecord.cpp
-    # src/controllers/AdministratorController.cpp
-    # src/controllers/UserController.cpp
-)
-
-set(CORE_INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule
-    ${CMAKE_CURRENT_SOURCE_DIR}/StudentModule/StudentGUI
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/cpp-httplib
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/controllers
-    ${CMAKE_CURRENT_SOURCE_DIR}/models
-    ${CMAKE_CURRENT_SOURCE_DIR}/database
-    ${PostgreSQL_INCLUDE_DIRS}
-    ${OPENSSL_INCLUDE_DIR}
-)
-
-if(HTTPLIB_INCLUDE_DIR)
-    list(APPEND CORE_INCLUDE_DIRS ${HTTPLIB_INCLUDE_DIR})
-endif()
-
-add_executable(attendance_app
-    main.cpp
-    ${CORE_SOURCES}
-)
-
-target_include_directories(attendance_app PRIVATE ${CORE_INCLUDE_DIRS})
-
-target_link_libraries(attendance_app PRIVATE
-    OpenSSL::Crypto
-    OpenSSL::SSL
+target_link_libraries(AttendanceSystem PRIVATE
     PostgreSQL::PostgreSQL
-    Threads::Threads
+    OpenSSL::Crypto
+    ws2_32
 )
 
-if(WIN32)
-    target_link_libraries(attendance_app PRIVATE ws2_32)
-endif()
 
-# --- Google Test ---
-include(FetchContent)
-enable_testing()
+# =========================================
+# 2. Lecturer System
+# =========================================
 
-set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
-FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+add_executable(LecturerSystem
+    src/main_lecturer.cpp
+
+    ModuleLecturer/Controller/LecturerController.cpp
+
+    ModuleLecturer/Model/AttendanceRecord.cpp
+    ModuleLecturer/Model/ClassSession.cpp
+
+    ModuleLecturer/View/LecturerView.cpp
 )
-FetchContent_MakeAvailable(googletest)
 
-add_executable(attendance_tests
-    tests/test_gps.cpp
-    tests/test_case.cpp
+target_include_directories(LecturerSystem PRIVATE
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/Controller
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/Model
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/View
+)
+
+
+# =========================================
+# 3. Student System
+# =========================================
+
+add_executable(StudentSystem
+    src/main_student.cpp
+
+    StudentModule/AttendanceRecord.cpp
     StudentModule/Course.cpp
     StudentModule/Student.cpp
     StudentModule/StudentController.cpp
     StudentModule/StudentView.cpp
 )
 
-target_include_directories(attendance_tests PRIVATE ${CORE_INCLUDE_DIRS})
-
-target_link_libraries(attendance_tests PRIVATE
-    GTest::gtest_main
-    OpenSSL::Crypto
-    PostgreSQL::PostgreSQL
-    Threads::Threads
+target_include_directories(StudentSystem PRIVATE
+    ${CMAKE_SOURCE_DIR}/StudentModule
 )
 
-if(WIN32)
-    target_link_libraries(attendance_tests PRIVATE ws2_32)
-endif()
 
-include(GoogleTest)
-gtest_discover_tests(attendance_tests)
+# =========================================
+# 4. Compiler Options
+# =========================================
+
+if(MSVC)
+    target_compile_options(AttendanceSystem PRIVATE /W4)
+    target_compile_options(LecturerSystem PRIVATE /W4)
+    target_compile_options(StudentSystem PRIVATE /W4)
+else()
+    target_compile_options(AttendanceSystem PRIVATE -Wall -Wextra)
+    target_compile_options(LecturerSystem PRIVATE -Wall -Wextra)
+    target_compile_options(StudentSystem PRIVATE -Wall -Wextra)
+endif()
