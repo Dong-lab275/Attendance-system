@@ -41,8 +41,12 @@ find_package(OpenSSL REQUIRED)
 target_link_libraries(AttendanceSystem PRIVATE
     PostgreSQL::PostgreSQL
     OpenSSL::Crypto
-    ws2_32
 )
+
+if(WIN32)
+    target_link_libraries(AttendanceSystem PRIVATE ws2_32)
+endif()
+
 
 
 # =========================================
@@ -74,7 +78,6 @@ target_include_directories(LecturerSystem PRIVATE
 
 add_executable(StudentSystem
     src/main_student.cpp
-
     StudentModule/AttendanceRecord.cpp
     StudentModule/Course.cpp
     StudentModule/Student.cpp
@@ -100,3 +103,46 @@ else()
     target_compile_options(LecturerSystem PRIVATE -Wall -Wextra)
     target_compile_options(StudentSystem PRIVATE -Wall -Wextra)
 endif()
+
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+add_executable(attendance_tests
+    tests/test_case.cpp
+)
+
+target_include_directories(attendance_tests PRIVATE
+    ${CMAKE_SOURCE_DIR}/AdminUserModule
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/controllers
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/database
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/models
+    ${CMAKE_SOURCE_DIR}/AdminUserModule/api
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/Controller
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/Model
+    ${CMAKE_SOURCE_DIR}/ModuleLecturer/View
+    ${CMAKE_SOURCE_DIR}/StudentModule
+    ${CMAKE_SOURCE_DIR}/tests
+)
+
+target_link_libraries(attendance_tests PRIVATE
+    GTest::gtest
+    GTest::gtest_main
+    PostgreSQL::PostgreSQL
+    OpenSSL::Crypto
+)
+
+if(WIN32)
+    target_link_libraries(attendance_tests PRIVATE ws2_32)
+endif()
+
+include(GoogleTest)
+gtest_discover_tests(attendance_tests)

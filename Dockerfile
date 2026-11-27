@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    nlohmann-json3-dev \
     cmake \
     ninja-build \
     git \
@@ -25,14 +26,15 @@ FROM ubuntu:24.04 AS runtime
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgtest-dev \
     libssl3t64 \
     libpq5 \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-
+    
 WORKDIR /app
 
-COPY --from=builder /app/build/attendance_app /app/attendance_app
+COPY --from=builder /app/build/AttendanceSystem /app/attendance_app
 COPY --from=builder /app/build/attendance_tests /app/attendance_tests
 
 ENV SERVER_HOST=0.0.0.0
