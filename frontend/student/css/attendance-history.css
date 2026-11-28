@@ -1,0 +1,677 @@
+
+/* =========================================
+   05 · STUDENT — ATTENDANCE HISTORY
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --page-background: #F6F8F9;
+    --sidebar-background: #102F36;
+    --sidebar-active: #1F5358;
+    --sidebar-text: #B6CECE;
+
+    --heading-color: #162B35;
+    --text-color: #63767F;
+    --border-color: #E0E8EA;
+    --primary-color: #087F75;
+
+    --white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--page-background);
+    color: var(--heading-color);
+    min-width: 320px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.student-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+    width: 224px;
+    min-width: 224px;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 28px 20px 32px;
+    gap: 32px;
+
+    background-color: var(--sidebar-background);
+    color: var(--white);
+
+    position: relative;
+    isolation: isolate;
+}
+
+/* System identity */
+
+.sidebar-brand {
+    width: 100%;
+    height: 49px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.brand-icon {
+    width: 34px;
+    height: 31px;
+    min-width: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(16, 47, 54, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 11px;
+}
+
+.brand-icon svg {
+    width: 25px;
+    height: 25px;
+    color: var(--white);
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.brand-text span {
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.brand-text small {
+    font-size: 8px;
+    line-height: 12px;
+    font-weight: 400;
+    color: var(--white);
+}
+
+/* Student navigation */
+
+.sidebar-navigation {
+    position: absolute;
+    top: 106px;
+    left: 20px;
+
+    width: 184px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+.sidebar-heading {
+    height: 22px;
+    margin-bottom: 0;
+
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 900;
+    color: var(--white);
+    white-space: nowrap;
+}
+
+.nav-item {
+    width: 184px;
+    min-height: 43px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    color: var(--sidebar-text);
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 400;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+}
+
+.nav-item.active {
+    background: var(--sidebar-active);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* Account actions */
+
+.sidebar-bottom {
+    width: 184px;
+
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.sidebar-action {
+    width: 184px;
+
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 800;
+
+    color: var(--white);
+}
+
+.sidebar-action:hover {
+    color: #B6CECE;
+}
+
+/* =========================================
+   WORKSPACE
+========================================= */
+
+.workspace {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.topbar {
+    width: 100%;
+    height: 80px;
+    min-height: 80px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 40px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+}
+
+.breadcrumb {
+    flex: 1;
+
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 400;
+
+    color: var(--text-color);
+}
+
+.breadcrumb span {
+    padding: 0 5px;
+}
+
+.student-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.student-profile strong {
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.student-profile small {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+/* =========================================
+   PAGE CONTENT
+========================================= */
+
+.page-content {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 32px 40px 28px;
+    gap: 24px;
+}
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.page-heading {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.page-heading h1 {
+    font-size: 28px;
+    line-height: 41px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.page-heading p {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+/* =========================================
+   FILTERS
+========================================= */
+
+.attendance-filters {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filter-control select {
+    height: 39px;
+
+    padding: 0 14px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.12);
+
+    color: var(--primary-color);
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+
+    outline: none;
+    cursor: pointer;
+}
+
+#courseFilter {
+    width: 155px;
+}
+
+#statusFilter {
+    width: 168px;
+}
+
+#dateFilter {
+    width: 153px;
+}
+
+.filter-control select:focus {
+    border-color: var(--primary-color);
+}
+
+/* =========================================
+   ATTENDANCE SUMMARY
+========================================= */
+
+.attendance-summary {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.summary-card {
+    min-width: 0;
+    height: 152px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 22px 24px;
+    gap: 16px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.summary-label {
+    width: 100%;
+
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.summary-card h2 {
+    width: 100%;
+
+    font-size: 28px;
+    line-height: 41px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.summary-description {
+    width: 100%;
+
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+/* =========================================
+   ATTENDANCE RECORDS
+========================================= */
+
+.attendance-records {
+    width: 100%;
+    min-height: 431px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+
+    padding: 22px 24px;
+
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.records-title {
+    width: 100%;
+
+    font-size: 16px;
+    line-height: 23px;
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.attendance-table thead {
+    background: #F3F7F8;
+}
+
+.attendance-table th {
+    height: 36px;
+
+    padding: 10px 12px;
+
+    text-align: left;
+
+    color: var(--text-color);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+}
+
+.attendance-table td {
+    height: 46px;
+
+    padding: 10px 12px;
+
+    color: var(--heading-color);
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+
+    border-bottom: 1px solid #EEF2F3;
+}
+
+.attendance-table th:first-child,
+.attendance-table td:first-child {
+    padding-left: 0;
+}
+
+.attendance-table th:last-child,
+.attendance-table td:last-child {
+    padding-right: 0;
+}
+
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+    width: 25%;
+}
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
+    width: 25%;
+}
+
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+    width: 25%;
+}
+
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4) {
+    width: 25%;
+}
+
+.session-number {
+    font-weight: 500 !important;
+}
+
+/* =========================================
+   STATUS BADGES
+========================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 26px;
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
+.status-badge.present {
+    background: #E7F4F1;
+    color: #087562;
+}
+
+.status-badge.late {
+    background: #FFF3DA;
+    color: #8C641A;
+}
+
+.status-badge.absent {
+    background: #FCECEE;
+    color: #AD3F4E;
+}
+
+/* =========================================
+   TABLE FOOTER
+========================================= */
+
+.records-footer {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--text-color);
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+}
+
+.footer-dot {
+    color: var(--text-color);
+}
+
+.empty-message {
+    padding: 28px 0;
+
+    text-align: center;
+
+    color: var(--text-color);
+    font-size: 13px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+    .page-content {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .topbar {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .attendance-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .student-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .sidebar-navigation {
+        position: static;
+        width: 100%;
+    }
+
+    .sidebar-bottom {
+        width: 100%;
+        margin-top: 0;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .topbar {
+        height: auto;
+        min-height: 70px;
+        padding: 16px 20px;
+    }
+
+    .page-content {
+        padding: 24px 20px;
+    }
+
+    .page-heading h1 {
+        font-size: 24px;
+    }
+
+    .attendance-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        height: auto;
+        min-height: 140px;
+    }
+
+    .attendance-records {
+        padding: 18px;
+    }
+
+    .attendance-table {
+        min-width: 650px;
+    }
+}

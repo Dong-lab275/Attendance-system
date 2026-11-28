@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Course Registration Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/course-registrations.css">
+</head>
+<body>
+<div class="admin-layout">
+
+    <aside class="sidebar">
+        <div class="admin-brand">
+            <div class="admin-brand-icon">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                          stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8 14V21C13 25 19 25 24 21V14"
+                          stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M29 11V20"
+                          stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="admin-brand-text">
+                <span>Student Attendance</span>
+                <small>MANAGEMENT SYSTEM</small>
+            </div>
+        </div>
+
+        <div class="sidebar-heading">ADMINISTRATOR WORKSPACE</div>
+
+        <nav class="sidebar-nav">
+    <a href="admin.html" class="nav-item">
+        Account creation &amp; roles
+    </a>
+
+    <a href="accounts.html" class="nav-item">
+        Student &amp; lecturer accounts
+    </a>
+
+    <a href="courses.html" class="nav-item">
+        Course management
+    </a>
+
+    <a href="course-registrations.html" class="nav-item">
+        Course registrations
+    </a>
+
+    <a href="lecturer-assignments.html" class="nav-item">
+        Lecturer assignments
+    </a>
+
+    <a href="departments.html" class="nav-item">
+        Departments
+    </a>
+
+    <a href="SessionSchedules.html" class="nav-item">
+        Session schedules
+    </a>
+
+    <a href="attendance-reports.html" class="nav-item">
+        Attendance reports
+    </a>
+
+    <a href="attendance-history.html" class="nav-item">
+        Attendance history
+    </a>
+
+    <a href="personal-information.html" class="nav-item">
+        Personal information
+    </a>
+</nav>
+
+        <div class="sidebar-bottom">
+    <a href="personal-information.html#change-password" class="nav-item">
+        Change password
+    </a>
+
+    <a href="../users/index.html" class="nav-item">
+        Sign out
+    </a>
+</div>
+    </aside>
+
+    <main class="workspace">
+        <header class="topbar">
+            <div class="breadcrumb">
+                Administrator / Course registrations
+            </div>
+            <div class="admin-profile">
+                <strong>System Administrator</strong>
+                <small>079080000001 · Administrator</small>
+            </div>
+        </header>
+
+        <section class="page-content">
+            <div class="page-heading">
+                <div>
+                    <h1>Course registration management</h1>
+                    <p>View, add or remove student course registrations.</p>
+                </div>
+                <button type="button" class="btn-create-account" id="addEnrollmentBtn">
+                     Add enrollment
+                </button>
+            </div>
+
+            <div class="registration-notice">
+                <div>
+                    <strong>Registration period: 02–20 Nov 2026</strong>
+                    <p>Manage student enrollments during the active registration period.</p>
+                </div>
+            </div>
+
+            <div class="filter-toolbar">
+                <div class="filter-item">
+                    <label for="courseFilter">Course</label>
+                    <select id="courseFilter">
+                        <option value="all">All courses</option>
+                        <option value="C0001">C0001</option>
+                        <option value="C0002">C0002</option>
+                    </select>
+                </div>
+
+                <div class="filter-item search-item">
+                    <label for="studentSearch">Search student</label>
+                    <input id="studentSearch" type="search"
+                           placeholder="Name or student ID">
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <section class="card enrollment-card">
+                    <div class="card-title-row">
+                        <div>
+                            <h2 id="listTitle">Enrolled students · All courses</h2>
+                            <p>List of students currently enrolled in courses.</p>
+                        </div>
+                        <span class="total-badge" id="totalBadge">8 registrations</span>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <div class="table-header">
+                            <div>Student / ID</div>
+                            <div>Course</div>
+                            <div>Action</div>
+                        </div>
+                        <div id="enrollmentRows"></div>
+                    </div>
+
+                    <div id="emptyState" class="empty-state" hidden>
+                        <strong>No registrations found</strong>
+                        <p>Try changing your search or course filter.</p>
+                    </div>
+
+                    <div class="table-footer">
+                        <span id="showingCount">Showing 8 of 8 enrolled students</span>
+                    </div>
+                </section>
+
+                <section class="card editor-card">
+                    <h2 id="editorTitle">Edit registration</h2>
+                    <p class="editor-description">
+                        Update the course registration information.
+                    </p>
+
+                    <form id="enrollmentForm">
+                        <div class="form-group">
+                            <label for="formCourse">Course</label>
+                            <select id="formCourse" required>
+                                <option value="C0001">C0001 - Database Systems</option>
+                                <option value="C0002">C0002 - Software Engineering</option> 
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formStudent">Student</label>
+                            <select id="formStudent" required>
+                                <option value="079205003456">079205003456 - Le Minh Khang</option>
+                                <option value="079305004567">079305004567 - Pham Ngoc Mai</option>
+                                <option value="079204005678">079204005678 - Vo Quoc Huy</option>
+                            </select>
+                        </div>
+
+                        <div class="editor-hint">
+                            Make sure the student is not already registered for this course
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save-role"
+                                    id="saveEnrollmentBtn">Save changes</button>
+                            <button type="button" class="btn-secondary"
+                                    id="cancelEnrollmentBtn">Cancel</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="js/admin-navigation.js"></script>
+<script src="js/course-registrations.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Accounts</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        
+<aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="admin-brand">
+        <div class="admin-brand-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 14V21C13 25 19 25 24 21V14"
+                      stroke="currentColor" stroke-width="1.5"/>
+                <path d="M29 11V20"
+                      stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+        </div>
+
+        <div class="admin-brand-text">
+            <span>Student Attendance</span>
+            <small>MANAGEMENT SYSTEM</small>
+        </div>
+    </div>
+
+    <!-- Workspace title -->
+    <div class="sidebar-heading">
+        ADMINISTRATOR WORKSPACE
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+
+    <a href="admin.html" class="nav-item">
+        Account creation & roles
+    </a>
+
+    <a href="accounts.html" class="nav-item">
+        Student & lecturer accounts
+    </a>
+
+    <a href="courses.html" class="nav-item">
+        Course management
+    </a>
+
+    <a href="course-registrations.html" class="nav-item">
+        Course registrations
+    </a>
+
+    <a href="lecturer-assignments.html" class="nav-item">
+        Lecturer assignments
+    </a>
+
+    <a href="departments.html" class="nav-item">
+        Departments
+    </a>
+
+    <a href="SessionSchedules.html" class="nav-item">
+        Session schedules
+    </a>
+
+    <a href="attendance-reports.html" class="nav-item">
+        Attendance reports
+    </a>
+
+    <a href="attendance-history.html" class="nav-item">
+        Attendance history
+    </a>
+
+    <a href="personal-information.html" class="nav-item">
+        Personal information
+    </a>
+
+</nav>
+
+    <!-- Bottom actions -->
+    <div class="sidebar-bottom">
+    <a href="personal-information.html#change-password" class="nav-item">
+        Change password
+    </a>
+
+    <a href="../users/index.html" class="nav-item">
+        Sign out
+    </a>
+</div>
+
+</aside>
+
+
+        <!-- Main workspace -->
+        <main class="workspace">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="breadcrumb">
+                    Administrator / Account creation & roles
+                </div>
+
+                <div class="admin-profile">
+                <strong>System Administrator</strong>
+                <small>079080000001 · Administrator</small>
+            </div>
+            </header>
+
+            <!-- Page content -->
+            <section class="page-content">
+
+                <div class="page-heading">
+                    <h1>Account creation & role assignment</h1>
+                    <p>Create accounts, assign roles and manage accounts.</p>
+                </div>
+
+                <div class="content-grid">
+
+                    <!-- Create account -->
+                    <section class="card create-card">
+                        <h2>Create user account</h2>
+
+                        <form id="createAccountForm">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="accountId">Account ID</label>
+                                    <input id="accountId" type="text"
+                                           placeholder="SV2024041" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fullName">Full name</label>
+                                    <input id="fullName" type="text"
+                                           placeholder="Đặng Phương Thảo" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input id="email" type="email"
+                                       placeholder="phuongthao.dang@university.edu.vn"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Role</label>
+
+                                <div class="role-options">
+                                    <label class="role-option selected">
+                                        <input type="radio" name="role"
+                                               value="Student" checked>
+                                        Student
+                                    </label>
+
+                                    <label class="role-option">
+                                        <input type="radio" name="role"
+                                               value="Lecturer">
+                                        Lecturer
+                                    </label>
+
+                                    <label class="role-option">
+                                        <input type="radio" name="role"
+                                               value="Administrator">
+                                        Administrator
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Initial password</label>
+                                <input id="password" type="password"
+                                       placeholder="Enter initial password"
+                                       required>
+                                <small>
+                                    Share the initial credentials with the user. Students and lecturers cannot create their own accounts.
+                                </small>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-create-account">
+                                    Create account
+                                </button>
+
+                                <button type="reset" class="btn-secondary">
+                                    Cancel
+                                </button>
+                            </div>
+
+                        </form>
+                    </section>
+
+                    <!-- Assign role -->
+                    <section class="card assign-card">
+                        <h2>Assign role</h2>
+
+                        <form id="assignRoleForm">
+
+                            <div class="form-group">
+                                <label for="selectedAccount">User account</label>
+                                <select id="selectedAccount">
+                                    <option value="GV001">
+                                        Trần Quốc Huy · GV001
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Current role</label>
+                                <div class="role-display">Lecturer</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="assignedRole">Assigned role</label>
+                                <select id="assignedRole">
+                                    <option>Student</option>
+                                    <option selected>Lecturer</option>
+                                    <option>Administrator</option>
+                                </select>
+
+                                <small>
+                                    Available roles: Student, Lecturer and Administrator.
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn-save-role">
+                                Save role assignment
+                            </button>
+
+                        </form>
+                    </section>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="js/admin-navigation.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

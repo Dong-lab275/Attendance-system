@@ -1,0 +1,899 @@
+
+/* ========================================
+   1. GLOBAL
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-dark: #102F36;
+    --primary: #1589A4;
+    --primary-hover: #11758C;
+
+    --text-white: #FFFFFF;
+    --text-muted: #CDD5E1;
+    --text-placeholder: #65748B;
+
+    --input-border: #E1E8F0;
+    --background: #FFFFFF;
+
+    --error: #FFB5AD;
+    --success: #B9E9DC;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Inter", Arial, sans-serif;
+    min-height: 100vh;
+    background: var(--background);
+}
+
+
+/* ========================================
+   2. MAIN LAYOUT
+======================================== */
+
+.login-layout {
+    display: grid;
+    grid-template-columns: 45.49% 54.51%;
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* ========================================
+   3. LEFT BRAND PANEL
+======================================== */
+
+.brand-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    min-height: 100vh;
+    padding: 56px 64px;
+
+    color: var(--text-white);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9, 46, 53, 0.96),
+            rgba(7, 61, 59, 0.94),
+            rgba(6, 75, 69, 0.96)
+        );
+
+    overflow: hidden;
+}
+
+/* Brand */
+
+.brand {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.brand-icon {
+    width: 58px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 11px;
+
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(21, 137, 164, 0.22),
+        inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+
+.brand-icon svg {
+    width: 27px;
+    height: 27px;
+
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+/* Main title */
+
+.brand-title {
+    position: absolute;
+    top: 40%;
+    left: 33px;
+    right: 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    color: #FFFFFF;
+    font-size: clamp(55px, 5.87vw, 80px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -2px;
+}
+
+.brand-title span:last-child {
+    align-self: flex-end;
+    margin-right: 0;
+}
+
+/* Bottom features */
+
+.brand-features {
+    position: absolute;
+
+    left: 18px;
+    right: 18px;
+    bottom: 16.7%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    color: #D5E5E3;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.brand-features > div {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    white-space: nowrap;
+}
+
+.brand-features svg {
+    width: 20px;
+    height: 20px;
+
+    color: #D5E5E3;
+    flex-shrink: 0;
+}
+
+
+/* ========================================
+   4. RIGHT LOGIN PANEL
+======================================== */
+
+.login-panel {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+    padding: 50px 30px;
+
+    background: #FFFFFF;
+}
+
+/* Semester label */
+
+.semester {
+    position: absolute;
+
+    top: 9%;
+    right: 5%;
+
+    color: #78868B;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* ========================================
+   5. LOGIN CARD
+======================================== */
+
+.login-card {
+    position: relative;
+
+    width: 430px;
+    min-height: 458px;
+
+    padding: 28px 32px;
+
+    color: var(--text-white);
+    background: var(--primary-dark);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 10px 4px rgba(0, 0, 0, 0.25),
+        0 4px 4px 2px rgba(0, 0, 0, 0.25);
+}
+
+.login-card h1 {
+    margin-bottom: 6px;
+
+    color: var(--text-white);
+
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.subtitle {
+    margin-bottom: 28px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   6. FORM INPUTS
+======================================== */
+
+.form-group {
+    position: relative;
+    margin-bottom: 19px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--text-white);
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.form-group input {
+    display: block;
+
+    width: 100%;
+    height: 43px;
+
+    padding: 0 12px;
+
+    color: #233B42;
+    background: #FFFFFF;
+
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 400;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: var(--text-placeholder);
+    opacity: 1;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 2px rgba(21, 137, 164, 0.18);
+}
+
+
+/* ========================================
+   7. PASSWORD INPUT
+======================================== */
+
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    padding-right: 42px;
+}
+
+.toggle-password {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: #718188;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+}
+
+
+/* ========================================
+   8. FORM OPTIONS
+======================================== */
+
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 24px 0;
+
+    font-size: 12px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--text-white);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.remember input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}
+
+.form-options a {
+    color: var(--text-white);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.form-options a:hover {
+    text-decoration: underline;
+}
+
+
+/* ========================================
+   9. LOGIN BUTTON
+======================================== */
+
+.login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: 223px;
+    height: 42px;
+
+    margin: 0 auto;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--primary);
+    color: var(--text-white);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.login-button:hover {
+    background: var(--primary-hover);
+}
+
+.login-button:active {
+    transform: translateY(1px);
+}
+
+.login-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ========================================
+   10. ERROR AND MESSAGE
+======================================== */
+
+.error {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--error);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.message {
+    margin-top: 12px;
+
+    color: var(--success);
+
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+
+/* ========================================
+   11. RESPONSIVE TABLET
+======================================== */
+
+@media (max-width: 1000px) {
+    .login-layout {
+        grid-template-columns: 42% 58%;
+    }
+
+    .brand-panel {
+        padding: 40px 32px;
+    }
+
+    .brand-title {
+        left: 24px;
+        font-size: clamp(48px, 6vw, 68px);
+    }
+
+    .brand-features {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 14px 20px;
+    }
+
+    .login-card {
+        width: min(100%, 430px);
+    }
+}
+
+
+/* ========================================
+   12. RESPONSIVE MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+    .login-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand-panel {
+        min-height: 250px;
+        padding: 24px;
+    }
+
+    .brand {
+        font-size: 20px;
+    }
+
+    .brand-icon {
+        width: 46px;
+        height: 46px;
+    }
+
+    .brand-title {
+        position: static;
+
+        margin: 35px 0 0;
+
+        font-size: clamp(42px, 10vw, 56px);
+        line-height: 1.05;
+    }
+
+    .brand-features {
+        display: none;
+    }
+
+    .login-panel {
+        min-height: 520px;
+        padding: 55px 20px 35px;
+    }
+
+    .semester {
+        top: 20px;
+        right: 20px;
+    }
+
+    .login-card {
+        width: min(100%, 430px);
+        min-height: auto;
+
+        padding: 28px 24px;
+    }
+
+    .login-card h1 {
+        font-size: 28px;
+    }
+
+    .login-button {
+        width: 100%;
+    }
+}
+
+
+/* ========================================
+   13. SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+    .brand-panel {
+        min-height: 220px;
+    }
+
+    .brand-title {
+        font-size: 42px;
+    }
+
+    .login-card {
+        padding: 24px 18px;
+    }
+
+    .form-options {
+        gap: 10px;
+        font-size: 11px;
+    }
+
+    .remember,
+    .form-options a {
+        font-size: 11px;
+    }
+}
+/* =====================================
+   CHANGE PASSWORD FORM
+===================================== */
+
+.change-password-card[hidden] {
+    display: none !important;
+}
+
+.change-password-card {
+    width: 430px;
+    min-height: 483px;
+    height: auto;
+    padding: 36px;
+    box-sizing: border-box;
+}
+
+.change-password-heading {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+/* Title and Back Arrow */
+
+.change-password-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 2px;
+}
+
+.change-password-title h1 {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.change-password-title .back-account {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 39px;
+    height: 34px;
+    margin-left: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #C5D8E1;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.change-password-title .back-account:hover {
+    color: #FFFFFF;
+}
+
+/* Subtitle */
+
+.change-password-heading p {
+    color: #C5D8E1;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Form Fields */
+
+.change-password-card .form-group {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.change-password-card .form-group label {
+    display: block;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 8px;
+}
+
+.change-password-card .password-box {
+    position: relative;
+    width: 100%;
+    height: 48px;
+}
+
+.change-password-card .password-box input {
+    width: 100%;
+    height: 48px;
+    padding: 13px 44px 13px 16px;
+    background: rgba(16, 47, 54, 0.2);
+    border: 1px solid #DEE7E8;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+}
+
+.change-password-card .password-box input::placeholder {
+    color: #C5D8E1;
+    opacity: 1;
+}
+
+.change-password-card .password-box input:focus {
+    border-color: #B5D2D5;
+}
+
+.change-password-card .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.change-password-card .toggle-password svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* Error and Message */
+
+.change-password-card .error {
+    display: block;
+    color: #FFB5AD;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.change-password-card .message {
+    font-size: 11px;
+    margin: 0 0 8px;
+}
+
+/* Update Password Button */
+
+.change-password-card .login-button {
+    width: 100%;
+    height: 48px;
+    margin-top: 4px;
+    background: #1589A4;
+    border-radius: 8px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.change-password-card .login-button:hover {
+    background: #11758C;
+}
+
+/* Responsive Change Password */
+
+@media (max-width: 700px) {
+    .change-password-card {
+        width: 100%;
+        max-width: 430px;
+        min-height: auto;
+        padding: 28px 24px;
+    }
+}
+
+/* =====================================
+   RESET PASSWORD FORM
+===================================== */
+
+.reset-password-card[hidden] {
+    display: none !important;
+}
+
+.reset-password-card {
+    width: 430px;
+    min-height: auto;
+    height: auto;
+    padding: 36px;
+    box-sizing: border-box;
+}
+
+/* Heading */
+
+.reset-password-heading {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+.reset-password-heading h1 {
+    margin: 0 0 6px;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.reset-password-heading p {
+    margin: 0;
+    color: #C5D8E1;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+/* Email Field */
+
+.reset-password-card .form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.reset-password-card .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.reset-password-card .form-group input {
+    width: 100%;
+    height: 48px;
+    padding: 13px 16px;
+    background: rgba(16, 47, 54, 0.2);
+    border: 1px solid #DEE7E8;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.reset-password-card .form-group input::placeholder {
+    color: #C5D8E1;
+    opacity: 1;
+}
+
+.reset-password-card .form-group input:focus {
+    border-color: #B5D2D5;
+}
+
+/* Submit Button */
+
+.reset-password-card .login-button {
+    width: 100%;
+    height: 48px;
+    margin-top: 4px;
+    background: #1589A4;
+    border-radius: 8px;
+}
+
+.reset-password-card .login-button:hover {
+    background: #11758C;
+}
+
+/* Back to Sign In */
+
+.back-to-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.back-to-signin:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Reset Password */
+
+@media (max-width: 700px) {
+    .reset-password-card {
+        width: 100%;
+        max-width: 430px;
+        min-height: auto;
+        padding: 28px 24px;
+    }
+}

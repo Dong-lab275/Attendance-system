@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudentAttendance - Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="login-layout">
+
+        <!-- LEFT: BRAND PANEL -->
+        <section class="brand-panel">
+
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 14V21C13 25 19 25 24 21V14"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M29 11V20"
+                              stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <span>StudentAttendance</span>
+            </div>
+
+            <div class="brand-title">
+                <span>Attendance</span>
+                <span>system</span>
+            </div>
+
+            <div class="brand-features">
+                <div class="feature-item">
+                    <i data-lucide="clipboard-check"></i>
+                    <span>Accurate records</span>
+                </div>
+
+                <div class="feature-item">
+                    <i data-lucide="users"></i>
+                    <span>Role-based access</span>
+                </div>
+
+                <div class="feature-item">
+                    <i data-lucide="chart-column"></i>
+                    <span>Clear insights</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT: AUTHENTICATION PANEL -->
+        <section class="login-panel">
+
+            <div class="semester">
+                Academic year 2025–2026 · Semester 1
+            </div>
+
+
+            <!-- LOGIN FORM -->
+            <form class="login-card" id="loginForm">
+
+                <h1>Welcome back</h1>
+
+                <p class="subtitle">
+                    Sign in with your university account to continue.
+                </p>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                    >
+
+                    <small class="error" id="usernameError"></small>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+
+                    <small class="error" id="passwordError"></small>
+                </div>
+
+
+                <div class="form-options">
+
+                    <label class="remember">
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            name="rememberMe"
+                        >
+                        <span>Remember me</span>
+                    </label>
+
+                    <a href="#" id="forgotPassword">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <button type="submit" class="login-button">
+                    <span>Sign in</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+
+                <p id="loginMessage" class="message"></p>
+
+            </form>
+
+
+            <!-- CHANGE PASSWORD FORM -->
+            <form class="login-card change-password-card"
+                  id="changePasswordForm"
+                  hidden>
+
+                <div class="change-password-heading">
+                <div class="change-password-title">
+                    <h1>Change Password</h1>
+
+                    <button type="button" id="backToLogin" class="back-account" aria-label="Go back">
+                        ↩
+                    </button>
+                </div>
+
+                <p>Keep your account secure with a new password.</p>
+            </div>
+
+
+                <!-- CURRENT PASSWORD -->
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            placeholder="Enter your current password"
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="currentPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+
+                    <small class="error" id="currentPasswordError"></small>
+                </div>
+
+
+                <!-- NEW PASSWORD -->
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter a new password"
+                            autocomplete="new-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="newPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+
+                    <small class="error" id="newPasswordError"></small>
+                </div>
+
+
+                <!-- CONFIRM NEW PASSWORD -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Re-enter your new password"
+                            autocomplete="new-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="confirmPassword"
+                            aria-label="Show password"
+                        >
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+
+                    <small class="error" id="confirmPasswordError"></small>
+                </div>
+
+
+                <p id="changePasswordMessage" class="message"></p>
+
+
+                <button type="submit" class="login-button">
+                    <span>Update Password</span>
+                </button>
+
+
+
+            </form>
+
+            <!-- RESET PASSWORD FORM -->
+            <form class="login-card reset-password-card"
+                id="resetPasswordForm"
+                hidden>
+
+                <div class="reset-password-heading">
+                    <h1>Reset your password</h1>
+
+                    <p>Enter your email address to reset your password.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="resetEmail">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="resetEmail"
+                        name="resetEmail"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                    >
+
+                    <small class="error" id="resetEmailError"></small>
+                </div>
+
+                <p id="resetPasswordMessage" class="message"></p>
+
+                <button type="submit" class="login-button">
+                    <span>Submit</span>
+                </button>
+
+                <button type="button"
+                        id="backFromReset"
+                        class="back-to-signin">
+                    Back to sign in
+                </button>
+
+            </form>
+        </section>
+
+    </main>
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    
+
+</body>
+</html>

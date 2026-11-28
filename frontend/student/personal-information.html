@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student - Personal Information</title>
+
+    <link rel="stylesheet" href="css/personal-information.css">
+</head>
+
+<body>
+
+<div class="student-layout">
+
+    <!-- Sidebar: same layout as Attendance Rate -->
+    <aside class="sidebar">
+
+        <div class="brand-mark">
+            <svg viewBox="0 0 32 32" fill="none">
+                <path
+                    d="M3 11L16 5L29 11L16 17L3 11Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+                <path
+                    d="M8 14V21C13 25 19 25 24 21V14"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+                <path
+                    d="M29 11V20"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+            </svg>
+        </div>
+
+        <div class="system-identity">
+            <span>Student Attendance</span>
+            <small>MANAGEMENT SYSTEM</small>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="sidebar-heading">
+                STUDENT WORKSPACE
+            </div>
+
+            <a href="attendance-check-in.html" class="nav-item">
+                Attendance check-in
+            </a>
+
+            <a href="attendance-history.html" class="nav-item">
+                Attendance history
+            </a>
+
+            <a href="course-registration.html" class="nav-item">
+                Course registration
+            </a>
+
+            <a href="personal-information.html" class="nav-item active">
+                Personal information
+            </a>
+
+            <a href="attendance-rate.html" class="nav-item">
+                Attendance rate
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="personal-information.html#change-password"
+                class="bottom-link"
+            >
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="bottom-link">
+                Sign out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main workspace -->
+    <main class="workspace">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                Student <span>/</span> Personal information
+            </div>
+
+            <div class="account-identity">
+
+                <strong class="js-full-name">
+                    Le Minh Khang
+                </strong>
+
+                <small class="js-student-id">
+                    079205003456
+                </small>
+
+            </div>
+
+        </header>
+
+
+        <!-- Page content -->
+        <section class="page-content personal-information-page">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+
+                <div class="page-title">
+
+                    <h1>Personal information</h1>
+
+                    <p>
+                        Your student information and account details.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="edit-information-button"
+                    id="editInformationButton"
+                >
+                    Edit information
+                </button>
+
+            </div>
+
+
+            <!-- Student information card -->
+            <section class="student-info-card">
+
+                <!-- Student identity -->
+                <div class="student-identity">
+
+                    
+
+                    <div class="student-identity-text">
+
+                        <h2 class="js-full-name">
+                            Le Minh Khang
+                        </h2>
+
+                        <p>
+                            <span class="js-student-id">079205003456</span>
+                            <span class="identity-separator">·</span>
+                            Student
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Student details -->
+                <div class="student-details">
+
+                    <!-- Left column -->
+                    <div class="student-details-column">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Student ID
+                            </span>
+
+                            <span class="detail-value js-student-id">
+                                079205003456
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Full name
+                            </span>
+
+                            <span class="detail-value js-full-name">
+                                Le Minh Khang
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Date of birth
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="studentDateOfBirth"
+                            >
+                                14 Feb 2005
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Gender
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="studentGender"
+                            >
+                                Male
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Right column -->
+                    <div class="student-details-column">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Email address
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="studentEmail"
+                            >
+                                khang.le@student.edu.vn
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Phone number
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="studentPhone"
+                            >
+                                0910000001
+                            </span>
+
+                        </div>
+
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+                                Address
+                            </span>
+
+                            <span
+                                class="detail-value"
+                                id="studentAddress"
+                            >
+                                Thu Duc, Ho Chi Minh City
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Account security -->
+            <section class="account-security-card" id="change-password">
+
+                <div class="security-icon">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <rect
+                            x="4"
+                            y="10"
+                            width="16"
+                            height="11"
+                            rx="2"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                        />
+
+                        <path
+                            d="M8 10V7C8 4.8 9.8 3 12 3C14.2 3 16 4.8 16 7V10"
+                            stroke="currentColor"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                        />
+
+                        <circle
+                            cx="12"
+                            cy="15.5"
+                            r="1.2"
+                            fill="currentColor"
+                        />
+                    </svg>
+                </div>
+
+                <div class="security-content">
+
+                    <h3>Account security</h3>
+
+                    <p>
+                        Your account is provided and managed by the university.
+                        Keep your password secure to protect your account.
+                    </p>
+
+                    <a
+                        href="../users/index.html?mode=change-password&return=student"
+                        class="change-password-button"
+                    >
+                        Change password
+                    </a>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/personal-information.js"></script>
+
+</body>
+</html>

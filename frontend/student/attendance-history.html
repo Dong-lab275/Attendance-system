@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student - Attendance History</title>
+
+    <link rel="stylesheet" href="css/attendance-history.css">
+</head>
+<body>
+
+<div class="student-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <!-- System identity -->
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                    <path d="M8 14V21C13 25 19 25 24 21V14"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                    <path d="M29 11V20"
+                          stroke="currentColor"
+                          stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="brand-text">
+                <span>Student Attendance</span>
+                <small>MANAGEMENT SYSTEM</small>
+            </div>
+        </div>
+
+        <!-- Student navigation -->
+        <nav class="sidebar-navigation">
+
+            <h2 class="sidebar-heading">STUDENT WORKSPACE</h2>
+
+            <a href="attendance-check-in.html" class="nav-item">
+                Attendance check-in
+            </a>
+
+            <a href="attendance-history.html"
+               class="nav-item active"
+               aria-current="page">
+                Attendance history
+            </a>
+
+            <a href="course-registration.html" class="nav-item">
+                Course registration
+            </a>
+
+            <a href="personal-information.html" class="nav-item">
+                Personal information
+            </a>
+
+            <a href="attendance-rate.html" class="nav-item">
+                Attendance rate
+            </a>
+
+        </nav>
+
+        <!-- Account actions -->
+        <div class="sidebar-bottom">
+
+            <a href="personal-information.html#change-password"
+               class="sidebar-action">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="sidebar-action">
+                Sign out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= WORKSPACE ================= -->
+    <main class="workspace">
+
+        <!-- Top bar -->
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                Student <span>/</span> Attendance history
+            </div>
+
+            <div class="student-profile">
+                <strong class="js-full-name">Le Minh Khang</strong>
+                <small class="js-student-id">079205003456</small>
+            </div>
+
+        </header>
+
+
+        <!-- Page content -->
+        <section class="page-content">
+
+            <!-- Page heading -->
+            <div class="page-heading">
+
+                <h1>Attendance history</h1>
+
+                <p>
+                    Review your attendance and progress in each course.
+                </p>
+
+            </div>
+
+
+            <!-- Filters -->
+            <div class="attendance-filters">
+
+                <div class="filter-control">
+                    <select id="courseFilter" aria-label="Filter by course">
+                        <option value="all" selected>All courses</option>
+                        <option value="C0001">Database Systems</option>
+                        <option value="C0002">Software Engineering</option>
+                    </select>
+                </div>
+
+                <div class="filter-control">
+                    <select id="statusFilter"
+                            aria-label="Filter by attendance status">
+                        <option value="all" selected>
+                            All attendance statuses
+                        </option>
+                        <option value="Present">Present</option>
+                        <option value="Late">Late</option>
+                        <option value="Absent">Absent</option>
+                    </select>
+                </div>
+
+                <div class="filter-control">
+                    <select id="dateFilter" aria-label="Filter by date">
+                        <option value="all" selected>
+                            September 2026
+                        </option>
+                        <option value="september">September 2026</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- Attendance summary -->
+            <div class="attendance-summary">
+
+                <article class="summary-card">
+                    <p class="summary-label">Attendance rate</p>
+
+                    <h2>100%</h2>
+
+                    <p class="summary-description">
+                        3 attended / 3 recorded sessions
+                    </p>
+                </article>
+
+
+                <article class="summary-card">
+                    <p class="summary-label">Present</p>
+
+                    <h2>3</h2>
+
+                    <p class="summary-description">
+                        On-time check-ins
+                    </p>
+                </article>
+
+
+                <article class="summary-card">
+                    <p class="summary-label">Late</p>
+
+                    <h2>0</h2>
+
+                    <p class="summary-description">
+                        Late check-ins
+                    </p>
+                </article>
+
+
+                <article class="summary-card">
+                    <p class="summary-label">Absent</p>
+
+                    <h2>0</h2>
+
+                    <p class="summary-description">
+                        Missed sessions
+                    </p>
+                </article>
+
+            </div>
+
+
+            <!-- Attendance records -->
+            <section class="attendance-records">
+
+                <h2 class="records-title" id="recordsTitle">
+                    All courses · Attendance records
+                </h2>
+
+
+                <div class="table-wrapper">
+
+                    <table class="attendance-table">
+
+                        <thead>
+                            <tr>
+                                <th>Session</th>
+                                <th>Date &amp; time</th>
+                                <th>Check-in</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="attendanceTableBody">
+
+                            <!-- Database Systems - SE001 -->
+                            <tr data-course="C0001"
+                                data-status="Present"
+                                data-month="september">
+
+                                <td class="session-number">SE001</td>
+
+                                <td>07 Sep 2026 · 07:30</td>
+
+                                <td>07:25</td>
+
+                                <td>
+                                    <span class="status-badge present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+
+                            <!-- Database Systems - SE002 -->
+                            <tr data-course="C0001"
+                                data-status="Present"
+                                data-month="september">
+
+                                <td class="session-number">SE002</td>
+
+                                <td>14 Sep 2026 · 07:30</td>
+
+                                <td>07:28</td>
+
+                                <td>
+                                    <span class="status-badge present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+
+                            <!-- Software Engineering - SE003 -->
+                            <tr data-course="C0002"
+                                data-status="Present"
+                                data-month="september">
+
+                                <td class="session-number">SE003</td>
+
+                                <td>09 Sep 2026 · 13:00</td>
+
+                                <td>12:55</td>
+
+                                <td>
+                                    <span class="status-badge present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <p class="empty-message" id="emptyMessage" hidden>
+                        No attendance records found.
+                    </p>
+
+                </div>
+
+
+                <!-- Table footer -->
+                <div class="records-footer">
+
+                    <p id="recordsCount">
+                        Showing 3 of 3 sessions
+                    </p>
+
+                    <span class="footer-dot">•</span>
+
+                    <p>Page 1</p>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/attendance-history.js"></script>
+
+</body>
+</html>

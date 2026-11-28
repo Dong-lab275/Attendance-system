@@ -1,0 +1,625 @@
+
+/* =====================================
+   ATTENDANCE HISTORY PAGE
+===================================== */
+
+.attendance-history-page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 32px 40px 28px;
+    gap: 24px;
+
+    box-sizing: border-box;
+}
+
+.attendance-history-page * {
+    box-sizing: border-box;
+}
+
+/* =====================================
+   PAGE HEADING
+===================================== */
+
+.history-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 67px;
+
+    gap: 6px;
+}
+
+.history-heading h1 {
+    width: 100%;
+    margin: 0;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+.history-heading p {
+    width: 100%;
+    margin: 0;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* =====================================
+   ATTENDANCE FILTERS
+===================================== */
+
+.attendance-filters {
+    display: grid;
+
+    /*
+       Phân chia chiều rộng theo tỷ lệ Figma:
+       Search : Course : Date : Status
+       184    : 154    : 106  : 99
+    */
+
+    grid-template-columns: 184fr 154fr 106fr 99fr;
+
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 39px;
+
+    gap: 12px;
+}
+
+/* Common input and select */
+
+.attendance-filters input,
+.attendance-filters select {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: 39px;
+
+    padding: 10px 14px;
+
+    background: #FFFFFF;
+    border: 1px solid #E0E8EA;
+    border-radius: 6px;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 145%;
+
+    color: #087F75;
+
+    outline: none;
+}
+
+.attendance-filters input:focus,
+.attendance-filters select:focus {
+    border-color: #087F75;
+}
+
+.attendance-filters select {
+    cursor: pointer;
+}
+
+.attendance-filters input::placeholder {
+    color: #087F75;
+    opacity: 1;
+}
+
+/* Search */
+
+.filter-search {
+    width: 100%;
+    min-width: 0;
+}
+
+.filter-search input {
+    width: 100%;
+}
+
+/* Course */
+
+.filter-course {
+    width: 100%;
+    min-width: 0;
+}
+
+.filter-course select {
+    width: 100%;
+}
+
+/* Date */
+
+.filter-date {
+    width: 100%;
+    min-width: 0;
+}
+
+.filter-date select {
+    width: 100%;
+}
+
+/* Status */
+
+.filter-status {
+    width: 100%;
+    min-width: 0;
+}
+
+.filter-status select {
+    width: 100%;
+}
+
+/* =====================================
+   ATTENDANCE RECORDS CARD
+===================================== */
+
+.attendance-records-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 409px;
+
+    padding: 22px;
+    gap: 16px;
+
+    background: #FFFFFF;
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+}
+
+.attendance-records-card h2 {
+    width: 100%;
+    margin: 0;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+/* =====================================
+   ATTENDANCE TABLE
+===================================== */
+
+.attendance-table-wrapper {
+    width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    min-width: 850px;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.attendance-table th {
+    height: 36px;
+    padding: 10px 8px;
+
+    background: #F3F7F8;
+
+    text-align: left;
+    vertical-align: middle;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* Column widths */
+
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+    width: 20%;
+}
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
+    width: 20%;
+}
+
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+    width: 20%;
+}
+
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4) {
+    width: 20%;
+}
+
+.attendance-table th:nth-child(5),
+.attendance-table td:nth-child(5) {
+    width: 20%;
+}
+
+/* Table rows */
+
+.attendance-table td {
+    height: 56px;
+    padding: 11px 8px;
+
+    border-bottom: 1px solid #EEF2F3;
+
+    vertical-align: middle;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+.attendance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.attendance-table tbody tr:hover {
+    background: #FAFCFC;
+}
+
+/* First and last column spacing */
+
+.attendance-table th:first-child,
+.attendance-table td:first-child {
+    padding-left: 0;
+}
+
+.attendance-table th:last-child,
+.attendance-table td:last-child {
+    padding-right: 0;
+}
+
+/* =====================================
+   STUDENT INFORMATION
+===================================== */
+
+.student-cell {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+.student-name {
+    font-weight: 500;
+    color: #162B35;
+}
+
+.student-id {
+    font-weight: 400;
+    color: #63767F;
+}
+
+/* =====================================
+   COURSE INFORMATION
+===================================== */
+
+.course-cell {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+.course-name {
+    color: #162B35;
+}
+
+.session-number {
+    color: #63767F;
+}
+
+/* =====================================
+   STATUS BADGES
+===================================== */
+
+.status-badge {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 26px;
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 145%;
+
+    white-space: nowrap;
+}
+
+.status-present {
+    background: #E7F4F1;
+    color: #087562;
+}
+
+.status-late {
+    background: #FFF3DA;
+    color: #8C641A;
+}
+
+.status-absent {
+    background: #FCECEE;
+    color: #AD3F4E;
+}
+
+/* =====================================
+   CHECK-IN TIMESTAMP
+===================================== */
+
+.checkin-cell {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+
+    color: #087F75;
+}
+
+.checkin-date {
+    font-size: 12px;
+    color: #087F75;
+}
+
+.checkin-time {
+    font-size: 12px;
+    color: #087F75;
+}
+
+.no-checkin {
+    color: #087F75;
+}
+
+/* =====================================
+   EMPTY STATE
+===================================== */
+
+.empty-records {
+    width: 100%;
+    padding: 30px 10px;
+
+    text-align: center;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+
+    color: #63767F;
+}
+
+/* =====================================
+   ATTENDANCE MODIFICATION HISTORY
+===================================== */
+
+.modification-history-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 156px;
+
+    padding: 22px;
+    gap: 16px;
+
+    background: #FFFFFF;
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+}
+
+.modification-history-card h2 {
+    width: 100%;
+    margin: 0;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+/* =====================================
+   MODIFICATION RECORD
+===================================== */
+
+.modification-record {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+    gap: 24px;
+
+    align-items: center;
+}
+
+/* Student */
+
+.modification-student {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+    min-width: 0;
+}
+
+.modification-student strong {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+.modification-student span {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* Status change */
+
+.modification-status {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 10px;
+    min-width: 0;
+}
+
+.status-to {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+
+    color: #63767F;
+}
+
+/* Updated by */
+
+.modification-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+    min-width: 0;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* Modification note */
+
+.modification-note {
+    width: 100%;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 1100px) {
+
+    .attendance-history-page {
+        padding: 28px 24px;
+    }
+
+    .attendance-filters {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .attendance-records-card,
+    .modification-history-card {
+        height: auto;
+    }
+
+    .modification-record {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .attendance-history-page {
+        padding: 24px 16px;
+        gap: 20px;
+    }
+
+    .history-heading h1 {
+        font-size: 24px;
+    }
+
+    .attendance-filters {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .attendance-filters input,
+    .attendance-filters select {
+        width: 100%;
+    }
+
+    .attendance-records-card,
+    .modification-history-card {
+        padding: 16px;
+    }
+
+    .attendance-table {
+        min-width: 850px;
+    }
+
+    .modification-record {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .modification-status {
+        flex-wrap: wrap;
+    }
+}

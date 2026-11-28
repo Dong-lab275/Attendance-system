@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student & Lecturer Accounts | SAMS</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/accounts.css">
+</head>
+
+<body>
+    <div class="admin-layout accounts-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="admin-brand">
+                <div class="admin-brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path d="M3 11L16 5L29 11L16 17L3 11Z"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 14V21C13 25 19 25 24 21V14"
+                              stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M29 11V20"
+                              stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+
+                <div class="admin-brand-text">
+                    <span>Student Attendance</span>
+                    <small>MANAGEMENT SYSTEM</small>
+                </div>
+            </div>
+
+            <div class="sidebar-heading">ADMINISTRATOR WORKSPACE</div>
+
+            <nav class="sidebar-nav">
+            <a href="admin.html" class="nav-item">
+                Account creation & roles
+            </a>
+
+            <a href="accounts.html" class="nav-item">
+                Student & lecturer accounts
+            </a>
+
+            <a href="courses.html" class="nav-item">Course management</a>
+            <a href="course-registrations.html" class="nav-item">Course registrations</a>
+            <a href="lecturer-assignments.html" class="nav-item">Lecturer assignments</a>
+            <a href="departments.html" class="nav-item">Departments</a>
+            <a href="SessionSchedules.html" class="nav-item">Session schedules</a>
+            <a href="attendance-reports.html" class="nav-item">Attendance reports</a>
+            <a href="attendance-history.html" class="nav-item">Attendance history</a>
+            <a href="personal-information.html" class="nav-item">Personal information</a>
+        </nav>
+
+            <div class="sidebar-bottom">
+            <a href="personal-information.html#change-password" class="nav-item">
+                Change password
+            </a>
+
+            <a href="../users/index.html" class="nav-item">
+                Sign out
+            </a>
+        </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="workspace">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="breadcrumb">
+                    <span>Administrator</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Student & lecturer accounts</span>
+                </div>
+
+                <div class="admin-profile">
+                <strong>System Administrator</strong>
+                <small>079080000001 · Administrator</small>
+            </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <div class="accounts-page">
+
+                <section class="accounts-heading">
+                    <div>
+                        <h1>Student & lecturer accounts</h1>
+                        <p>Create, view, update and manage student and lecturer accounts.</p>
+                    </div>
+
+                    <a href="admin.html"
+                    class="btn-create-account"
+                    id="createAccountBtn">
+                        Create account & assign role
+                    </a>
+                </section>
+
+                <!-- FILTERS -->
+                <section class="account-filters">
+                    <div class="search-box">
+                        <span class="search-icon">⌕</span>
+                        <input
+                            type="text"
+                            id="searchAccount"
+                            placeholder="Search by name or account ID..."
+                        >
+                    </div>
+
+                    <select id="filterRole">
+                        <option value="all">All roles</option>
+                        <option value="student">Student</option>
+                        <option value="lecturer">Lecturer</option>
+                    </select>
+
+                    <select id="filterStatus">
+                        <option value="all">All statuses</option>
+                        <option value="active">Active</option>
+                        <option value="locked">Locked</option>
+                    </select>
+                </section>
+
+                <!-- ACCOUNT MANAGEMENT -->
+                <section class="account-management">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="accounts-left-column">
+
+                        <div class="user-directory">
+                            <div class="section-title">
+                                <div>
+                                    <h2>User directory</h2>
+                                    <p>Manage student and lecturer accounts</p>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table class="account-table">
+                                    <thead>
+                                        <tr>
+                                            <th>USER</th>
+                                            <th>ROLE</th>
+                                            <th>STATUS</th>
+                                            <th>ACTION</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="accountTableBody">
+
+                                        <!-- STUDENT 01 -->
+                                        <tr
+                                            data-name="Le Minh Khang"
+                                            data-id="079205003456"
+                                            data-username="student01"
+                                            data-role="student"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Le Minh Khang</strong>
+                                                        <small>079205003456</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Student</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079205003456">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- STUDENT 02 -->
+                                        <tr
+                                            data-name="Pham Ngoc Mai"
+                                            data-id="079305004567"
+                                            data-username="student02"
+                                            data-role="student"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Pham Ngoc Mai</strong>
+                                                        <small>079305004567</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Student</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079305004567">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- STUDENT 03 -->
+                                        <tr
+                                            data-name="Vo Quoc Huy"
+                                            data-id="079204005678"
+                                            data-username="student03"
+                                            data-role="student"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Vo Quoc Huy</strong>
+                                                        <small>079204005678</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Student</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079204005678">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- LECTURER 01 -->
+                                        <tr
+                                            data-name="Nguyen Van An"
+                                            data-id="079082001234"
+                                            data-username="lecturer01"
+                                            data-role="lecturer"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Nguyen Van An</strong>
+                                                        <small>079082001234</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Lecturer</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079082001234">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <!-- LECTURER 02 -->
+                                        <tr
+                                            data-name="Tran Thi Binh"
+                                            data-id="079185002345"
+                                            data-username="lecturer02"
+                                            data-role="lecturer"
+                                            data-status="active"
+                                        >
+                                            <td>
+                                                <div class="user-cell">
+                                                    <div>
+                                                        <strong>Tran Thi Binh</strong>
+                                                        <small>079185002345</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Lecturer</td>
+                                            <td>
+                                                <span class="status-badge active-status">Active</span>
+                                            </td>
+                                            <td>
+                                                <button class="view-edit-btn" data-account-id="079185002345">
+                                                    View / Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <div class="empty-state" id="emptyState">
+                                    No accounts found.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SELECTED ACCOUNT -->
+                        <div class="selected-account-card">
+                            <div class="section-title">
+                                <div>
+                                    <h2>Account actions</h2>
+                                    <p>Manage the selected account</p>
+                                </div>
+                            </div>
+
+                            <div class="selected-user">
+                            <div>
+                                <strong id="selectedName">Le Minh Khang</strong>
+                                <small id="selectedId">079205003456 · Student</small>
+                            </div>
+                        </div>
+
+                            <div class="account-actions">
+                                <button class="action-btn edit-action" id="editAccountBtn">
+                                    Edit account
+                                </button>
+
+                                <button class="action-btn lock-action" id="lockAccountBtn">
+                                    Lock account
+                                </button>
+
+                                <button class="action-btn reset-action" id="resetPasswordBtn">
+                                    Reset password
+                                </button>
+
+                                <button class="action-btn delete-action" id="deleteAccountBtn">
+                                    Delete account
+                                </button>
+                            </div>
+
+                            <p class="action-note">
+                                Locking an account prevents the user from logging in.
+                                Deleting an account permanently removes it.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="edit-account-card">
+                        <div class="section-title">
+                            <div>
+                                <h2>Account information</h2>
+                                <p>View and update account details</p>
+                            </div>
+                        </div>
+
+                        <form id="editAccountForm">
+
+                            <div class="edit-form-group">
+                                <label for="accountId">Account ID</label>
+                                <input type="text" id="accountId" readonly>
+                            </div>
+
+                            <div class="edit-form-group">
+                                <label for="fullName">Full name</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+
+                            <div class="edit-form-group">
+                                <label for="emailAddress">Email address</label>
+                                <input type="email" id="emailAddress" required>
+                            </div>
+
+                            <div class="edit-form-group">
+                                <label for="accountRole">Role</label>
+                                <select id="accountRole" disabled>
+                                    <option value="student">Student</option>
+                                    <option value="lecturer">Lecturer</option>
+                                </select>
+                            </div>
+
+                            <p class="edit-note">
+                                Role assignment is managed in Account creation & roles.
+                            </p>
+
+                            <div class="edit-actions">
+                                <button type="submit" class="btn-save-changes">
+                                    Save changes
+                                </button>
+
+                                <button type="button" class="btn-cancel" id="cancelEditBtn">
+                                    Cancel
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/admin-navigation.js"></script>
+    <script src="js/accounts.js"></script>
+</body>
+</html>

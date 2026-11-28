@@ -1,0 +1,713 @@
+
+/* =========================================
+   SESSION SCHEDULES PAGE
+========================================= */
+
+.session-page {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 880px;
+
+    padding: 32px 40px 28px;
+    gap: 24px;
+
+    background: #F6F8F9;
+
+    font-family: 'Inter', sans-serif;
+    color: #162B35;
+}
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.session-page-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+    min-height: 67px;
+
+    gap: 20px;
+}
+
+.session-page-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    flex: 1;
+    min-width: 0;
+
+    gap: 6px;
+}
+
+.session-page-title h1 {
+    margin: 0;
+
+    width: 100%;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+.session-page-title p {
+    margin: 0;
+
+    width: 100%;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+.btn-create-session {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    min-width: 130px;
+    height: 43px;
+
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #087F75;
+    color: #FFFFFF;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-create-session:hover {
+    background: #066D65;
+}
+
+/* =========================================
+   SCHEDULE FILTERS
+========================================= */
+
+.schedule-filters {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 39px;
+
+    gap: 12px;
+}
+
+.schedule-filter,
+.date-filter {
+    box-sizing: border-box;
+
+    height: 39px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #E0E8EA;
+    border-radius: 6px;
+
+    background: #FFFFFF;
+
+    color: #087F75;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.schedule-filter {
+    min-width: 95px;
+    cursor: pointer;
+}
+
+.date-filter {
+    display: flex;
+    align-items: center;
+
+    width: 230px;
+    gap: 5px;
+}
+
+.date-filter input {
+    width: 95px;
+    min-width: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #087F75;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.date-filter span {
+    color: #63767F;
+}
+
+/* =========================================
+   SESSION MANAGEMENT LAYOUT
+========================================= */
+
+.session-management {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 632px;
+
+    gap: 24px;
+}
+
+/* =========================================
+   SCHEDULE LIST CARD
+========================================= */
+
+.schedule-list-card {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    flex: 1;
+    min-width: 0;
+    min-height: 409px;
+
+    padding: 22px;
+    gap: 16px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+}
+
+.schedule-list-card h2 {
+    margin: 0;
+
+    width: 100%;
+
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+/* =========================================
+   SCHEDULE TABLE
+========================================= */
+
+.schedule-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    min-width: 650px;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.schedule-table thead {
+    background: #F3F7F8;
+}
+
+.schedule-table th {
+    padding: 10px 8px;
+
+    text-align: left;
+
+    color: #63767F;
+
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 145%;
+}
+
+.schedule-table th:nth-child(1) {
+    width: 25%;
+}
+
+.schedule-table th:nth-child(2) {
+    width: 25%;
+}
+
+.schedule-table th:nth-child(3) {
+    width: 20%;
+}
+
+.schedule-table th:nth-child(4) {
+    width: 30%;
+}
+
+.schedule-table td {
+    padding: 11px 8px;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid #EDF1F2;
+
+    color: #162B35;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 145%;
+}
+
+.schedule-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.schedule-table tbody tr:hover {
+    background: #F8FBFB;
+}
+
+.schedule-table tbody tr.selected-row {
+    background: #F0F8F7;
+}
+
+.course-information {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.course-information strong {
+    font-size: 12px;
+    font-weight: 500;
+
+    color: #162B35;
+}
+
+.course-information span {
+    font-size: 11px;
+    font-weight: 400;
+
+    color: #63767F;
+}
+
+.class-information {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.class-information span:first-child {
+    color: #162B35;
+}
+
+.class-information span:last-child {
+    color: #63767F;
+}
+
+/* =========================================
+   ATTENDANCE STATUS
+========================================= */
+
+.status-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: fit-content;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 145%;
+
+    white-space: nowrap;
+}
+
+.status-open {
+    background: #E7F4F1;
+    color: #087562;
+}
+
+.status-scheduled {
+    background: #EDF1F7;
+    color: #4C6283;
+}
+
+.status-closed {
+    background: #FCEDEF;
+    color: #AD3F4E;
+}
+
+.status-completed {
+    background: #E9F3EA;
+    color: #39804A;
+}
+
+/* =========================================
+   TABLE ACTIONS
+========================================= */
+
+.table-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 5px;
+}
+
+.table-action {
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: #087F75;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+
+    cursor: pointer;
+}
+
+.table-action:hover {
+    text-decoration: underline;
+}
+
+.table-action.delete {
+    color: #AD3F4E;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty-state {
+    display: none;
+
+    width: 100%;
+
+    padding: 30px 10px;
+
+    text-align: center;
+
+    color: #63767F;
+
+    font-size: 13px;
+}
+
+.empty-state.show {
+    display: block;
+}
+
+/* =========================================
+   SESSION EDITOR
+========================================= */
+
+.session-editor-card {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    flex: 0 0 340px;
+
+    width: 340px;
+    min-height: 632px;
+
+    padding: 22px;
+    gap: 16px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E0E8EA;
+    border-radius: 10px;
+}
+
+.session-editor-card h2 {
+    margin: 0;
+
+    width: 100%;
+
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 145%;
+
+    color: #162B35;
+}
+
+/* =========================================
+   SESSION FORM
+========================================= */
+
+#sessionForm {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    gap: 16px;
+}
+
+.session-form-group {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+
+    gap: 6px;
+}
+
+.session-form-group label {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+.session-form-group input,
+.session-form-group select {
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 41px;
+
+    padding: 10px 12px;
+
+    border: 1px solid #E0E8EA;
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #FFFFFF;
+
+    color: #162B35;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.session-form-group input:focus,
+.session-form-group select:focus {
+    border-color: #087F75;
+    box-shadow: 0 0 0 2px rgba(8, 127, 117, 0.08);
+}
+
+/* =========================================
+   TIME INPUT ROWS
+========================================= */
+
+.session-time-row {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    gap: 12px;
+}
+
+.session-time-row .session-form-group {
+    width: 50%;
+}
+
+/* =========================================
+   AUTOMATIC CLOSURE NOTE
+========================================= */
+
+.automatic-closure-note {
+    margin: 0;
+
+    width: 100%;
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 145%;
+
+    color: #63767F;
+}
+
+/* =========================================
+   FORM ACTIONS
+========================================= */
+
+.session-form-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+    gap: 10px;
+}
+
+.btn-save-session,
+.btn-cancel-session,
+.btn-delete-session {
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 39px;
+
+    padding: 10px 14px;
+
+    border-radius: 6px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-save-session {
+    border: none;
+
+    background: #087F75;
+    color: #FFFFFF;
+}
+
+.btn-save-session:hover {
+    background: #066D65;
+}
+
+.btn-cancel-session {
+    border: 1px solid #E0E8EA;
+
+    background: #FFFFFF;
+    color: #087F75;
+}
+
+.btn-cancel-session:hover {
+    background: #F3F7F8;
+}
+
+.btn-delete-session {
+    width: 100%;
+
+    border: 1px solid #E0E8EA;
+
+    background: #FFFFFF;
+    color: #AD3F4E;
+}
+
+.btn-delete-session:hover {
+    background: #FFF5F6;
+}
+
+.btn-delete-session:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1200px) {
+
+    .session-page {
+        padding: 28px 24px;
+    }
+
+    .session-management {
+        flex-direction: column;
+    }
+
+    .schedule-list-card {
+        width: 100%;
+    }
+
+    .session-editor-card {
+        width: 100%;
+        flex-basis: auto;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .session-page {
+        padding: 20px 16px;
+    }
+
+    .session-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .session-page-title h1 {
+        font-size: 23px;
+    }
+
+    .schedule-filters {
+        flex-wrap: wrap;
+    }
+
+    .date-filter {
+        width: 100%;
+    }
+
+    .schedule-filter {
+        flex: 1;
+    }
+
+    .schedule-list-card {
+        padding: 16px;
+    }
+
+    .session-editor-card {
+        padding: 16px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .session-time-row {
+        flex-direction: column;
+    }
+
+    .session-time-row .session-form-group {
+        width: 100%;
+    }
+
+    .session-form-actions {
+        flex-wrap: wrap;
+    }
+
+}
